@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VetPath — VA Benefits Intelligence for Veterans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #F5F2EC;
+    --bg-2:      #EDEAE2;
+    --surface:   #FFFFFF;
+    --surface-2: #F0EDE6;
+    --border:    rgba(0,0,0,0.09);
+    --border-2:  rgba(0,0,0,0.16);
+    --green:     #0E8A63;
+    --green-l:   #10A376;
+    --green-d:   #0A6649;
+    --green-bg:  rgba(14,138,99,0.09);
+    --green-border: rgba(14,138,99,0.25);
+    --ink:       #18191A;
+    --ink-2:     #4A4845;
+    --ink-3:     #8A8780;
+    --ink-4:     #B8B5AE;
+    --amber:     #C47F0A;
+    --amber-bg:  rgba(196,127,10,0.09);
+    --red:       #C43030;
+    --ff-display: 'Barlow Condensed', sans-serif;
+    --ff-body:    'DM Sans', sans-serif;
+    --ff-mono:    'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--ff-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--ff-mono); font-size: 11px; letter-spacing: .07em; color: var(--green); background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 4px; padding: 4px 10px; text-transform: uppercase; font-weight: 500; }
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--green); color: #fff; font-family: var(--ff-body); font-size: 16px; font-weight: 500; padding: 14px 30px; border-radius: 10px; border: none; cursor: pointer; transition: background .15s, transform .12s; white-space: nowrap; }
+  .btn-primary:hover { background: var(--green-l); transform: translateY(-1px); }
+  .btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: var(--ink-2); font-family: var(--ff-body); font-size: 15px; font-weight: 400; padding: 13px 22px; border-radius: 10px; border: 1.5px solid var(--border-2); cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink-3); background: var(--surface-2); }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(245,242,236,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: 1080px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-logo { font-family: var(--ff-display); font-size: 24px; font-weight: 800; letter-spacing: -.3px; color: var(--ink); }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { font-size: 15px; color: var(--ink-2); transition: color .15s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { display: flex; align-items: center; gap: 10px; }
+  .hero { padding: 88px 28px 72px; max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; }
+  .hero-eyebrow { margin-bottom: 18px; }
+  .hero-headline { font-family: var(--ff-display); font-size: 72px; font-weight: 800; line-height: .93; letter-spacing: -1px; color: var(--ink); margin-bottom: 22px; }
+  .hero-headline em { color: var(--green); font-style: normal; }
+  .hero-body { font-size: 18px; color: var(--ink-2); line-height: 1.65; margin-bottom: 32px; max-width: 440px; }
+  .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .hero-note { font-size: 13px; color: var(--ink-3); margin-top: 14px; font-family: var(--ff-mono); }
+  .math-card { background: var(--surface); border: 1.5px solid var(--border-2); border-radius: 20px; padding: 28px 26px; box-shadow: 0 2px 0 0 rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.06); }
+  .math-label { font-family: var(--ff-mono); font-size: 11px; color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+  .math-equation { font-family: var(--ff-display); font-size: 44px; font-weight: 800; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+  .math-equation .wrong { color: var(--red); text-decoration: line-through; opacity: .75; }
+  .math-equation .right { color: var(--green); }
+  .math-sub { font-size: 13px; color: var(--ink-2); margin-bottom: 20px; line-height: 1.55; border-left: 3px solid var(--green-border); padding-left: 12px; margin-top: 10px; }
+  .math-conditions { display: flex; flex-direction: column; gap: 7px; }
+  .mc-row { display: flex; align-items: center; justify-content: space-between; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 10px 14px; }
+  .mc-row.gap-row { border: 1px dashed rgba(196,127,10,0.4); background: var(--amber-bg); }
+  .mc-name { font-size: 13px; color: var(--ink); }
+  .mc-right { display: flex; align-items: center; gap: 10px; }
+  .mc-pct { font-family: var(--ff-mono); font-size: 13px; font-weight: 500; color: var(--ink-2); min-width: 32px; text-align: right; }
+  .mc-pct.amber { color: var(--amber); }
+  .mc-bar-wrap { width: 64px; height: 5px; background: var(--bg-2); border-radius: 3px; overflow: hidden; }
+  .mc-bar { height: 100%; background: var(--green); border-radius: 3px; }
+  .mc-bar.amber { background: var(--amber); opacity: .6; }
+  .math-result-row { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1.5px solid var(--border); }
+  .mr-label { font-size: 13px; color: var(--ink-2); margin-bottom: 2px; }
+  .mr-official { font-size: 12px; color: var(--ink-3); font-family: var(--ff-mono); }
+  .mr-val { font-family: var(--ff-display); font-size: 36px; font-weight: 800; color: var(--green); }
+  .trust-strip { background: var(--ink); padding: 28px; }
+  .trust-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 56px; flex-wrap: wrap; }
+  .trust-stat { text-align: center; }
+  .ts-num { font-family: var(--ff-display); font-size: 34px; font-weight: 800; color: #fff; line-height: 1; }
+  .ts-num span { color: #23BF8D; }
+  .ts-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 3px; font-family: var(--ff-mono); }
+  .trust-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.12); }
+  .section { padding: 88px 28px; }
+  .section-header { text-align: center; margin-bottom: 52px; }
+  .section-eyebrow { margin-bottom: 14px; }
+  .section-title { font-family: var(--ff-display); font-size: 50px; font-weight: 800; line-height: .95; letter-spacing: -.5px; color: var(--ink); }
+  .section-sub { font-size: 17px; color: var(--ink-2); margin-top: 14px; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; background: var(--border); border-radius: 18px; overflow: hidden; border: 1.5px solid var(--border-2); }
+  .step { background: var(--surface); padding: 34px 28px; }
+  .step-num { font-family: var(--ff-mono); font-size: 11px; color: var(--green); letter-spacing: .1em; margin-bottom: 18px; font-weight: 500; }
+  .step-icon { width: 44px; height: 44px; border-radius: 11px; background: var(--green-bg); border: 1.5px solid var(--green-border); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .step-icon svg { width: 22px; height: 22px; stroke: var(--green); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .step h3 { font-size: 20px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+  .step p { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .feat-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 26px; transition: border-color .2s, box-shadow .2s; }
+  .feat-card:hover { border-color: var(--border-2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .feat-card.highlight { border-color: var(--green-border); }
+  .feat-badge { display: inline-block; font-family: var(--ff-mono); font-size: 10px; background: var(--green-bg); color: var(--green-d); border: 1px solid var(--green-border); border-radius: 4px; padding: 3px 9px; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+  .feat-badge.v2 { background: var(--surface-2); color: var(--ink-3); border-color: var(--border); }
+  .feat-title { font-size: 17px; font-weight: 500; color: var(--ink); margin-bottom: 9px; }
+  .feat-desc { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+  .who-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .who-card { display: flex; gap: 16px; align-items: flex-start; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 24px; transition: border-color .15s; }
+  .who-card:hover { border-color: var(--green-border); }
+  .who-check { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: var(--green-bg); border: 1.5px solid var(--green-border); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .who-check svg { width: 15px; height: 15px; stroke: var(--green); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .who-text h4 { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+  .who-text p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 700px; margin: 0 auto; }
+  .price-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; padding: 30px; }
+  .price-card.featured { border-color: var(--green); border-width: 2px; }
+  .price-tier { font-family: var(--ff-mono); font-size: 11px; color: var(--ink-3); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+  .price-amount { font-family: var(--ff-display); font-size: 48px; font-weight: 800; color: var(--ink); line-height: 1; }
+  .price-amount span { font-size: 18px; font-weight: 400; color: var(--ink-3); }
+  .price-desc { font-size: 14px; color: var(--ink-2); margin: 12px 0 22px; line-height: 1.6; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+  .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+  .check-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; background: var(--green-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .check-icon svg { width: 10px; height: 10px; stroke: var(--green); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .final-cta { background: var(--ink); padding: 96px 28px; text-align: center; }
+  .final-cta h2 { font-family: var(--ff-display); font-size: 60px; font-weight: 800; line-height: .93; letter-spacing: -1px; color: #fff; margin-bottom: 18px; }
+  .final-cta h2 em { color: #23BF8D; font-style: normal; }
+  .final-cta p { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 36px; }
+  .btn-primary-light { display: inline-flex; align-items: center; justify-content: center; background: #23BF8D; color: #fff; font-family: var(--ff-body); font-size: 17px; font-weight: 500; padding: 16px 36px; border-radius: 10px; border: none; cursor: pointer; transition: background .15s, transform .12s; }
+  .btn-primary-light:hover { background: #29D49F; transform: translateY(-1px); }
+  footer { background: var(--surface); border-top: 1.5px solid var(--border); padding: 36px 28px; }
+  .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .footer-logo { font-family: var(--ff-display); font-size: 20px; font-weight: 800; color: var(--ink-3); }
+  .footer-logo span { color: var(--green); }
+  .footer-note { font-size: 13px; color: var(--ink-3); max-width: 400px; line-height: 1.6; }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a { font-size: 13px; color: var(--ink-3); transition: color .15s; }
+  .footer-links a:hover { color: var(--ink-2); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-eyebrow  { animation: fadeUp .45s ease both; }
+  .hero-headline { animation: fadeUp .45s .08s ease both; }
+  .hero-body     { animation: fadeUp .45s .16s ease both; }
+  .hero-actions  { animation: fadeUp .45s .22s ease both; }
+  .hero-note     { animation: fadeUp .45s .28s ease both; }
+  .math-card     { animation: fadeUp .55s .15s ease both; }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 56px 24px 48px; }
+    .hero-headline { font-size: 56px; }
+    .steps { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .who-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .trust-inner { gap: 24px; }
+    .trust-divider { display: none; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .hero-headline { font-size: 46px; }
+    .section-title { font-size: 38px; }
+    .final-cta h2 { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Vet<span>Path</span></div>
+    <div class="nav-links">
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn-ghost">Log in</a>
+      <a href="#" class="btn-primary">Sign up free</a>
+    </div>
+  </div>
+</nav>
+
+<section>
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow"><span class="tag">Free VA benefits tool</span></div>
+      <h1 class="hero-headline">The VA system<br>is <em>complicated</em><br>on purpose.</h1>
+      <p class="hero-body">VetPath cuts through it. Find your real combined rating, surface conditions you haven't claimed, and build a claim package — without paying an attorney 20% of your back pay.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Sign up free</a>
+        <a href="#how-it-works" class="btn-ghost">See how it works</a>
+      </div>
+      <p class="hero-note">No credit card. No attorney fees. Built for vets.</p>
+    </div>
+    <div class="math-card">
+      <div class="math-label">Why your rating isn't what you think</div>
+      <div class="math-equation">50% + 30% ≠ <span class="wrong">80%</span></div>
+      <div class="math-equation" style="font-size:32px;margin-bottom:6px;">It equals <span class="right">65%</span></div>
+      <p class="math-sub">The VA uses "whole person" math. Each condition takes a slice of what's left — not of the original 100%.</p>
+      <div class="math-conditions">
+        <div class="mc-row">
+          <span class="mc-name">Lumbar strain</span>
+          <div class="mc-right"><span class="mc-pct">50%</span><div class="mc-bar-wrap"><div class="mc-bar" style="width:50%"></div></div></div>
+        </div>
+        <div class="mc-row">
+          <span class="mc-name">Right knee</span>
+          <div class="mc-right"><span class="mc-pct">30%</span><div class="mc-bar-wrap"><div class="mc-bar" style="width:30%"></div></div></div>
+        </div>
+        <div class="mc-row gap-row">
+          <span class="mc-name" style="color:var(--amber);font-size:13px;">Sleep apnea — not claimed yet</span>
+          <div class="mc-right"><span class="mc-pct amber">+30%?</span><div class="mc-bar-wrap"><div class="mc-bar amber" style="width:30%"></div></div></div>
+        </div>
+      </div>
+      <div class="math-result-row">
+        <div>
+          <div class="mr-label">Current official rating</div>
+          <div class="mr-official">65.0% → rounds to 70%</div>
+        </div>
+        <div class="mr-val">70%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-stat"><div class="ts-num">30<span>%</span></div><div class="ts-label">avg attorney cut of back pay</div></div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat"><div class="ts-num">$<span>0</span></div><div class="ts-label">to use VetPath's core tools</div></div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat"><div class="ts-num">4<span>+</span></div><div class="ts-label">avg unclaimed conditions found</div></div>
+    <div class="trust-divider"></div>
+    <div class="trust-stat"><div class="ts-num">21<span>M</span></div><div class="ts-label">veterans in the US</div></div>
+  </div>
+</div>
+
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="tag">How it works</span></div>
+      <h2 class="section-title">Three steps to a stronger claim</h2>
+      <p class="section-sub">No paperwork maze. No legalese. Just a clear path from "I think I'm underrated" to "I filed."</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01 —</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div>
+        <h3>See your real rating</h3>
+        <p>Enter your conditions and ratings. VetPath runs the VA's "whole person" math and explains every step in plain English — no guessing, no black box.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02 —</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg></div>
+        <h3>Find what you're missing</h3>
+        <p>Tell VetPath your MOS, era, and combat history. The gap identifier surfaces unclaimed conditions — and explains exactly why you likely qualify for each one.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03 —</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></div>
+        <h3>Build your claim package</h3>
+        <p>Step-by-step workflow outputs a ready-to-file package — evidence checklist, nexus letter drafts, and plain-English breakdowns of every VA form involved.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features" style="padding-top:0;background:var(--bg-2);">
+  <div class="container">
+    <div class="section-header" style="padding-top:88px">
+      <div class="section-eyebrow"><span class="tag">Features</span></div>
+      <h2 class="section-title">Everything in one place</h2>
+      <p class="section-sub">The tools attorneys use — without the 20–33% contingency fee.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card highlight">
+        <div class="feat-badge">Free</div>
+        <div class="feat-title">Rating calculator</div>
+        <p class="feat-desc">Input your conditions and ratings. Get the combined math explained step by step — and see exactly how far you are from the next compensation tier.</p>
+      </div>
+      <div class="feat-card highlight">
+        <div class="feat-badge">Free</div>
+        <div class="feat-title">Gap identifier</div>
+        <p class="feat-desc">AI-powered analysis based on your MOS, service era, and current conditions. Surfaces unclaimed conditions with the specific reason you likely qualify.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-badge v2">Paid</div>
+        <div class="feat-title">Claim builder</div>
+        <p class="feat-desc">Guided step-by-step workflow that outputs a ready-to-file claim package — evidence requirements, form instructions, and personal statement templates.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-badge v2">Paid</div>
+        <div class="feat-title">Nexus letter generator</div>
+        <p class="feat-desc">AI-assisted drafts connecting secondary conditions to primary ones. The nexus letter is what makes or breaks a secondary claim — most vets never file one.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-badge v2">Paid</div>
+        <div class="feat-title">Appeal assistant</div>
+        <p class="feat-desc">Got denied? VetPath reads the denial code, explains it in plain English, picks the right appeal lane, and helps you build the response.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-badge v2">Paid</div>
+        <div class="feat-title">Document vault + state benefits</div>
+        <p class="feat-desc">Store your DD-214, C&P exam results, and records securely. Plus your federal rating stacked with every state-specific benefit you qualify for.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="tag">Who it's for</span></div>
+      <h2 class="section-title">Sound familiar?</h2>
+    </div>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div>
+        <div class="who-text"><h4>You think you're underrated</h4><p>Your conditions are worse than your rating suggests, but the VA's math is a black box. VetPath opens it up.</p></div>
+      </div>
+      <div class="who-card">
+        <div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div>
+        <div class="who-text"><h4>You just got out and don't know where to start</h4><p>The VA system is a lot. VetPath walks you through it from zero — no prior knowledge needed.</p></div>
+      </div>
+      <div class="who-card">
+        <div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div>
+        <div class="who-text"><h4>You've got conditions you've never claimed</h4><p>Most vets leave money on the table — not because they're ineligible, but because they didn't know to ask. The gap identifier fixes that.</p></div>
+      </div>
+      <div class="who-card">
+        <div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div>
+        <div class="who-text"><h4>You got denied and don't know why</h4><p>Denial letters are written in bureaucratic nonsense. The appeal assistant translates it and tells you exactly what to do next.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing" style="padding-top:0;background:var(--bg-2);">
+  <div class="container">
+    <div class="section-header" style="padding-top:88px">
+      <div class="section-eyebrow"><span class="tag">Pricing</span></div>
+      <h2 class="section-title">Straightforward. No surprises.</h2>
+      <p class="section-sub">Core tools are free. Paid unlocks everything else — still a fraction of what an attorney charges.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Free — always</div>
+        <div class="price-amount">$0</div>
+        <p class="price-desc">The tools that help you understand your situation. No credit card, no time limit.</p>
+        <ul class="price-features">
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Rating calculator with combined math explainer</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Gap identifier — find unclaimed conditions</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Basic document vault (DD-214 storage)</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Plain-English VA glossary</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%">Get started free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier">Full access</div>
+        <div class="price-amount">$19 <span>/ month</span></div>
+        <p class="price-desc">Everything you need to file, appeal, and stack benefits — from first claim to final decision.</p>
+        <ul class="price-features">
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Everything in Free</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Claim builder — ready-to-file packages</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Nexus letter generator</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Evidence checklist (condition-specific)</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Appeal assistant</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>State benefits layer</li>
+          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Full document vault + C&P storage</li>
+        </ul>
+        <a href="#" class="btn-primary" style="width:100%">Sign up free — upgrade anytime</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="final-cta">
+  <div class="container">
+    <h2>Stop leaving money<br>on the <em>table.</em></h2>
+    <p>You earned these benefits. VetPath helps you get them.</p>
+    <div style="display:flex;justify-content:center;">
+      <a href="#" class="btn-primary-light">Sign up free — it takes 2 minutes</a>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.35);margin-top:16px;font-family:var(--ff-mono);">No credit card required. No attorney fees. Ever.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Vet<span>Path</span></div>
+    <p class="footer-note">VetPath is not a law firm and does not provide legal advice. We help veterans understand and prepare VA claims — always consult a VSO or accredited attorney for complex situations.</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
