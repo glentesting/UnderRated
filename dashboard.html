@@ -193,20 +193,6 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  function calcCombined(conds){
-    const valid=conds.filter(c=>c.rating>0);
-    if(!valid.length) return {exact:0,official:0};
-    const sorted=[...valid].sort((a,b)=>b.rating-a.rating);
-    let remaining=100;
-    for(const c of sorted) remaining=remaining*(1-c.rating/100);
-    const exact=100-remaining;
-    let official;
-    if(exact<1) official=0;
-    else if(exact>=95) official=100;
-    else official=Math.round(exact/10)*10;
-    return {exact:parseFloat(exact.toFixed(2)),official};
-  }
-
   function init(){
     sb.auth.onAuthStateChange(async (event, session) => {
       if (!session) { window.location.href = "login.html"; return; }
@@ -217,13 +203,14 @@
       document.getElementById("greeting-sub").textContent = "Logged in as " + email;
       const { data } = await sb.from("conditions").select("*").eq("user_id", session.user.id);
       if (data && data.length > 0) {
-        let remaining = 100;
         const sorted = [...data].sort((a,b) => b.rating - a.rating);
+        let remaining = 100;
         for (const c of sorted) { remaining = remaining * (1 - c.rating / 100); }
         const exact = 100 - remaining;
         const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
         if (official > 0) {
-          document.getElementById("combined-rating").innerHTML = official + "<span>%</span>";
+          // FIX: was "combined-rating", correct id is "rating-display"
+          document.getElementById("rating-display").innerHTML = official + "<span>%</span>";
           document.getElementById("rating-sub").textContent = data.length + " condition" + (data.length !== 1 ? "s" : "") + " entered";
         }
       }
