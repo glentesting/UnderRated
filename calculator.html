@@ -858,37 +858,37 @@ function updateCriteria(item, c, criteriaEl) {
 }
 
 function showDropdown(dropdown, query, condIdx) {
-  dropdown.innerHTML = '';
+  dropdown.innerHTML = "";
   const q = query.toLowerCase().trim();
+  const alreadySelected = conditions
+    .filter((c, i) => i !== condIdx && c.conditionName)
+    .map(c => c.conditionName);
+  const available = CONDITIONS.filter(c => !alreadySelected.includes(c.name));
   const filtered = q.length === 0
-    ? CONDITIONS
-    : CONDITIONS.filter(c =>
+    ? available
+    : available.filter(c =>
         c.name.toLowerCase().includes(q) ||
         c.category.toLowerCase().includes(q)
       );
-
   if (filtered.length === 0) {
     dropdown.innerHTML = '<div class="dropdown-empty">No conditions found — try different keywords</div>';
   } else {
     filtered.slice(0, 12).forEach((cond, fi) => {
-      const item = document.createElement('div');
-      item.className = 'dropdown-item';
+      const item = document.createElement("div");
+      item.className = "dropdown-item";
       const ratingRange = cond.ratings.length === 1
-        ? cond.ratings[0] + '%'
-        : cond.ratings[0] + '–' + cond.ratings[cond.ratings.length - 1] + '%';
-      item.innerHTML = `
-        <div class="item-name">${cond.name}</div>
-        <div class="item-sub">${cond.category} &nbsp;·&nbsp; Rating range: <span>${ratingRange}</span></div>
-      `;
-      item.addEventListener('mousedown', (e) => {
+        ? cond.ratings[0] + "%"
+        : cond.ratings[0] + "–" + cond.ratings[cond.ratings.length - 1] + "%";
+      item.innerHTML = `<div class="item-name">${cond.name}</div><div class="item-sub">${cond.category} &nbsp;·&nbsp; Rating range: <span>${ratingRange}</span></div>`;
+      item.addEventListener("mousedown", (e) => {
         e.preventDefault();
         selectCondition(condIdx, cond);
-        dropdown.classList.remove('open');
+        dropdown.classList.remove("open");
       });
       dropdown.appendChild(item);
     });
   }
-  dropdown.classList.add('open');
+  dropdown.classList.add("open");
 }
 
 function handleDropdownKey(e, dropdown, condIdx) {
