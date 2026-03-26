@@ -21,7 +21,7 @@
   a{color:inherit;text-decoration:none}
 
   nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
   .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
   .nav-logo span{color:var(--green)}
   .nav-links{display:flex;align-items:center;gap:24px}
@@ -32,6 +32,8 @@
   .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
   .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
   .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+  .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
 
   .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
   .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
@@ -134,8 +136,12 @@
 
   @media(max-width:780px){
     .layout{grid-template-columns:1fr}
-    .nav-links{display:none}
     .user-pill{display:none}
+    .hamburger{display:flex}
+    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+    .nav-links a:last-child{border-bottom:none}
     .hypo-grid{grid-template-columns:repeat(4,1fr)}
   }
 </style>
@@ -145,7 +151,7 @@
 <nav>
   <div class="nav-inner">
     <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="calculator.html" class="active">Rating calculator</a>
       <a href="gap.html">Gap identifier</a>
       <a href="vault.html">Vault</a>
@@ -153,6 +159,7 @@
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
       <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+      <button class="hamburger" onclick="toggleNav()">☰ Menu</button>
     </div>
   </div>
 </nav>
@@ -233,393 +240,41 @@ const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+
 // ── CONDITION DATABASE ──
-// Each condition: name, category, valid ratings [], criteria per rating, tip
 const CONDITIONS = [
-  {
-    name: 'Tinnitus (ringing in ears)',
-    category: 'Hearing',
-    ratings: [10],
-    defaultRating: 10,
-    criteria: { 10: 'Recurrent tinnitus — any diagnosed, recurring ringing, buzzing, or hissing in ears' },
-    tip: 'Tinnitus only has ONE rating: 10%. There is no higher rating under this code. Almost always claimed alongside hearing loss.'
-  },
-  {
-    name: 'Hearing loss',
-    category: 'Hearing',
-    ratings: [0,10,20,30,40,50,60,70,80,90,100],
-    defaultRating: 10,
-    criteria: {
-      0: 'Mild loss detectable only on audiometric testing',
-      10: 'Moderate hearing loss — difficulty in noisy environments',
-      30: 'Significant loss — difficulty understanding speech',
-      50: 'Severe loss — difficulty even with hearing aids',
-      100: 'Profound loss / near total deafness'
-    },
-    tip: 'Rating is determined by audiometric testing (puretone average + speech recognition). Must be tested without hearing aids. File this alongside tinnitus.'
-  },
-  {
-    name: 'PTSD',
-    category: 'Mental Health',
-    ratings: [0,10,30,50,70,100],
-    defaultRating: 30,
-    criteria: {
-      0: 'Diagnosed PTSD but symptoms do not impair work or social function',
-      10: 'Mild or transient symptoms, well-controlled by medication',
-      30: 'Occasional decrease in reliability — depressed mood, anxiety, chronic sleep impairment',
-      50: 'Reduced reliability at work — panic attacks, impaired memory, flattened affect',
-      70: 'Deficiencies in most areas — suicidal ideation, near-continuous symptoms, impaired impulse control',
-      100: 'Total occupational and social impairment — unable to function independently'
-    },
-    tip: 'Combat veterans do NOT need to prove a specific stressor — VA presumes it occurred. 51% of PTSD claims are rated at 70% or higher.'
-  },
-  {
-    name: 'Depression / major depressive disorder',
-    category: 'Mental Health',
-    ratings: [0,10,30,50,70,100],
-    defaultRating: 30,
-    criteria: {
-      0: 'Diagnosed but no occupational or social impairment',
-      10: 'Mild symptoms controlled by medication',
-      30: 'Occasional decrease in reliability — depressed mood, sleep impairment',
-      50: 'Reduced productivity — disturbances of motivation, memory impairment',
-      70: 'Deficiencies in most areas of daily life',
-      100: 'Total occupational and social impairment'
-    },
-    tip: 'VA cannot give separate ratings for PTSD + depression if they overlap. They rate whichever gives the highest single rating.'
-  },
-  {
-    name: 'Anxiety / generalized anxiety disorder',
-    category: 'Mental Health',
-    ratings: [0,10,30,50,70,100],
-    defaultRating: 30,
-    criteria: {
-      0: 'Diagnosed but minimal impact on function',
-      10: 'Mild symptoms, controlled by medication',
-      30: 'Occasional decrease in work reliability',
-      50: 'Reduced reliability and productivity',
-      70: 'Deficiencies in most areas of daily life',
-      100: 'Total occupational and social impairment'
-    },
-    tip: 'Same General Rating Formula as PTSD and depression. Cannot receive separate ratings for overlapping mental health conditions.'
-  },
-  {
-    name: 'Sleep apnea (obstructive)',
-    category: 'Respiratory',
-    ratings: [0,30,50,100],
-    defaultRating: 50,
-    criteria: {
-      0: 'Diagnosed sleep disorder, currently asymptomatic',
-      30: 'Persistent daytime sleepiness even without CPAP',
-      50: 'Requires CPAP, BiPAP, or similar breathing device',
-      100: 'Chronic respiratory failure, cor pulmonale, or requires tracheostomy'
-    },
-    tip: 'If your doctor prescribed a CPAP machine, you qualify for 50%. Most common secondary to PTSD, TBI, or rhinitis. A sleep study is required for diagnosis.'
-  },
-  {
-    name: 'Knee — limitation of flexion',
-    category: 'Musculoskeletal',
-    ratings: [0,10,20,30],
-    defaultRating: 10,
-    criteria: {
-      0: 'Flexion limited to 60° (normal is ~140°)',
-      10: 'Flexion limited to 45° — most common rating. Also applies if any pain on movement.',
-      20: 'Flexion limited to 30°',
-      30: 'Flexion limited to 15° or less — severe limitation'
-    },
-    tip: 'If your knee hurts when you bend it, VA must give at minimum 10% under the "painful motion" rule — even if your range of motion is near normal. Always mention pain at your C&P exam.'
-  },
-  {
-    name: 'Knee — instability / impairment',
-    category: 'Musculoskeletal',
-    ratings: [10,20,30],
-    defaultRating: 10,
-    criteria: {
-      10: 'Slight instability — occasional giving way',
-      20: 'Moderate instability',
-      30: 'Severe instability — frequent dislocation or locking'
-    },
-    tip: 'Rate under whichever knee code gives the highest rating. Flexion, extension, instability, and impairment all have separate codes.'
-  },
-  {
-    name: 'Low back / lumbar strain',
-    category: 'Musculoskeletal',
-    ratings: [0,10,20,30,40,50,100],
-    defaultRating: 10,
-    criteria: {
-      0: 'Full range of motion but painful — service connection established',
-      10: 'Forward flexion over 60° with pain, OR any pain on motion',
-      20: 'Forward flexion 30–60°, or muscle spasm noted on exam',
-      30: 'Forward flexion 30–60° with additional factors, or favorable ankylosis',
-      40: 'Forward flexion 30° or less, OR unfavorable ankylosis of thoracolumbar spine',
-      50: 'Unfavorable ankylosis of entire thoracolumbar spine',
-      100: 'Unfavorable ankylosis of entire spine'
-    },
-    tip: 'If your back hurts when you bend, VA must give at minimum 10%. Your rating is based on how far you can bend forward at your worst — not your average day.'
-  },
-  {
-    name: 'Neck / cervical strain',
-    category: 'Musculoskeletal',
-    ratings: [0,10,20,30,40,50,100],
-    defaultRating: 10,
-    criteria: {
-      0: 'Full range of motion but painful',
-      10: 'Forward flexion over 15° with pain, OR any pain on motion',
-      20: 'Forward flexion 15–30°',
-      30: 'Forward flexion 15–30° with additional limitation',
-      40: 'Forward flexion 15° or less, OR unfavorable ankylosis of cervical spine',
-      50: 'Unfavorable ankylosis of entire cervical spine',
-      100: 'Unfavorable ankylosis of entire spine'
-    },
-    tip: 'Rated exactly like low back pain but for the neck. Normal cervical flexion is 45°. File separately from low back — they are different ratings.'
-  },
-  {
-    name: 'Sciatica / radiculopathy (leg nerve pain)',
-    category: 'Neurological',
-    ratings: [10,20,40,60,80],
-    defaultRating: 20,
-    criteria: {
-      10: 'Mild — occasional tingling, numbness, or mild weakness in the leg',
-      20: 'Moderate — definite sensory loss, moderate muscle weakness',
-      40: 'Moderately severe — significant weakness and sensory disturbance',
-      60: 'Severe — marked muscle atrophy, serious sensory loss',
-      80: 'Complete paralysis — foot drop, no active movement below the knee'
-    },
-    tip: 'Usually secondary to a service-connected back condition. If you have a back claim, file sciatica as a secondary condition — you do not need a new in-service event.'
-  },
-  {
-    name: 'Migraines',
-    category: 'Neurological',
-    ratings: [0,10,30,50],
-    defaultRating: 10,
-    criteria: {
-      0: 'Infrequent attacks that do not cause complete incapacitation',
-      10: 'Prostrating attacks (must lie down) averaging once every 2 months',
-      30: 'Prostrating attacks averaging once per month',
-      50: 'Very frequent completely prostrating attacks that severely impact ability to work'
-    },
-    tip: '"Prostrating" means so severe you must lie down in a dark, quiet room. Keep a migraine diary documenting frequency and impact — VA routinely underrates migraines.'
-  },
-  {
-    name: 'TBI — traumatic brain injury',
-    category: 'Neurological',
-    ratings: [0,10,40,70,100],
-    defaultRating: 10,
-    criteria: {
-      0: 'History of TBI, no current residual disability',
-      10: 'Mild cognitive impairment, occasional headaches or dizziness',
-      40: 'Definite impairment — moderate cognitive symptoms, personality changes',
-      70: 'Significant cognitive impairment, behavioral changes, marked deficits',
-      100: 'Total occupational and social impairment'
-    },
-    tip: 'TBI is rated on its residual symptoms, not the injury itself. Rate each symptom separately (migraines, PTSD, sleep apnea, tinnitus, hearing loss) for the best combined outcome.'
-  },
-  {
-    name: 'Shoulder — limitation of arm motion',
-    category: 'Musculoskeletal',
-    ratings: [10,20,30,40],
-    defaultRating: 10,
-    criteria: {
-      10: 'Dominant arm cannot be raised to shoulder level; OR non-dominant arm limited to midway',
-      20: 'Dominant arm limited to midway; OR non-dominant arm very limited',
-      30: 'Non-dominant arm limited at 25° from side; OR dominant arm at 45° from side',
-      40: 'Dominant arm limited at 25° from side (barely moves from body)'
-    },
-    tip: 'Dominant arm always rates higher than non-dominant at the same limitation. Also evaluate for rotator cuff tears, labrum tears, and AC joint issues.'
-  },
-  {
-    name: 'Hypertension (high blood pressure)',
-    category: 'Cardiovascular',
-    ratings: [0,10,20,40,60],
-    defaultRating: 10,
-    criteria: {
-      0: 'Diastolic 90–99, controlled by medication',
-      10: 'Diastolic 100–109, OR systolic 160+ with diastolic under 100',
-      20: 'Diastolic 110–119, OR systolic 160–179, OR requires continuous medication',
-      40: 'Diastolic 120–129, OR systolic 180–199',
-      60: 'Diastolic 130+, OR systolic 200+'
-    },
-    tip: 'Strong secondary claim if you have PTSD or sleep apnea. Vietnam veterans: hypertension is now on the Agent Orange presumptive list — no nexus letter needed.'
-  },
-  {
-    name: 'Diabetes mellitus type 2',
-    category: 'Endocrine',
-    ratings: [10,20,40,60,100],
-    defaultRating: 20,
-    criteria: {
-      10: 'Manageable by restricted diet only',
-      20: 'Requires insulin AND restricted diet, OR oral medication AND restricted diet',
-      40: 'Requires insulin AND restricted diet, AND regulation of activities',
-      60: 'Requires insulin, restricted diet, AND regulation of activities with complications',
-      100: 'Requires insulin with frequent hospitalizations for ketoacidosis or hypoglycemia'
-    },
-    tip: 'Agent Orange PRESUMPTIVE for Vietnam veterans — no proof of connection needed. PACT Act expands this for many post-9/11 veterans. Diabetes commonly causes secondary conditions: peripheral neuropathy, hypertension, kidney disease.'
-  },
-  {
-    name: 'Peripheral neuropathy (nerve damage in hands/feet)',
-    category: 'Neurological',
-    ratings: [10,20,40,60,80],
-    defaultRating: 10,
-    criteria: {
-      10: 'Mild — tingling, numbness, or mild weakness',
-      20: 'Moderate — definite weakness and sensory disturbance',
-      40: 'Moderately severe — significant functional loss',
-      60: 'Severe — marked weakness, muscle atrophy',
-      80: 'Complete paralysis of nerve group'
-    },
-    tip: 'Each affected extremity rates separately. Bilateral neuropathy (both legs or both hands) triggers the bilateral factor. Most common secondary to service-connected diabetes.'
-  },
-  {
-    name: 'Ischemic heart disease / coronary artery disease',
-    category: 'Cardiovascular',
-    ratings: [10,30,60,100],
-    defaultRating: 30,
-    criteria: {
-      10: 'Workload over 5 METs but not over 7 METs, OR; continuous medication required',
-      30: 'Workload over 3 METs but not over 5 METs causing dyspnea, fatigue, or angina',
-      60: 'Workload of 3 METs or less causing dyspnea, fatigue, or angina; OR; left ventricular dysfunction',
-      100: 'Chronic congestive heart failure, OR; workload of 1 MET or less'
-    },
-    tip: 'Agent Orange PRESUMPTIVE for Vietnam veterans. One of the highest-value Agent Orange claims. Also applies to certain Korean DMZ and Thailand veterans.'
-  },
-  {
-    name: 'GERD / acid reflux',
-    category: 'Digestive',
-    ratings: [10,30,60],
-    defaultRating: 10,
-    criteria: {
-      10: 'Mild symptoms — occasional heartburn, manageable with medication',
-      30: 'Moderate symptoms — frequent episodes, some dietary restriction required',
-      60: 'Severe symptoms — significant weight loss, recurrent episodes despite treatment'
-    },
-    tip: 'Commonly secondary to PTSD or service-connected medications. File as secondary if you have an existing mental health or pain condition.'
-  },
-  {
-    name: 'Rhinitis / sinusitis (chronic nasal problems)',
-    category: 'Respiratory',
-    ratings: [0,10,30,50],
-    defaultRating: 10,
-    criteria: {
-      0: 'Detected by X-ray only, no symptoms',
-      10: 'Up to 6 non-incapacitating episodes per year with nasal discharge, headaches, or pain',
-      30: '3 to 6 incapacitating episodes per year requiring bed rest and antibiotics',
-      50: 'More than 6 incapacitating episodes per year'
-    },
-    tip: 'PACT Act presumptive for burn pit exposure veterans. Also a common secondary to sleep apnea — blocked nasal passages contribute to airway obstruction.'
-  },
-  {
-    name: 'Flat feet (pes planus)',
-    category: 'Musculoskeletal',
-    ratings: [0,10,30,50],
-    defaultRating: 10,
-    criteria: {
-      0: 'Mild — foot pain after prolonged standing, partial or complete relief with orthotics',
-      10: 'Moderate — marked pronation, pain on use, pain not fully relieved by orthotics',
-      30: 'Severe — marked deformity, severe pain on use, inability to stand for long periods',
-      50: 'Pronounced — marked deformity, objective evidence of marked limitation'
-    },
-    tip: 'Very common in infantry, armor, and other physically demanding MOSs. Often secondary to or paired with knee and back conditions.'
-  },
-  {
-    name: 'Plantar fasciitis',
-    category: 'Musculoskeletal',
-    ratings: [0,10,20,30],
-    defaultRating: 10,
-    criteria: {
-      0: 'Mild heel pain after rest',
-      10: 'Moderate pain, some limitation on prolonged standing or walking',
-      20: 'Marked pain, significant limitation on weight-bearing activities',
-      30: 'Severe pain, inability to stand or walk for extended periods'
-    },
-    tip: 'Rated analogously to foot conditions. Common in veterans with high physical activity MOS. Often paired with flat feet.'
-  },
-  {
-    name: 'Hip — limitation of motion',
-    category: 'Musculoskeletal',
-    ratings: [10,20,30,40],
-    defaultRating: 10,
-    criteria: {
-      10: 'Limitation of flexion to 45°, OR painful motion',
-      20: 'Limitation of flexion to 30°',
-      30: 'Limitation of flexion to 20°, OR favorable ankylosis',
-      40: 'Limitation of flexion to 10°, OR unfavorable ankylosis'
-    },
-    tip: 'Commonly secondary to low back or knee conditions. Altered gait from a service-connected back or knee condition can accelerate hip degeneration.'
-  },
-  {
-    name: 'Erectile dysfunction',
-    category: 'Reproductive',
-    ratings: [0],
-    defaultRating: 0,
-    criteria: { 0: 'Service-connected erectile dysfunction — 0% rating but qualifies for SMC-K' },
-    tip: 'ED rates at 0% under its own code but qualifies for Special Monthly Compensation (SMC-K), which adds $132/month on top of your regular compensation. This is massively under-claimed. Secondary to PTSD, diabetes, spinal injury, medications, or vascular conditions.'
-  },
-  {
-    name: 'Knee — limitation of extension',
-    category: 'Musculoskeletal',
-    ratings: [0,10,20,30],
-    defaultRating: 10,
-    criteria: {
-      0: 'Extension limited to 5°',
-      10: 'Extension limited to 10°',
-      20: 'Extension limited to 15°',
-      30: 'Extension limited to 20° or more — severe limitation'
-    },
-    tip: 'Rate whichever knee code (flexion, extension, or instability) gives the highest rating. You pick the one in your favor.'
-  },
-  {
-    name: 'Scars — painful or disfiguring',
-    category: 'Skin',
-    ratings: [0,10,30,50,80],
-    defaultRating: 10,
-    criteria: {
-      0: 'Superficial, non-disfiguring scar — service connection established',
-      10: 'Painful or unstable scar 6+ square inches, OR 2 disfiguring characteristics',
-      30: '3 disfiguring characteristics, OR 40–72 sq in with deep scar',
-      50: '4 disfiguring characteristics, OR 72–144 sq in',
-      80: '5+ disfiguring characteristics, OR 144+ sq in'
-    },
-    tip: 'Surgery scars from service-connected conditions rate as service-connected even if the surgery happened after discharge. Document all scars at your C&P exam.'
-  },
-  {
-    name: 'Asthma',
-    category: 'Respiratory',
-    ratings: [10,30,60,100],
-    defaultRating: 10,
-    criteria: {
-      10: 'FEV-1 71%+ of predicted, OR intermittent bronchodilator therapy',
-      30: 'FEV-1 56–70% of predicted, OR daily bronchodilator therapy',
-      60: 'FEV-1 40–55% of predicted, OR more than monthly ER visits',
-      100: 'FEV-1 less than 40% of predicted, OR more than weekly ER visits'
-    },
-    tip: 'PACT Act presumptive for burn pit exposure veterans. Also secondary to rhinitis or sinusitis. Rated based on lung function test results.'
-  },
-  {
-    name: 'Chronic fatigue syndrome',
-    category: 'General',
-    ratings: [10,20,40,60,100],
-    defaultRating: 20,
-    criteria: {
-      10: 'Mild symptoms — fatigue with no restrictions on usual activities',
-      20: 'Episodes of debilitating fatigue requiring bed rest less than once per week',
-      40: 'Episodes requiring bed rest 1–2 times per week',
-      60: 'Episodes requiring bed rest 3 or more times per week',
-      100: 'Continuous bed rest, inability to care for self'
-    },
-    tip: 'Gulf War presumptive condition — no nexus letter needed for qualifying veterans. Also associated with PTSD and fibromyalgia.'
-  },
-  {
-    name: 'Fibromyalgia',
-    category: 'General',
-    ratings: [10,20,40],
-    defaultRating: 20,
-    criteria: {
-      10: 'Pain manageable by continuous medication',
-      20: 'Widespread pain with occasional incapacitating episodes',
-      40: 'Widespread pain with near-constant incapacitating episodes'
-    },
-    tip: 'Gulf War presumptive condition. Commonly secondary to PTSD. File alongside other Gulf War illness claims.'
-  },
+  {name:'Tinnitus (ringing in ears)',category:'Hearing',ratings:[10],defaultRating:10,criteria:{10:'Recurrent tinnitus — any diagnosed, recurring ringing, buzzing, or hissing in ears'},tip:'Tinnitus only has ONE rating: 10%. There is no higher rating under this code. Almost always claimed alongside hearing loss.'},
+  {name:'Hearing loss',category:'Hearing',ratings:[0,10,20,30,40,50,60,70,80,90,100],defaultRating:10,criteria:{0:'Mild loss detectable only on audiometric testing',10:'Moderate hearing loss — difficulty in noisy environments',30:'Significant loss — difficulty understanding speech',50:'Severe loss — difficulty even with hearing aids',100:'Profound loss / near total deafness'},tip:'Rating is determined by audiometric testing (puretone average + speech recognition). Must be tested without hearing aids. File this alongside tinnitus.'},
+  {name:'PTSD',category:'Mental Health',ratings:[0,10,30,50,70,100],defaultRating:30,criteria:{0:'Diagnosed PTSD but symptoms do not impair work or social function',10:'Mild or transient symptoms, well-controlled by medication',30:'Occasional decrease in reliability — depressed mood, anxiety, chronic sleep impairment',50:'Reduced reliability at work — panic attacks, impaired memory, flattened affect',70:'Deficiencies in most areas — suicidal ideation, near-continuous symptoms, impaired impulse control',100:'Total occupational and social impairment — unable to function independently'},tip:'Combat veterans do NOT need to prove a specific stressor — VA presumes it occurred. 51% of PTSD claims are rated at 70% or higher.'},
+  {name:'Depression / major depressive disorder',category:'Mental Health',ratings:[0,10,30,50,70,100],defaultRating:30,criteria:{0:'Diagnosed but no occupational or social impairment',10:'Mild symptoms controlled by medication',30:'Occasional decrease in reliability — depressed mood, sleep impairment',50:'Reduced productivity — disturbances of motivation, memory impairment',70:'Deficiencies in most areas of daily life',100:'Total occupational and social impairment'},tip:'VA cannot give separate ratings for PTSD + depression if they overlap. They rate whichever gives the highest single rating.'},
+  {name:'Anxiety / generalized anxiety disorder',category:'Mental Health',ratings:[0,10,30,50,70,100],defaultRating:30,criteria:{0:'Diagnosed but minimal impact on function',10:'Mild symptoms, controlled by medication',30:'Occasional decrease in work reliability',50:'Reduced reliability and productivity',70:'Deficiencies in most areas of daily life',100:'Total occupational and social impairment'},tip:'Same General Rating Formula as PTSD and depression. Cannot receive separate ratings for overlapping mental health conditions.'},
+  {name:'Sleep apnea (obstructive)',category:'Respiratory',ratings:[0,30,50,100],defaultRating:50,criteria:{0:'Diagnosed sleep disorder, currently asymptomatic',30:'Persistent daytime sleepiness even without CPAP',50:'Requires CPAP, BiPAP, or similar breathing device',100:'Chronic respiratory failure, cor pulmonale, or requires tracheostomy'},tip:'If your doctor prescribed a CPAP machine, you qualify for 50%. Most common secondary to PTSD, TBI, or rhinitis. A sleep study is required for diagnosis.'},
+  {name:'Knee — limitation of flexion',category:'Musculoskeletal',ratings:[0,10,20,30],defaultRating:10,criteria:{0:'Flexion limited to 60° (normal is ~140°)',10:'Flexion limited to 45° — most common rating. Also applies if any pain on movement.',20:'Flexion limited to 30°',30:'Flexion limited to 15° or less — severe limitation'},tip:'If your knee hurts when you bend it, VA must give at minimum 10% under the "painful motion" rule — even if your range of motion is near normal. Always mention pain at your C&P exam.'},
+  {name:'Knee — instability / impairment',category:'Musculoskeletal',ratings:[10,20,30],defaultRating:10,criteria:{10:'Slight instability — occasional giving way',20:'Moderate instability',30:'Severe instability — frequent dislocation or locking'},tip:'Rate under whichever knee code gives the highest rating. Flexion, extension, instability, and impairment all have separate codes.'},
+  {name:'Low back / lumbar strain',category:'Musculoskeletal',ratings:[0,10,20,30,40,50,100],defaultRating:10,criteria:{0:'Full range of motion but painful — service connection established',10:'Forward flexion over 60° with pain, OR any pain on motion',20:'Forward flexion 30–60°, or muscle spasm noted on exam',30:'Forward flexion 30–60° with additional factors, or favorable ankylosis',40:'Forward flexion 30° or less, OR unfavorable ankylosis of thoracolumbar spine',50:'Unfavorable ankylosis of entire thoracolumbar spine',100:'Unfavorable ankylosis of entire spine'},tip:'If your back hurts when you bend, VA must give at minimum 10%. Your rating is based on how far you can bend forward at your worst — not your average day.'},
+  {name:'Neck / cervical strain',category:'Musculoskeletal',ratings:[0,10,20,30,40,50,100],defaultRating:10,criteria:{0:'Full range of motion but painful',10:'Forward flexion over 15° with pain, OR any pain on motion',20:'Forward flexion 15–30°',30:'Forward flexion 15–30° with additional limitation',40:'Forward flexion 15° or less, OR unfavorable ankylosis of cervical spine',50:'Unfavorable ankylosis of entire cervical spine',100:'Unfavorable ankylosis of entire spine'},tip:'Rated exactly like low back pain but for the neck. Normal cervical flexion is 45°. File separately from low back — they are different ratings.'},
+  {name:'Sciatica / radiculopathy (leg nerve pain)',category:'Neurological',ratings:[10,20,40,60,80],defaultRating:20,criteria:{10:'Mild — occasional tingling, numbness, or mild weakness in the leg',20:'Moderate — definite sensory loss, moderate muscle weakness',40:'Moderately severe — significant weakness and sensory disturbance',60:'Severe — marked muscle atrophy, serious sensory loss',80:'Complete paralysis — foot drop, no active movement below the knee'},tip:'Usually secondary to a service-connected back condition. If you have a back claim, file sciatica as a secondary condition — you do not need a new in-service event.'},
+  {name:'Migraines',category:'Neurological',ratings:[0,10,30,50],defaultRating:10,criteria:{0:'Infrequent attacks that do not cause complete incapacitation',10:'Prostrating attacks (must lie down) averaging once every 2 months',30:'Prostrating attacks averaging once per month',50:'Very frequent completely prostrating attacks that severely impact ability to work'},tip:'"Prostrating" means so severe you must lie down in a dark, quiet room. Keep a migraine diary documenting frequency and impact — VA routinely underrates migraines.'},
+  {name:'TBI — traumatic brain injury',category:'Neurological',ratings:[0,10,40,70,100],defaultRating:10,criteria:{0:'History of TBI, no current residual disability',10:'Mild cognitive impairment, occasional headaches or dizziness',40:'Definite impairment — moderate cognitive symptoms, personality changes',70:'Significant cognitive impairment, behavioral changes, marked deficits',100:'Total occupational and social impairment'},tip:'TBI is rated on its residual symptoms, not the injury itself. Rate each symptom separately (migraines, PTSD, sleep apnea, tinnitus, hearing loss) for the best combined outcome.'},
+  {name:'Shoulder — limitation of arm motion',category:'Musculoskeletal',ratings:[10,20,30,40],defaultRating:10,criteria:{10:'Dominant arm cannot be raised to shoulder level; OR non-dominant arm limited to midway',20:'Dominant arm limited to midway; OR non-dominant arm very limited',30:'Non-dominant arm limited at 25° from side; OR dominant arm at 45° from side',40:'Dominant arm limited at 25° from side (barely moves from body)'},tip:'Dominant arm always rates higher than non-dominant at the same limitation. Also evaluate for rotator cuff tears, labrum tears, and AC joint issues.'},
+  {name:'Hypertension (high blood pressure)',category:'Cardiovascular',ratings:[0,10,20,40,60],defaultRating:10,criteria:{0:'Diastolic 90–99, controlled by medication',10:'Diastolic 100–109, OR systolic 160+ with diastolic under 100',20:'Diastolic 110–119, OR systolic 160–179, OR requires continuous medication',40:'Diastolic 120–129, OR systolic 180–199',60:'Diastolic 130+, OR systolic 200+'},tip:'Strong secondary claim if you have PTSD or sleep apnea. Vietnam veterans: hypertension is now on the Agent Orange presumptive list — no nexus letter needed.'},
+  {name:'Diabetes mellitus type 2',category:'Endocrine',ratings:[10,20,40,60,100],defaultRating:20,criteria:{10:'Manageable by restricted diet only',20:'Requires insulin AND restricted diet, OR oral medication AND restricted diet',40:'Requires insulin AND restricted diet, AND regulation of activities',60:'Requires insulin, restricted diet, AND regulation of activities with complications',100:'Requires insulin with frequent hospitalizations for ketoacidosis or hypoglycemia'},tip:'Agent Orange PRESUMPTIVE for Vietnam veterans — no proof of connection needed. PACT Act expands this for many post-9/11 veterans. Diabetes commonly causes secondary conditions: peripheral neuropathy, hypertension, kidney disease.'},
+  {name:'Peripheral neuropathy (nerve damage in hands/feet)',category:'Neurological',ratings:[10,20,40,60,80],defaultRating:10,criteria:{10:'Mild — tingling, numbness, or mild weakness',20:'Moderate — definite weakness and sensory disturbance',40:'Moderately severe — significant functional loss',60:'Severe — marked weakness, muscle atrophy',80:'Complete paralysis of nerve group'},tip:'Each affected extremity rates separately. Bilateral neuropathy (both legs or both hands) triggers the bilateral factor. Most common secondary to service-connected diabetes.'},
+  {name:'Ischemic heart disease / coronary artery disease',category:'Cardiovascular',ratings:[10,30,60,100],defaultRating:30,criteria:{10:'Workload over 5 METs but not over 7 METs, OR; continuous medication required',30:'Workload over 3 METs but not over 5 METs causing dyspnea, fatigue, or angina',60:'Workload of 3 METs or less causing dyspnea, fatigue, or angina; OR; left ventricular dysfunction',100:'Chronic congestive heart failure, OR; workload of 1 MET or less'},tip:'Agent Orange PRESUMPTIVE for Vietnam veterans. One of the highest-value Agent Orange claims. Also applies to certain Korean DMZ and Thailand veterans.'},
+  {name:'GERD / acid reflux',category:'Digestive',ratings:[10,30,60],defaultRating:10,criteria:{10:'Mild symptoms — occasional heartburn, manageable with medication',30:'Moderate symptoms — frequent episodes, some dietary restriction required',60:'Severe symptoms — significant weight loss, recurrent episodes despite treatment'},tip:'Commonly secondary to PTSD or service-connected medications. File as secondary if you have an existing mental health or pain condition.'},
+  {name:'Rhinitis / sinusitis (chronic nasal problems)',category:'Respiratory',ratings:[0,10,30,50],defaultRating:10,criteria:{0:'Detected by X-ray only, no symptoms',10:'Up to 6 non-incapacitating episodes per year with nasal discharge, headaches, or pain',30:'3 to 6 incapacitating episodes per year requiring bed rest and antibiotics',50:'More than 6 incapacitating episodes per year'},tip:'PACT Act presumptive for burn pit exposure veterans. Also a common secondary to sleep apnea — blocked nasal passages contribute to airway obstruction.'},
+  {name:'Flat feet (pes planus)',category:'Musculoskeletal',ratings:[0,10,30,50],defaultRating:10,criteria:{0:'Mild — foot pain after prolonged standing, partial or complete relief with orthotics',10:'Moderate — marked pronation, pain on use, pain not fully relieved by orthotics',30:'Severe — marked deformity, severe pain on use, inability to stand for long periods',50:'Pronounced — marked deformity, objective evidence of marked limitation'},tip:'Very common in infantry, armor, and other physically demanding MOSs. Often secondary to or paired with knee and back conditions.'},
+  {name:'Plantar fasciitis',category:'Musculoskeletal',ratings:[0,10,20,30],defaultRating:10,criteria:{0:'Mild heel pain after rest',10:'Moderate pain, some limitation on prolonged standing or walking',20:'Marked pain, significant limitation on weight-bearing activities',30:'Severe pain, inability to stand or walk for extended periods'},tip:'Rated analogously to foot conditions. Common in veterans with high physical activity MOS. Often paired with flat feet.'},
+  {name:'Hip — limitation of motion',category:'Musculoskeletal',ratings:[10,20,30,40],defaultRating:10,criteria:{10:'Limitation of flexion to 45°, OR painful motion',20:'Limitation of flexion to 30°',30:'Limitation of flexion to 20°, OR favorable ankylosis',40:'Limitation of flexion to 10°, OR unfavorable ankylosis'},tip:'Commonly secondary to low back or knee conditions. Altered gait from a service-connected back or knee condition can accelerate hip degeneration.'},
+  {name:'Erectile dysfunction',category:'Reproductive',ratings:[0],defaultRating:0,criteria:{0:'Service-connected erectile dysfunction — 0% rating but qualifies for SMC-K'},tip:'ED rates at 0% under its own code but qualifies for Special Monthly Compensation (SMC-K), which adds $132/month on top of your regular compensation. This is massively under-claimed.'},
+  {name:'Knee — limitation of extension',category:'Musculoskeletal',ratings:[0,10,20,30],defaultRating:10,criteria:{0:'Extension limited to 5°',10:'Extension limited to 10°',20:'Extension limited to 15°',30:'Extension limited to 20° or more — severe limitation'},tip:'Rate whichever knee code (flexion, extension, or instability) gives the highest rating. You pick the one in your favor.'},
+  {name:'Scars — painful or disfiguring',category:'Skin',ratings:[0,10,30,50,80],defaultRating:10,criteria:{0:'Superficial, non-disfiguring scar — service connection established',10:'Painful or unstable scar 6+ square inches, OR 2 disfiguring characteristics',30:'3 disfiguring characteristics, OR 40–72 sq in with deep scar',50:'4 disfiguring characteristics, OR 72–144 sq in',80:'5+ disfiguring characteristics, OR 144+ sq in'},tip:'Surgery scars from service-connected conditions rate as service-connected even if the surgery happened after discharge. Document all scars at your C&P exam.'},
+  {name:'Asthma',category:'Respiratory',ratings:[10,30,60,100],defaultRating:10,criteria:{10:'FEV-1 71%+ of predicted, OR intermittent bronchodilator therapy',30:'FEV-1 56–70% of predicted, OR daily bronchodilator therapy',60:'FEV-1 40–55% of predicted, OR more than monthly ER visits',100:'FEV-1 less than 40% of predicted, OR more than weekly ER visits'},tip:'PACT Act presumptive for burn pit exposure veterans. Also secondary to rhinitis or sinusitis. Rated based on lung function test results.'},
+  {name:'Chronic fatigue syndrome',category:'General',ratings:[10,20,40,60,100],defaultRating:20,criteria:{10:'Mild symptoms — fatigue with no restrictions on usual activities',20:'Episodes of debilitating fatigue requiring bed rest less than once per week',40:'Episodes requiring bed rest 1–2 times per week',60:'Episodes requiring bed rest 3 or more times per week',100:'Continuous bed rest, inability to care for self'},tip:'Gulf War presumptive condition — no nexus letter needed for qualifying veterans. Also associated with PTSD and fibromyalgia.'},
+  {name:'Fibromyalgia',category:'General',ratings:[10,20,40],defaultRating:20,criteria:{10:'Pain manageable by continuous medication',20:'Widespread pain with occasional incapacitating episodes',40:'Widespread pain with near-constant incapacitating episodes'},tip:'Gulf War presumptive condition. Commonly secondary to PTSD. File alongside other Gulf War illness claims.'},
 ];
 
 const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
@@ -627,9 +282,7 @@ const HYPO_OPTIONS = [10,20,30,40,50,60,70,80];
 
 let conditions = [];
 let currentUser = null;
-let saveTimer = null;
 
-// ── AUTH ──
 async function init() {
   sb.auth.onAuthStateChange(async (event, session) => {
     if (!session) { window.location.href = "login.html"; return; }
@@ -647,7 +300,6 @@ async function handleSignout() {
   window.location.href = 'login.html';
 }
 
-// ── DATA ──
 async function loadConditions() {
   const { data } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('sort_order');
   if (!data || data.length === 0) return;
@@ -695,7 +347,6 @@ function queueSave() {
   document.getElementById('save-status').className = 'save-status';
 }
 
-// ── MATH ──
 function calcCombined(conds) {
   const valid = conds.filter(c => c.conditionName && c.rating > 0);
   if (valid.length === 0) return { exact: 0, official: 0, steps: [] };
@@ -712,7 +363,6 @@ function calcCombined(conds) {
   return { exact, official, steps };
 }
 
-// ── RENDER ──
 function render() {
   renderConditions();
   updateResults();
@@ -747,11 +397,9 @@ function renderConditions() {
     const item = document.createElement('div');
     item.className = 'condition-item' + (c.conditionName ? ' filled' : '');
 
-    // Top row: search + rating + remove
     const top = document.createElement('div');
     top.className = 'condition-item-top';
 
-    // Search wrap
     const searchWrap = document.createElement('div');
     searchWrap.className = 'condition-search-wrap';
 
@@ -765,17 +413,10 @@ function renderConditions() {
     const dropdown = document.createElement('div');
     dropdown.className = 'condition-dropdown';
 
-    searchInput.addEventListener('input', () => {
-      showDropdown(dropdown, searchInput.value, i);
-    });
-    searchInput.addEventListener('focus', () => {
-      showDropdown(dropdown, searchInput.value, i);
-    });
-    searchInput.addEventListener('keydown', (e) => {
-      handleDropdownKey(e, dropdown, i);
-    });
+    searchInput.addEventListener('input', () => { showDropdown(dropdown, searchInput.value, i); });
+    searchInput.addEventListener('focus', () => { showDropdown(dropdown, searchInput.value, i); });
+    searchInput.addEventListener('keydown', (e) => { handleDropdownKey(e, dropdown, i); });
 
-    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
       if (!item.contains(e.target)) dropdown.classList.remove('open');
     }, { capture: true });
@@ -783,7 +424,6 @@ function renderConditions() {
     searchWrap.appendChild(searchInput);
     searchWrap.appendChild(dropdown);
 
-    // Rating select (only show if condition selected)
     const ratingWrap = document.createElement('div');
     ratingWrap.className = 'rating-select-wrap';
 
@@ -813,7 +453,6 @@ function renderConditions() {
       ratingWrap.appendChild(rSelect);
     }
 
-    // Remove button
     const removeBtn = document.createElement('button');
     removeBtn.className = 'remove-btn';
     removeBtn.innerHTML = '&times;';
@@ -825,12 +464,9 @@ function renderConditions() {
     top.appendChild(removeBtn);
     item.appendChild(top);
 
-    // Criteria hint
     const criteriaEl = document.createElement('div');
     criteriaEl.className = 'condition-criteria';
-    if (c.conditionData) {
-      updateCriteria(item, c, criteriaEl);
-    }
+    if (c.conditionData) updateCriteria(item, c, criteriaEl);
     item.appendChild(criteriaEl);
 
     list.appendChild(item);
@@ -860,25 +496,16 @@ function updateCriteria(item, c, criteriaEl) {
 function showDropdown(dropdown, query, condIdx) {
   dropdown.innerHTML = "";
   const q = query.toLowerCase().trim();
-  const alreadySelected = conditions
-    .filter((c, i) => i !== condIdx && c.conditionName)
-    .map(c => c.conditionName);
+  const alreadySelected = conditions.filter((c, i) => i !== condIdx && c.conditionName).map(c => c.conditionName);
   const available = CONDITIONS.filter(c => !alreadySelected.includes(c.name));
-  const filtered = q.length === 0
-    ? available
-    : available.filter(c =>
-        c.name.toLowerCase().includes(q) ||
-        c.category.toLowerCase().includes(q)
-      );
+  const filtered = q.length === 0 ? available : available.filter(c => c.name.toLowerCase().includes(q) || c.category.toLowerCase().includes(q));
   if (filtered.length === 0) {
     dropdown.innerHTML = '<div class="dropdown-empty">No conditions found — try different keywords</div>';
   } else {
-    filtered.slice(0, 12).forEach((cond, fi) => {
+    filtered.slice(0, 12).forEach((cond) => {
       const item = document.createElement("div");
       item.className = "dropdown-item";
-      const ratingRange = cond.ratings.length === 1
-        ? cond.ratings[0] + "%"
-        : cond.ratings[0] + "–" + cond.ratings[cond.ratings.length - 1] + "%";
+      const ratingRange = cond.ratings.length === 1 ? cond.ratings[0] + "%" : cond.ratings[0] + "–" + cond.ratings[cond.ratings.length - 1] + "%";
       item.innerHTML = `<div class="item-name">${cond.name}</div><div class="item-sub">${cond.category} &nbsp;·&nbsp; Rating range: <span>${ratingRange}</span></div>`;
       item.addEventListener("mousedown", (e) => {
         e.preventDefault();
@@ -919,9 +546,6 @@ function selectCondition(condIdx, cond) {
   conditions[condIdx].conditionData = cond;
   conditions[condIdx].rating = cond.defaultRating;
   render();
-  updateResults();
-  renderHypo();
-  renderCompTable();
   queueSave();
 }
 
@@ -933,7 +557,6 @@ function updateResults() {
   document.getElementById('official-display').textContent = hasData ? official + '%' : '—';
   document.getElementById('exact-sub').textContent = hasData ? 'Before rounding' : 'Add conditions to calculate';
   document.getElementById('official-sub').textContent = hasData ? 'What the VA pays on' : 'Rounded to nearest 10%';
-
   document.getElementById('tier-fill').style.width = (hasData ? Math.min(official, 100) : 0) + '%';
 
   const tierLabel = document.getElementById('tier-label');
@@ -954,14 +577,13 @@ function updateResults() {
     }
   }
 
-  // Math steps
   const stepsEl = document.getElementById('math-steps');
   stepsEl.innerHTML = '';
   if (!steps || steps.length === 0) {
     stepsEl.innerHTML = '<div class="math-empty">Add conditions above to see the step-by-step math.</div>';
     return;
   }
-  steps.forEach((s, i) => {
+  steps.forEach(s => {
     const row = document.createElement('div');
     row.className = 'math-row';
     row.innerHTML = `<span class="math-label">${s.name}</span><span class="math-formula">${s.remaining_before}% × ${s.rating}%</span><span class="math-value">−${s.taken}%</span>`;
