@@ -13,7 +13,7 @@
     --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
     --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
     --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
-    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
+    --ff-display:\'Barlow Condensed\',sans-serif;--ff-body:\'DM Sans\',sans-serif;--ff-mono:\'DM Mono\',monospace;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -23,7 +23,7 @@
   .loading-logo span{color:var(--green)}
   #app{display:none}
   nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
   .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
   .nav-logo span{color:var(--green)}
   .nav-links{display:flex;align-items:center;gap:24px}
@@ -33,6 +33,8 @@
   .user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
   .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
   .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+  .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
   .page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
   .greeting{margin-bottom:20px}
   .greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
@@ -79,7 +81,15 @@
   .setup-banner strong{font-weight:500}
   .rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1}
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:700px){.grid-top,.grid-bottom{grid-template-columns:1fr}.nav-links{display:none}.user-email{display:none}}
+  @media(max-width:700px){
+    .grid-top,.grid-bottom{grid-template-columns:1fr}
+    .hamburger{display:flex}
+    .user-email{display:none}
+    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+    .nav-links a:last-child{border-bottom:none}
+  }
 </style>
 </head>
 <body>
@@ -87,20 +97,21 @@
 <div id="app">
   <nav>
     <div class="nav-inner">
-      <div class="nav-logo">UNDER<span>RATED</span></div>
-      <div class="nav-links">
+      <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
+      <div class="nav-links" id="nav-links">
         <a href="calculator.html">Rating calculator</a>
         <a href="gap.html">Gap identifier</a>
         <a href="vault.html">Vault</a>
       </div>
       <div class="nav-right">
         <span class="user-email" id="user-email"></span>
+        <button class="hamburger" onclick="toggleNav()">☰ Menu</button>
         <button class="signout-btn" onclick="handleSignout()">Sign out</button>
       </div>
     </div>
   </nav>
   <div class="page">
-    <div class="setup-banner">
+    <div class="setup-banner" id="setup-banner" style="display:none">
       <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating — it takes 60 seconds and unlocks your personalized gap analysis.</p>
       <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating →</a>
     </div>
@@ -141,7 +152,7 @@
               </div>
               <div><div class="doc-name">DD-214</div><div class="doc-sub">Required for all claims</div></div>
             </div>
-            <button class="upload-btn">Upload</button>
+            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
           </div>
           <div class="doc-item">
             <div class="doc-left">
@@ -150,7 +161,7 @@
               </div>
               <div><div class="doc-name">C&amp;P exam results</div><div class="doc-sub">Upload if you have them</div></div>
             </div>
-            <button class="upload-btn">Upload</button>
+            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
           </div>
           <div class="doc-item">
             <div class="doc-left">
@@ -159,7 +170,7 @@
               </div>
               <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional · strengthens claims</div></div>
             </div>
-            <button class="upload-btn">Upload</button>
+            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
           </div>
         </div>
       </div>
@@ -193,6 +204,10 @@
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  function toggleNav() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
+
   function init(){
     sb.auth.onAuthStateChange(async (event, session) => {
       if (!session) { window.location.href = "login.html"; return; }
@@ -201,19 +216,29 @@
       document.getElementById("user-email").textContent = email;
       document.getElementById("greeting-text").textContent = "Welcome back, " + name;
       document.getElementById("greeting-sub").textContent = "Logged in as " + email;
+
       const { data } = await sb.from("conditions").select("*").eq("user_id", session.user.id);
+
       if (data && data.length > 0) {
+        // Hide setup banner — user has conditions
+        document.getElementById("setup-banner").style.display = "none";
+
         const sorted = [...data].sort((a,b) => b.rating - a.rating);
         let remaining = 100;
         for (const c of sorted) { remaining = remaining * (1 - c.rating / 100); }
         const exact = 100 - remaining;
         const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
+
         if (official > 0) {
-          // FIX: was "combined-rating", correct id is "rating-display"
           document.getElementById("rating-display").innerHTML = official + "<span>%</span>";
+          document.getElementById("rating-display").style.color = "var(--ink)";
           document.getElementById("rating-sub").textContent = data.length + " condition" + (data.length !== 1 ? "s" : "") + " entered";
         }
+      } else {
+        // Show setup banner — no conditions yet
+        document.getElementById("setup-banner").style.display = "flex";
       }
+
       document.getElementById("loading-screen").style.display = "none";
       document.getElementById("app").style.display = "block";
     });
