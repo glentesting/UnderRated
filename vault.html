@@ -21,7 +21,7 @@
   a{color:inherit;text-decoration:none}
 
   nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
   .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
   .nav-logo span{color:var(--green)}
   .nav-links{display:flex;align-items:center;gap:24px}
@@ -32,19 +32,19 @@
   .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
   .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
   .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+  .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
 
   .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
   .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
   .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
   .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
 
-  /* LOADING */
   #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:14px;text-align:center}
   .spinner{width:28px;height:28px;border:2px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   #loading p{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
 
-  /* UPLOAD STATE */
   #upload-state{display:none}
   .upload-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:40px;max-width:560px;margin:0 auto;text-align:center}
   .upload-card h2{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);margin-bottom:8px}
@@ -66,7 +66,6 @@
   .reupload-btn{margin-top:16px;font-size:13px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
   .reupload-btn:hover{background:var(--green-bg)}
 
-  /* DASHBOARD */
   #dashboard{display:none}
   .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
   .dash-header-left h2{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);line-height:1}
@@ -132,8 +131,21 @@
   .step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
   .step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
 
+  .alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
+  .alt-action a{color:var(--green)}
+  .alt-action a:hover{text-decoration:underline}
+
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:780px){.stat-row{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.nav-links,.user-pill{display:none}}
+  @media(max-width:780px){
+    .stat-row{grid-template-columns:1fr}
+    .layout{grid-template-columns:1fr}
+    .hamburger{display:flex}
+    .user-pill{display:none}
+    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+    .nav-links a:last-child{border-bottom:none}
+  }
 </style>
 </head>
 <body>
@@ -141,13 +153,14 @@
 <nav>
   <div class="nav-inner">
     <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="calculator.html">Rating calculator</a>
       <a href="gap.html">Gap identifier</a>
       <a href="vault.html" class="active">Vault</a>
     </div>
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
       <button class="signout-btn" onclick="handleSignout()">Sign out</button>
     </div>
   </div>
@@ -171,9 +184,9 @@
       <p>Drop your VA rating decision PDF here. We'll extract all your conditions, ratings, and decisions automatically — takes about 30 seconds.</p>
       <div class="drop-zone" id="drop-zone">
         <input type="file" accept=".pdf" id="file-input" onchange="handleFile(this.files[0])">
-        <div class="drop-icon">📄</div>
+        <div class="drop-icon">&#128196;</div>
         <div class="drop-label">Drop your PDF here or click to browse</div>
-        <div class="drop-sub">VA rating decision, C&P exam results, or combined rating letter</div>
+        <div class="drop-sub">VA rating decision, C&amp;P exam results, or combined rating letter</div>
       </div>
       <div class="upload-progress" id="upload-progress">
         <div class="progress-step" id="step-upload">
@@ -190,6 +203,9 @@
         </div>
       </div>
       <div class="upload-error" id="upload-error"></div>
+    </div>
+    <div class="alt-action">
+      Don't have a PDF yet? <a href="calculator.html">Enter conditions manually in the calculator</a>
     </div>
   </div>
 
@@ -245,7 +261,7 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
@@ -254,7 +270,15 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
 let currentUser = null;
 
-// ── AUTH ──
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+
+// Safe decision string helper — avoids TypeError when decision is null/undefined
+function decisionIncludes(decision, term) {
+  return (decision?.toLowerCase() || '').includes(term);
+}
+
 async function init() {
   sb.auth.onAuthStateChange(async (event, session) => {
     if (!session) { window.location.href = 'login.html'; return; }
@@ -283,7 +307,6 @@ async function loadData() {
   document.getElementById('dashboard').style.display = 'block';
 }
 
-// ── UPLOAD ──
 function setupDropZone() {
   const zone = document.getElementById('drop-zone');
   zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
@@ -307,12 +330,13 @@ function showUpload() {
 
 function setStep(stepId, status) {
   const el = document.getElementById(stepId);
-  const dot = el.querySelector('.step-dot, .step-spinner, .step-check');
   el.className = 'progress-step' + (status === 'active' ? ' active' : status === 'done' ? ' done' : '');
-  if (status === 'active') {
-    dot.outerHTML = '<div class="step-spinner"></div>';
+  const inner = el.querySelector('.step-dot, .step-spinner, .step-check');
+  if (status === 'active' && inner) {
+    inner.outerHTML = '<div class="step-spinner"></div>';
   } else if (status === 'done') {
-    el.querySelector('.step-spinner, .step-dot') && (el.querySelector('.step-spinner, .step-dot').outerHTML = '<span class="step-check">✓</span>');
+    const s = el.querySelector('.step-spinner, .step-dot');
+    if (s) s.outerHTML = '<span class="step-check">&#10003;</span>';
   }
 }
 
@@ -320,11 +344,10 @@ function showUploadError(msg) {
   const el = document.getElementById('upload-error');
   el.textContent = msg;
   el.style.display = 'block';
-  // Reset steps
   ['step-upload','step-extract','step-save'].forEach(id => {
-    const el = document.getElementById(id);
-    el.className = 'progress-step';
-    const inner = el.querySelector('.step-spinner, .step-check');
+    const s = document.getElementById(id);
+    s.className = 'progress-step';
+    const inner = s.querySelector('.step-spinner, .step-check');
     if (inner) inner.outerHTML = '<div class="step-dot"></div>';
   });
 }
@@ -339,7 +362,6 @@ async function handleFile(file) {
   document.getElementById('drop-zone').style.opacity = '0.5';
 
   try {
-    // Step 1: Upload to Supabase Storage
     setStep('step-upload', 'active');
     const fileName = `${currentUser.id}/${Date.now()}_${file.name}`;
     const { data: uploadData, error: uploadError } = await sb.storage
@@ -349,11 +371,9 @@ async function handleFile(file) {
     if (uploadError) throw new Error('Upload failed: ' + uploadError.message);
     setStep('step-upload', 'done');
 
-    // Get public URL
     const { data: urlData } = sb.storage.from('rating-decisions').getPublicUrl(fileName);
     const fileUrl = urlData.publicUrl;
 
-    // Step 2: Extract with Vercel function
     setStep('step-extract', 'active');
     const extractRes = await fetch(VERCEL_URL, {
       method: 'POST',
@@ -368,17 +388,13 @@ async function handleFile(file) {
 
     const extracted = await extractRes.json();
     if (!extracted.success || !extracted.conditions?.length) {
-      throw new Error('No conditions found in this document. Make sure it\'s a VA rating decision letter.');
+      throw new Error("No conditions found in this document. Make sure it's a VA rating decision letter.");
     }
     setStep('step-extract', 'done');
 
-    // Step 3: Save to Supabase
     setStep('step-save', 'active');
-
-    // Delete existing conditions for this user first
     await sb.from('conditions').delete().eq('user_id', currentUser.id);
 
-    // Insert new ones
     const rows = extracted.conditions.map((c, i) => ({
       user_id: currentUser.id,
       name: c.condition_name,
@@ -393,7 +409,6 @@ async function handleFile(file) {
     if (insertError) throw new Error('Save failed: ' + insertError.message);
     setStep('step-save', 'done');
 
-    // Load dashboard
     setTimeout(async () => {
       document.getElementById('upload-state').style.display = 'none';
       const { data } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('rating', { ascending: false });
@@ -408,7 +423,6 @@ async function handleFile(file) {
   }
 }
 
-// ── RENDER ──
 function calcCombined(data) {
   const valid = data.filter(c => c.rating && parseInt(c.rating) > 0).sort((a,b) => parseInt(b.rating) - parseInt(a.rating));
   if (!valid.length) return { exact:0, official:0, steps:[] };
@@ -444,17 +458,24 @@ function dpLabel(d) {
 
 function renderDashboard(data) {
   const { exact, official, steps } = calcCombined(data);
-  const connected = data.filter(c => c.decision?.toLowerCase().includes('service connected') && !c.decision?.toLowerCase().includes('not')).length;
+
+  // FIX: use decisionIncludes helper so null decision never throws TypeError
+  const connected = data.filter(c =>
+    decisionIncludes(c.decision, 'service connected') &&
+    !decisionIncludes(c.decision, 'not')
+  ).length;
+
+  // Fallback: if no decision fields set (conditions from calculator), count those with rating > 0
+  const connectedDisplay = connected > 0 ? connected
+    : data.filter(c => c.rating && parseInt(c.rating) > 0).length;
 
   document.getElementById('last-updated').textContent = data.length + ' conditions · last updated ' + new Date().toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
 
-  // Stats
   document.getElementById('stat-row').innerHTML = `
     <div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">${official}%</div><div class="stat-sub">Exact ${exact.toFixed(1)}% → rounded to ${official}%</div></div>
-    <div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">${connected}</div><div class="stat-sub">of ${data.length} total conditions</div></div>
+    <div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">${connectedDisplay}</div><div class="stat-sub">of ${data.length} total conditions</div></div>
     <div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$${(COMP_RATES[official]||0).toLocaleString('en-US',{minimumFractionDigits:0})}</div><div class="stat-sub">Veteran alone, no dependents</div></div>`;
 
-  // Conditions
   document.getElementById('cond-list').innerHTML = data.map(c => `
     <div class="cond-row">
       <div class="cond-name">${c.name||'—'}</div>
@@ -463,12 +484,10 @@ function renderDashboard(data) {
       ${c.rating && parseInt(c.rating)>0 ? `<div class="cond-rating">${c.rating}%</div>` : `<div class="cond-rating tbd">TBD</div>`}
     </div>`).join('');
 
-  // Math
   document.getElementById('math-steps').innerHTML = steps.map(s =>
     `<div class="math-row"><span class="math-label">${s.name}</span><span class="math-formula">${s.remaining_before}% × ${s.rating}%</span><span class="math-value">−${s.taken}%</span></div>`
   ).join('') + `<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to ${official}%</span><span class="math-value">${exact.toFixed(1)}%</span></div>`;
 
-  // Tier
   document.getElementById('tier-fill').style.width = Math.min(official,100)+'%';
   document.getElementById('tier-label').textContent = 'Current rating: ' + official + '%';
   if (official < 100) {
@@ -479,14 +498,13 @@ function renderDashboard(data) {
     document.getElementById('next-tier').textContent = 'You are at the maximum rating.';
   }
 
-  // Comp table
   document.getElementById('comp-table').innerHTML = [10,20,30,40,50,60,70,80,90,100].map(t =>
     `<div class="comp-row${t===official?' active':''}"><span>${t}%${t===official?' ← you are here':''}</span><span style="font-family:var(--ff-mono);font-size:13px">$${(COMP_RATES[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}/mo</span></div>`
   ).join('');
 
   // Next steps
-  const deferred = data.filter(c => c.decision?.toLowerCase().includes('deferred'));
-  const denied   = data.filter(c => c.decision?.toLowerCase().includes('not service'));
+  const deferred = data.filter(c => decisionIncludes(c.decision, 'deferred'));
+  const denied   = data.filter(c => decisionIncludes(c.decision, 'not service'));
   const stepItems = [];
   if (deferred.length) stepItems.push({ icon:'⏳', title:`Follow up on ${deferred.length} deferred condition${deferred.length>1?'s':''}`, desc:`${deferred.map(c=>c.name).join(', ')} ${deferred.length>1?'are':'is'} still pending. Contact your VSO or check VA.gov.`, tag:'action required', amber:true });
   if (denied.length) stepItems.push({ icon:'⚡', title:`Appeal ${denied.length} denied condition${denied.length>1?'s':''}`, desc:`You have 1 year from the decision to file a supplemental claim with new evidence.`, tag:'potential increase', amber:false });
