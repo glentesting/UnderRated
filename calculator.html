@@ -3,616 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rating Calculator — UNDERRATED</title>
+<title>Dashboard — UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:           #F5F2EC;
-    --bg-2:         #EDEAE2;
-    --surface:      #FFFFFF;
-    --border:       rgba(0,0,0,0.09);
-    --border-2:     rgba(0,0,0,0.16);
-    --green:        #0E8A63;
-    --green-l:      #10A376;
-    --green-bg:     rgba(14,138,99,0.09);
-    --green-border: rgba(14,138,99,0.25);
-    --ink:          #18191A;
-    --ink-2:        #4A4845;
-    --ink-3:        #8A8780;
-    --ink-4:        #B8B5AE;
-    --amber:        #C47F0A;
-    --amber-bg:     rgba(196,127,10,0.08);
-    --amber-border: rgba(196,127,10,0.25);
-    --red:          #C43030;
-    --red-bg:       rgba(196,48,48,0.07);
-    --ff-display:   'Barlow Condensed', sans-serif;
-    --ff-body:      'DM Sans', sans-serif;
-    --ff-mono:      'DM Mono', monospace;
+    --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
+    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
+    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
+    --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
+    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--ink); font-family: var(--ff-body); font-size: 16px; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-  a { color: inherit; text-decoration: none; }
-
-  /* NAV */
-  nav { position: sticky; top: 0; z-index: 100; background: rgba(245,242,236,0.93); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 28px; }
-  .nav-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .nav-logo { font-family: var(--ff-display); font-size: 22px; font-weight: 800; letter-spacing: .5px; color: var(--ink); }
-  .nav-logo span { color: var(--green); }
-  .nav-links { display: flex; align-items: center; gap: 24px; }
-  .nav-links a { font-size: 14px; color: var(--ink-3); transition: color .15s; }
-  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
-  .nav-links a.active { font-weight: 500; }
-  .nav-right { display: flex; align-items: center; gap: 12px; }
-  .user-pill { font-size: 12px; color: var(--ink-3); font-family: var(--ff-mono); background: var(--bg-2); padding: 5px 10px; border-radius: 20px; }
-  .signout-btn { font-size: 13px; color: var(--ink-3); background: none; border: 1px solid var(--border-2); border-radius: 8px; padding: 6px 14px; cursor: pointer; transition: all .15s; }
-  .signout-btn:hover { color: var(--ink); border-color: var(--ink-3); }
-
-  /* PAGE */
-  .page { max-width: 1080px; margin: 0 auto; padding: 36px 28px 60px; }
-  .page-header { margin-bottom: 28px; }
-  .page-eyebrow { font-family: var(--ff-mono); font-size: 11px; color: var(--green); letter-spacing: .07em; text-transform: uppercase; font-weight: 500; margin-bottom: 8px; }
-  .page-title { font-family: var(--ff-display); font-size: 40px; font-weight: 800; color: var(--ink); line-height: 1; margin-bottom: 6px; }
-  .page-sub { font-size: 15px; color: var(--ink-3); }
-
-  /* LAYOUT */
-  .layout { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); gap: 20px; align-items: start; }
-
-  /* CARDS */
-  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 22px; }
-  .card-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-
-  /* CONDITION ROWS */
-  .condition-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-  .condition-row { display: flex; align-items: center; gap: 8px; }
-  .cond-name {
-    flex: 1; font-size: 14px; color: var(--ink);
-    background: var(--bg); border: 1.5px solid var(--border-2);
-    border-radius: 9px; padding: 9px 12px; outline: none;
-    font-family: var(--ff-body); transition: border-color .15s;
-  }
-  .cond-name:focus { border-color: var(--green); background: var(--surface); }
-  .cond-name::placeholder { color: var(--ink-4); }
-  .cond-select {
-    width: 82px; font-size: 14px; color: var(--ink);
-    background: var(--bg); border: 1.5px solid var(--border-2);
-    border-radius: 9px; padding: 9px 8px; outline: none;
-    font-family: var(--ff-body); cursor: pointer; flex-shrink: 0;
-    transition: border-color .15s;
-  }
-  .cond-select:focus { border-color: var(--green); }
-  .remove-btn {
-    width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--border-2);
-    background: none; cursor: pointer; color: var(--ink-4); font-size: 16px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    transition: all .15s;
-  }
-  .remove-btn:hover { background: var(--red-bg); color: var(--red); border-color: rgba(196,48,48,0.3); }
-  .add-btn {
-    font-size: 13px; color: var(--green); background: none;
-    border: 1.5px solid var(--green-border); border-radius: 9px;
-    padding: 8px 16px; cursor: pointer; transition: background .15s;
-    font-family: var(--ff-body);
-  }
-  .add-btn:hover { background: var(--green-bg); }
-
-  /* SAVE BAR */
-  .save-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1.5px solid var(--border); }
-  .save-status { font-size: 12px; color: var(--ink-3); font-family: var(--ff-mono); }
-  .save-status.saved { color: var(--green); }
-  .save-status.saving { color: var(--amber); }
-  .save-btn {
-    background: var(--green); color: #fff; font-size: 13px; font-weight: 500;
-    padding: 9px 20px; border-radius: 9px; border: none; cursor: pointer;
-    font-family: var(--ff-body); transition: background .15s;
-  }
-  .save-btn:hover { background: var(--green-l); }
-  .save-btn:disabled { opacity: .5; cursor: not-allowed; }
-
-  /* PAINFUL MOTION RULE */
-  .rule-box { background: var(--amber-bg); border: 1.5px solid var(--amber-border); border-radius: 12px; padding: 12px 14px; margin-top: 14px; }
-  .rule-box p { font-size: 13px; color: var(--amber); line-height: 1.55; }
-  .rule-box strong { font-weight: 500; }
-
-  /* MATH STEPS */
-  .math-steps { display: flex; flex-direction: column; gap: 0; }
-  .math-row { display: flex; align-items: baseline; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .math-row:last-child { border-bottom: none; }
-  .math-row .label { color: var(--ink-2); flex: 1; }
-  .math-row .formula { font-family: var(--ff-mono); font-size: 11px; color: var(--ink-4); margin: 0 10px; }
-  .math-row .value { font-weight: 500; color: var(--ink); text-align: right; }
-  .math-row.total-row .label { font-weight: 500; color: var(--ink); }
-  .math-row.total-row .value { color: var(--green); font-size: 16px; }
-
-  /* RESULT */
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .result-box { background: var(--bg-2); border-radius: 10px; padding: 14px 16px; }
-  .result-label { font-family: var(--ff-mono); font-size: 10px; color: var(--ink-3); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
-  .result-number { font-family: var(--ff-display); font-size: 44px; font-weight: 800; color: var(--ink); line-height: 1; }
-  .result-number.green { color: var(--green); }
-  .result-sub { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
-
-  /* TIER INDICATOR */
-  .tier-bar { background: var(--bg-2); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
-  .tier-label { font-size: 12px; color: var(--ink-3); margin-bottom: 8px; }
-  .tier-track { height: 8px; background: var(--border); border-radius: 4px; overflow: visible; position: relative; margin-bottom: 10px; }
-  .tier-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width .4s ease; }
-  .tier-markers { display: flex; justify-content: space-between; font-family: var(--ff-mono); font-size: 10px; color: var(--ink-4); }
-  .next-tier-note { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
-  .next-tier-note strong { color: var(--green); font-weight: 500; }
-
-  /* HYPOTHETICAL */
-  .hypo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-top: 12px; }
-  .hypo-card {
-    background: var(--bg-2); border: 1.5px solid var(--border); border-radius: 9px;
-    padding: 10px; cursor: pointer; transition: all .15s; text-align: center;
-  }
-  .hypo-card:hover { border-color: var(--green-border); background: var(--green-bg); }
-  .hypo-card.active { border-color: var(--green); background: var(--green-bg); }
-  .hypo-rating { font-family: var(--ff-display); font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1; }
-  .hypo-result { font-size: 11px; color: var(--ink-3); margin-top: 3px; }
-  .hypo-result.bump { color: var(--green); font-weight: 500; }
-  .hypo-detail { background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 9px; padding: 11px 13px; margin-top: 10px; font-size: 13px; color: var(--green); line-height: 1.55; display: none; }
-
-  /* EXPLAINER */
-  .explainer { background: var(--green-bg); border: 1.5px solid var(--green-border); border-radius: 12px; padding: 14px 16px; }
-  .explainer p { font-size: 13px; color: var(--green); line-height: 1.6; }
-  .explainer strong { font-weight: 500; }
-
-  /* DISCLAIMER */
-  .disclaimer { font-size: 12px; color: var(--ink-4); margin-top: 20px; line-height: 1.5; font-family: var(--ff-mono); }
-
-  /* EMPTY STATE */
-  .empty-state { text-align: center; padding: 32px 16px; }
-  .empty-state p { font-size: 14px; color: var(--ink-3); }
-
-  /* SPINNER */
-  .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .page { animation: fadeUp .35s ease both; }
-
-  @media (max-width: 780px) {
-    .layout { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-    .user-pill { display: none; }
-    .result-grid { grid-template-columns: 1fr 1fr; }
-  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  #loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
+  .loading-logo{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-4)}
+  .loading-logo span{color:var(--green)}
+  #app{display:none}
+  nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+  .nav-logo span{color:var(--green)}
+  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+  .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
+  .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
+  .greeting{margin-bottom:20px}
+  .greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
+  .greeting p{font-size:14px;color:var(--ink-3)}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:20px}
+  .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:14px}
+  .grid-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:14px;margin-bottom:14px}
+  .big-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
+  .big-number span{font-size:18px;font-weight:400;color:var(--ink-3)}
+  .number-label{font-size:12px;color:var(--ink-3);margin-bottom:8px;font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.06em}
+  .number-sub{font-size:12px;color:var(--ink-3);margin-top:6px}
+  .btn-green{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;margin-top:14px;font-family:var(--ff-body)}
+  .btn-green:hover{background:var(--green-l)}
+  .btn-outline{display:inline-flex;align-items:center;gap:6px;background:none;color:var(--green);font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid var(--green-border);cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
+  .btn-outline:hover{background:var(--green-bg)}
+  .gap-intro{font-size:14px;color:var(--ink-2);line-height:1.55;margin-bottom:14px}
+  .pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+  .pill{font-size:12px;padding:4px 11px;border-radius:20px}
+  .pill.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+  .pill.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(196,127,10,0.25)}
+  .pill.gray{background:var(--bg-2);color:var(--ink-3);border:1px solid var(--border)}
+  .grid-bottom{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}
+  .doc-row{display:flex;flex-direction:column;gap:8px}
+  .doc-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg);border-radius:9px;border:1px solid var(--border)}
+  .doc-left{display:flex;align-items:center;gap:10px}
+  .doc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .doc-icon.green{background:var(--green-bg)}
+  .doc-icon.amber{background:var(--amber-bg)}
+  .doc-icon.gray{background:var(--bg-2);border:1px solid var(--border)}
+  .doc-name{font-size:13px;color:var(--ink)}
+  .doc-sub{font-size:11px;color:var(--ink-3);margin-top:1px}
+  .upload-btn{font-size:12px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
+  .upload-btn:hover{background:var(--green-bg)}
+  .steps-list{display:flex;flex-direction:column;gap:8px}
+  .step-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+  .step-item:hover{background:var(--surface);border-color:var(--border)}
+  .step-item.disabled{opacity:.45;pointer-events:none}
+  .step-num{width:20px;height:20px;border-radius:50%;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--ff-mono)}
+  .step-num.muted{background:var(--bg-2);color:var(--ink-4)}
+  .step-text{font-size:13px;color:var(--ink);line-height:1.4}
+  .step-text small{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+  .setup-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .setup-banner p{font-size:14px;color:var(--green);line-height:1.5}
+  .setup-banner strong{font-weight:500}
+  .rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:700px){.grid-top,.grid-bottom{grid-template-columns:1fr}.nav-links{display:none}.user-email{display:none}}
 </style>
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
-    <div class="nav-links">
-      <a href="calculator.html" class="active">Rating calculator</a>
-      <a href="gap.html">Gap identifier</a>
-      <a href="vault.html">Vault</a>
-    </div>
-    <div class="nav-right">
-      <span class="user-pill" id="user-email"></span>
-      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
-    </div>
-  </div>
-</nav>
-
-<div class="page">
-  <div class="page-header">
-    <div class="page-eyebrow">Step 1 of 3</div>
-    <div class="page-title">Rating calculator</div>
-    <p class="page-sub">Enter your service-connected conditions and current ratings. We'll show the VA's real math.</p>
-  </div>
-
-  <div class="layout">
-
-    <!-- LEFT: INPUT -->
-    <div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title">
-          Your service-connected conditions
-          <span style="font-size:12px;color:var(--ink-3);font-weight:400;font-family:var(--ff-mono)" id="condition-count"></span>
-        </div>
-        <div class="condition-list" id="condition-list"></div>
-        <button class="add-btn" onclick="addCondition()">+ Add condition</button>
-
-        <div class="save-bar">
-          <span class="save-status" id="save-status">Not saved yet</span>
-          <button class="save-btn" id="save-btn" onclick="saveConditions()">Save my rating</button>
-        </div>
+<div id="loading-screen"><div class="loading-logo">UNDER<span>RATED</span></div></div>
+<div id="app">
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">UNDER<span>RATED</span></div>
+      <div class="nav-links">
+        <a href="calculator.html">Rating calculator</a>
+        <a href="gap.html">Gap identifier</a>
+        <a href="vault.html">Vault</a>
       </div>
-
+      <div class="nav-right">
+        <span class="user-email" id="user-email"></span>
+        <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page">
+    <div class="setup-banner">
+      <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating — it takes 60 seconds and unlocks your personalized gap analysis.</p>
+      <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating →</a>
+    </div>
+    <div class="greeting">
+      <h1 id="greeting-text">Welcome back</h1>
+      <p id="greeting-sub">Here's where things stand.</p>
+    </div>
+    <div class="grid-top">
       <div class="card">
-        <div class="card-title">How VA math works</div>
-        <div class="explainer">
-          <p>The VA doesn't add ratings together. It uses the <strong>"whole person" method</strong> — your highest-rated condition takes its percentage from 100%. Each next condition takes its percentage from what's <em>left</em>, not from 100%.</p>
-        </div>
-
-        <div id="math-steps-wrap" style="margin-top:16px">
-          <div class="math-steps" id="math-steps"></div>
-        </div>
-
-        <div id="painful-motion-tip" class="rule-box" style="display:none">
-          <p><strong>Painful motion rule (38 CFR § 4.59):</strong> If any of your joint conditions cause pain on movement, the VA is required to assign at least the minimum compensable rating (10%) — even if range of motion is near normal. Make sure your C&P exam documents pain, not just ROM.</p>
-        </div>
+        <div class="number-label">Combined VA rating</div>
+        <div class="rating-display" id="rating-display" style="color:var(--ink-3)">—</div>
+        <div class="number-sub" id="rating-sub">Not entered yet</div>
+        <a href="calculator.html" class="btn-green">Enter my rating →</a>
       </div>
-    </div>
-
-    <!-- RIGHT: RESULTS -->
-    <div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title">Your combined rating</div>
-
-        <div class="result-grid">
-          <div class="result-box">
-            <div class="result-label">Exact (VA math)</div>
-            <div class="result-number" id="exact-display">—</div>
-            <div class="result-sub" id="exact-sub">Add conditions to calculate</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Official rating</div>
-            <div class="result-number green" id="official-display">—</div>
-            <div class="result-sub" id="official-sub">Rounded to nearest 10%</div>
-          </div>
-        </div>
-
-        <div class="tier-bar">
-          <div class="tier-label" id="tier-label">Add conditions to see your rating tier</div>
-          <div class="tier-track"><div class="tier-fill" id="tier-fill" style="width:0%"></div></div>
-          <div class="tier-markers">
-            <span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span><span>100%</span>
-          </div>
-        </div>
-
-        <div class="next-tier-note" id="next-tier-note"></div>
-      </div>
-
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-title">What if you added a condition?</div>
-        <p style="font-size:13px;color:var(--ink-3);line-height:1.5;margin-bottom:4px">Tap a rating to see how it shifts your official rating.</p>
-        <div class="hypo-grid" id="hypo-grid"></div>
-        <div class="hypo-detail" id="hypo-detail"></div>
-      </div>
-
       <div class="card">
-        <div class="card-title">2026 monthly compensation</div>
-        <div id="comp-table"></div>
-        <p style="font-size:12px;color:var(--ink-4);margin-top:10px;font-family:var(--ff-mono)">Veteran alone, no dependents. Add ~$60-200/month per dependent at 30%+.</p>
+        <div class="card-title">Potential unclaimed conditions</div>
+        <p class="gap-intro">Once you enter your MOS and current conditions, UNDERRATED will surface conditions you likely qualify for but haven't claimed.</p>
+        <div class="pill-row">
+          <span class="pill green">Sleep apnea</span>
+          <span class="pill green">Tinnitus</span>
+          <span class="pill amber">PTSD (secondary)</span>
+          <span class="pill gray">Run analysis to see yours</span>
+        </div>
+        <a href="gap.html" class="btn-green">Run gap analysis →</a>
       </div>
-
-      <p class="disclaimer">UNDERRATED provides estimates based on VA Schedule for Rating Disabilities (38 CFR Part 4). Actual ratings depend on C&P exam findings and VA adjudicator decisions. This is not legal advice.</p>
     </div>
-
+    <div class="grid-bottom">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+          <div class="card-title" style="margin:0">Document vault</div>
+          <a href="vault.html" class="btn-outline">Manage all →</a>
+        </div>
+        <div class="doc-row">
+          <div class="doc-item">
+            <div class="doc-left">
+              <div class="doc-icon amber">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <div><div class="doc-name">DD-214</div><div class="doc-sub">Required for all claims</div></div>
+            </div>
+            <button class="upload-btn">Upload</button>
+          </div>
+          <div class="doc-item">
+            <div class="doc-left">
+              <div class="doc-icon amber">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <div><div class="doc-name">C&amp;P exam results</div><div class="doc-sub">Upload if you have them</div></div>
+            </div>
+            <button class="upload-btn">Upload</button>
+          </div>
+          <div class="doc-item">
+            <div class="doc-left">
+              <div class="doc-icon gray">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#8A8780" stroke-width="1.2"/><path d="M6 6h4M6 9h4" stroke="#8A8780" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional · strengthens claims</div></div>
+            </div>
+            <button class="upload-btn">Upload</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Next steps</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="window.location.href='calculator.html'">
+            <div class="step-num">1</div>
+            <div class="step-text">Enter your current rating<small>Sets your baseline</small></div>
+          </div>
+          <div class="step-item" onclick="window.location.href='gap.html'">
+            <div class="step-num">2</div>
+            <div class="step-text">Run gap analysis<small>Find unclaimed conditions</small></div>
+          </div>
+          <div class="step-item" onclick="window.location.href='vault.html'">
+            <div class="step-num">3</div>
+            <div class="step-text">Upload DD-214<small>Needed for all claims</small></div>
+          </div>
+          <div class="step-item disabled">
+            <div class="step-num muted">4</div>
+            <div class="step-text">Build claim package<small>Unlocks after steps 1–3</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const RATINGS = [0,10,20,30,40,50,60,70,80,90,100];
-const HYPO_OPTIONS = [10,20,30,40,50,60,70];
-const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
-const JOINT_CONDITIONS = ['knee','back','neck','lumbar','cervical','shoulder','hip','ankle','elbow','wrist','spine'];
-
-// Joint conditions that trigger painful motion tip
-function isJoint(name) {
-  return JOINT_CONDITIONS.some(j => name.toLowerCase().includes(j));
-}
-
-let conditions = [
-  { id: 1, name: '', rating: 10 }
-];
-let currentUser = null;
-let saveTimer = null;
-
-// ── AUTH ──
-async function init() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { window.location.href = 'login.html'; return; }
-  currentUser = session.user;
-  document.getElementById('user-email').textContent = currentUser.email;
-  await loadConditions();
-  render();
-}
-
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
-}
-
-// ── SUPABASE DATA ──
-async function loadConditions() {
-  const { data, error } = await sb
-    .from('conditions')
-    .select('*')
-    .eq('user_id', currentUser.id)
-    .order('sort_order', { ascending: true });
-
-  if (error || !data || data.length === 0) return;
-  conditions = data.map((d, i) => ({ id: d.id || i + 1, name: d.name, rating: d.rating }));
-}
-
-async function saveConditions() {
-  if (!currentUser) return;
-  const btn = document.getElementById('save-btn');
-  const status = document.getElementById('save-status');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div>';
-  status.textContent = 'Saving…';
-  status.className = 'save-status saving';
-
-  // Delete existing, re-insert
-  await sb.from('conditions').delete().eq('user_id', currentUser.id);
-
-  const rows = conditions
-    .filter(c => c.name.trim())
-    .map((c, i) => ({ user_id: currentUser.id, name: c.name.trim(), rating: c.rating, sort_order: i }));
-
-  if (rows.length > 0) {
-    const { error } = await sb.from('conditions').insert(rows);
-    if (error) {
-      status.textContent = 'Error saving — try again';
-      status.className = 'save-status';
-      btn.disabled = false;
-      btn.textContent = 'Save my rating';
-      return;
-    }
+  function calcCombined(conds){
+    const valid=conds.filter(c=>c.rating>0);
+    if(!valid.length) return {exact:0,official:0};
+    const sorted=[...valid].sort((a,b)=>b.rating-a.rating);
+    let remaining=100;
+    for(const c of sorted) remaining=remaining*(1-c.rating/100);
+    const exact=100-remaining;
+    let official;
+    if(exact<1) official=0;
+    else if(exact>=95) official=100;
+    else official=Math.round(exact/10)*10;
+    return {exact:parseFloat(exact.toFixed(2)),official};
   }
 
-  status.textContent = 'Saved ✓';
-  status.className = 'save-status saved';
-  btn.disabled = false;
-  btn.textContent = 'Save my rating';
-  setTimeout(() => {
-    if (status.textContent === 'Saved ✓') {
-      status.textContent = 'All changes saved';
-    }
-  }, 2000);
-}
+  async function init(){
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return}
+    const email=session.user.email;
+    const name=email.split('@')[0];
+    document.getElementById('user-email').textContent=email;
+    document.getElementById('greeting-text').textContent='Welcome back, '+name;
+    document.getElementById('greeting-sub').textContent='Logged in as '+email;
 
-function queueAutoSave() {
-  clearTimeout(saveTimer);
-  const status = document.getElementById('save-status');
-  status.textContent = 'Unsaved changes';
-  status.className = 'save-status';
-}
-
-// ── MATH ──
-function calcCombined(conds) {
-  const valid = conds.filter(c => c.rating > 0);
-  if (valid.length === 0) return { exact: 0, official: 0, steps: [] };
-  const sorted = [...valid].sort((a, b) => b.rating - a.rating);
-  let remaining = 100;
-  const steps = [];
-  for (const c of sorted) {
-    const taken = remaining * (c.rating / 100);
-    steps.push({ name: c.name || 'Unnamed condition', rating: c.rating, taken: taken.toFixed(1), remaining_before: remaining.toFixed(1) });
-    remaining -= taken;
-  }
-  const exact = 100 - remaining;
-  let official;
-  if (exact < 1) official = 0;
-  else if (exact >= 95) official = 100;
-  else official = Math.round(exact / 10) * 10;
-  return { exact: parseFloat(exact.toFixed(2)), official, steps };
-}
-
-function roundToTen(n) {
-  if (n < 1) return 0;
-  if (n >= 95) return 100;
-  return Math.round(n / 10) * 10;
-}
-
-// ── RENDER ──
-function render() {
-  renderConditions();
-  updateResults();
-  renderHypo();
-  renderCompTable();
-}
-
-function renderConditions() {
-  const list = document.getElementById('condition-list');
-  list.innerHTML = '';
-  const count = document.getElementById('condition-count');
-  count.textContent = conditions.length + ' condition' + (conditions.length !== 1 ? 's' : '');
-
-  let showJointTip = false;
-  conditions.forEach((c, i) => {
-    if (c.name && isJoint(c.name)) showJointTip = true;
-    const row = document.createElement('div');
-    row.className = 'condition-row';
-
-    const nameEl = document.createElement('input');
-    nameEl.className = 'cond-name';
-    nameEl.type = 'text';
-    nameEl.value = c.name;
-    nameEl.placeholder = 'e.g. Tinnitus, lumbar strain, PTSD…';
-    nameEl.oninput = e => {
-      conditions[i].name = e.target.value;
-      if (isJoint(e.target.value)) showJointTip = true;
-      updateResults();
-      renderMathSteps();
-      renderHypo();
-      queueAutoSave();
-      document.getElementById('painful-motion-tip').style.display =
-        conditions.some(c => c.name && isJoint(c.name)) ? 'block' : 'none';
-    };
-
-    const sel = document.createElement('select');
-    sel.className = 'cond-select';
-    RATINGS.forEach(r => {
-      const o = document.createElement('option');
-      o.value = r; o.textContent = r + '%';
-      if (r === c.rating) o.selected = true;
-      sel.appendChild(o);
-    });
-    sel.onchange = e => {
-      conditions[i].rating = parseInt(e.target.value);
-      updateResults();
-      renderMathSteps();
-      renderHypo();
-      queueAutoSave();
-    };
-
-    const btn = document.createElement('button');
-    btn.className = 'remove-btn';
-    btn.innerHTML = '&times;';
-    btn.title = 'Remove condition';
-    btn.onclick = () => {
-      if (conditions.length > 1) {
-        conditions.splice(i, 1);
-        render();
-        queueAutoSave();
+    // Load saved conditions and show rating on dashboard
+    const {data}=await sb.from('conditions').select('*').eq('user_id',session.user.id);
+    if(data&&data.length>0){
+      const {official}=calcCombined(data);
+      if(official>0){
+        document.getElementById('rating-display').textContent=official+'%';
+        document.getElementById('rating-display').style.color='var(--green)';
+        document.getElementById('rating-sub').textContent=data.length+' condition'+(data.length!==1?'s':'')+' entered';
       }
-    };
-
-    row.appendChild(nameEl);
-    row.appendChild(sel);
-    row.appendChild(btn);
-    list.appendChild(row);
-  });
-
-  document.getElementById('painful-motion-tip').style.display = showJointTip ? 'block' : 'none';
-}
-
-function updateResults() {
-  const { exact, official, steps } = calcCombined(conditions);
-  const hasData = conditions.some(c => c.rating > 0);
-
-  // Numbers
-  const exactEl = document.getElementById('exact-display');
-  const officialEl = document.getElementById('official-display');
-  exactEl.textContent = hasData ? exact.toFixed(1) + '%' : '—';
-  officialEl.textContent = hasData ? official + '%' : '—';
-  document.getElementById('exact-sub').textContent = hasData ? 'Before rounding' : 'Add conditions to calculate';
-  document.getElementById('official-sub').textContent = hasData ? 'What the VA pays on' : 'Rounded to nearest 10%';
-
-  // Tier bar
-  const fill = document.getElementById('tier-fill');
-  fill.style.width = (hasData ? Math.min(official, 100) : 0) + '%';
-
-  // Next tier note
-  const nextNote = document.getElementById('next-tier-note');
-  const tierLabel = document.getElementById('tier-label');
-  if (!hasData) {
-    tierLabel.textContent = 'Add conditions to see your rating tier';
-    nextNote.innerHTML = '';
-  } else {
-    tierLabel.textContent = 'Current official rating: ' + official + '%';
-    if (official >= 100) {
-      nextNote.innerHTML = 'You\'re at the maximum rating.';
-    } else {
-      const nextTier = official + 10;
-      const toNext = (nextTier - exact).toFixed(1);
-      const monthlyNow = COMP_RATES[official] || 0;
-      const monthlyNext = COMP_RATES[nextTier] || 0;
-      const diff = (monthlyNext - monthlyNow).toFixed(2);
-      nextNote.innerHTML = `You're <strong>${toNext}% away from ${nextTier}%</strong> — worth an extra <strong style="color:var(--green)">$${diff}/month</strong> ($${(parseFloat(diff)*12).toFixed(0)}/year).`;
     }
+
+    document.getElementById('loading-screen').style.display='none';
+    document.getElementById('app').style.display='block';
   }
 
-  // Math steps
-  renderMathSteps(steps);
-}
-
-function renderMathSteps(steps) {
-  const { steps: s } = calcCombined(conditions);
-  const wrap = document.getElementById('math-steps');
-  wrap.innerHTML = '';
-  if (!s || s.length === 0) {
-    wrap.innerHTML = '<div style="font-size:13px;color:var(--ink-3);padding:8px 0">Add conditions above to see the math.</div>';
-    return;
+  async function handleSignout(){
+    await sb.auth.signOut();
+    window.location.href='login.html';
   }
 
-  s.forEach((step, i) => {
-    const row = document.createElement('div');
-    row.className = 'math-row';
-    const label = step.name.trim() || ('Condition ' + (i + 1));
-    row.innerHTML = `
-      <span class="label">${label}</span>
-      <span class="formula">${step.remaining_before}% × ${step.rating}%</span>
-      <span class="value">−${step.taken}%</span>
-    `;
-    wrap.appendChild(row);
-  });
-
-  const { exact, official } = calcCombined(conditions);
-  const totalRow = document.createElement('div');
-  totalRow.className = 'math-row total-row';
-  totalRow.innerHTML = `
-    <span class="label">Combined (exact)</span>
-    <span class="formula">→ rounds to ${official}%</span>
-    <span class="value">${exact.toFixed(1)}%</span>
-  `;
-  wrap.appendChild(totalRow);
-}
-
-function renderHypo() {
-  const grid = document.getElementById('hypo-grid');
-  const detail = document.getElementById('hypo-detail');
-  grid.innerHTML = '';
-  detail.style.display = 'none';
-  const { official: currentOfficial } = calcCombined(conditions);
-
-  HYPO_OPTIONS.forEach(r => {
-    const hypothetical = [...conditions, { name: 'New condition', rating: r }];
-    const { exact: newExact, official: newOfficial } = calcCombined(hypothetical);
-    const bump = newOfficial - currentOfficial;
-
-    const card = document.createElement('div');
-    card.className = 'hypo-card';
-    card.innerHTML = `
-      <div class="hypo-rating">${r}%</div>
-      <div class="hypo-result ${bump > 0 ? 'bump' : ''}">→ ${newOfficial}%${bump > 0 ? ' (+' + bump + '%)' : ''}</div>
-    `;
-    card.onclick = () => {
-      document.querySelectorAll('.hypo-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      const monthlyDiff = (COMP_RATES[newOfficial] || 0) - (COMP_RATES[currentOfficial] || 0);
-      detail.style.display = 'block';
-      if (bump > 0) {
-        detail.innerHTML = `Adding a <strong>${r}%</strong> condition bumps your official rating from <strong>${currentOfficial}%</strong> to <strong>${newOfficial}%</strong> — an extra <strong>$${monthlyDiff.toFixed(2)}/month</strong> ($${(monthlyDiff * 12).toFixed(0)}/year).`;
-      } else {
-        detail.innerHTML = `Adding a <strong>${r}%</strong> condition moves your exact rating from <strong>${calcCombined(conditions).exact.toFixed(1)}%</strong> to <strong>${newExact.toFixed(1)}%</strong> — but it still rounds to <strong>${newOfficial}%</strong>. You'd need a higher-rated condition to move the dial.`;
-      }
-    };
-    grid.appendChild(card);
-  });
-}
-
-function renderCompTable() {
-  const el = document.getElementById('comp-table');
-  const { official: current } = calcCombined(conditions);
-  const tiers = [30, 40, 50, 60, 70, 80, 90, 100];
-  let html = '<div style="display:flex;flex-direction:column;gap:6px;">';
-  tiers.forEach(t => {
-    const rate = COMP_RATES[t];
-    const isActive = t === current;
-    html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:${isActive ? 'var(--green-bg)' : 'var(--bg-2)'};border:${isActive ? '1.5px solid var(--green-border)' : '1px solid var(--border)'};border-radius:8px;">
-      <span style="font-size:13px;font-weight:${isActive ? '500' : '400'};color:${isActive ? 'var(--green)' : 'var(--ink-2)'};">${t}% ${isActive ? '← you are here' : ''}</span>
-      <span style="font-family:var(--ff-mono);font-size:13px;font-weight:${isActive ? '500' : '400'};color:${isActive ? 'var(--green)' : 'var(--ink-2)'};">$${rate.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2})}/mo</span>
-    </div>`;
-  });
-  html += '</div>';
-  el.innerHTML = html;
-}
-
-function addCondition() {
-  conditions.push({ id: Date.now(), name: '', rating: 10 });
-  render();
-  // Focus the new input
-  setTimeout(() => {
-    const inputs = document.querySelectorAll('.cond-name');
-    if (inputs.length) inputs[inputs.length - 1].focus();
-  }, 50);
-}
-
-init();
+  init();
 </script>
 </body>
 </html>
