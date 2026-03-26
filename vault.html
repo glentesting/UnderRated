@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vault — UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
+    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
+    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
+    --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);
+    --red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);
+    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+  .nav-logo span{color:var(--green)}
+  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
+  .nav-links a.active{font-weight:500}
+  .nav-right{display:flex;align-items:center;gap:12px}
+  .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+  .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+  .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+  .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+  .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+  .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+  #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:14px;text-align:center}
+  .spinner{width:28px;height:28px;border:2px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #loading p{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
+  #dashboard{display:none}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+  .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px}
+  .stat-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+  .stat-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
+  .stat-number.green{color:var(--green)}
+  .stat-sub{font-size:12px;color:var(--ink-3);margin-top:5px}
+  .layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+  .card:last-child{margin-bottom:0}
+  .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+  .card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+  .cond-list{display:flex;flex-direction:column;gap:8px}
+  .cond-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:border-color .15s}
+  .cond-row:hover{border-color:var(--border-2)}
+  .cond-name{flex:1;font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
+  .cond-meta{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4)}
+  .cond-rating{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);line-height:1;min-width:36px;text-align:right}
+  .cond-rating.tbd{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);font-weight:400}
+  .dpill{font-size:10px;font-family:var(--ff-mono);padding:3px 8px;border-radius:4px;border:1px solid;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+  .dpill.sc{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+  .dpill.def{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+  .dpill.den{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+  .math-explainer{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+  .math-explainer p{font-size:13px;color:var(--green);line-height:1.6}
+  .math-explainer strong{font-weight:500}
+  .math-steps{display:flex;flex-direction:column}
+  .math-row{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .math-row:last-child{border-bottom:none}
+  .math-label{color:var(--ink-2);flex:1}
+  .math-formula{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);margin:0 10px}
+  .math-value{font-weight:500;color:var(--ink)}
+  .math-row.total .math-label{font-weight:500}
+  .math-row.total .math-value{color:var(--green);font-size:16px}
+  .tier-wrap{background:var(--bg-2);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .tier-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0 10px}
+  .tier-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
+  .tier-markers{display:flex;justify-content:space-between;font-family:var(--ff-mono);font-size:10px;color:var(--ink-4)}
+  .next-tier{font-size:13px;color:var(--ink-2);line-height:1.55}
+  .next-tier strong{color:var(--green);font-weight:500}
+  .comp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:13px}
+  .comp-row:last-child{margin-bottom:0}
+  .comp-row.active{background:var(--green-bg);border-color:var(--green-border)}
+  .comp-row.active span{color:var(--green);font-weight:500}
+  .step-list{display:flex;flex-direction:column;gap:8px}
+  .step-item{display:flex;align-items:flex-start;gap:12px;padding:13px;background:var(--bg);border-radius:10px;border:1px solid var(--border);transition:border-color .15s}
+  .step-item:hover{border-color:var(--border-2)}
+  .step-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+  .step-content{flex:1}
+  .step-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+  .step-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
+  .step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
+  .step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:780px){.stat-row{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.nav-links,.user-pill{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html" class="active">Vault</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Your records</div>
+  <div class="page-title">Vault</div>
+  <p class="page-sub">Your extracted conditions, combined rating breakdown, and what to do next.</p>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Loading your records…</p>
+  </div>
+
+  <div id="dashboard">
+    <div class="stat-row" id="stat-row"></div>
+    <div class="layout">
+      <div>
+        <div class="card">
+          <div class="card-title">Your conditions</div>
+          <div class="card-sub">Extracted from your rating decision document.</div>
+          <div class="cond-list" id="cond-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Next steps</div>
+          <div class="card-sub">Based on your decisions and rating gaps.</div>
+          <div class="step-list" id="step-list"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">How your rating is calculated</div>
+          <div class="math-explainer">
+            <p>The VA uses <strong>"whole person" math</strong> — not a simple sum. Your highest condition takes from 100%. Each next one takes from what's left.</p>
+          </div>
+          <div class="math-steps" id="math-steps"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Compensation tier</div>
+          <div class="tier-wrap">
+            <div style="font-size:13px;color:var(--ink-2)" id="tier-label"></div>
+            <div class="tier-track"><div class="tier-fill" id="tier-fill" style="width:0%"></div></div>
+            <div class="tier-markers"><span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span><span>100%</span></div>
+          </div>
+          <div class="next-tier" id="next-tier"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">2026 monthly compensation</div>
+          <div id="comp-table"></div>
+          <p style="font-size:12px;color:var(--ink-4);margin-top:10px;font-family:var(--ff-mono)">Veteran alone, no dependents.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+let currentUser = null;
+
+function calcCombined(conds) {
+  const valid = conds.filter(c => c.rating && parseInt(c.rating) > 0).sort((a,b) => parseInt(b.rating) - parseInt(a.rating));
+  if (!valid.length) return { exact:0, official:0, steps:[] };
+  let remaining = 100;
+  const steps = valid.map(c => {
+    const r = parseInt(c.rating);
+    const taken = remaining * (r / 100);
+    const row = { name: c.name, rating: r, taken: taken.toFixed(1), remaining_before: remaining.toFixed(1) };
+    remaining -= taken;
+    return row;
+  });
+  const exact = parseFloat((100 - remaining).toFixed(2));
+  const official = exact < 1 ? 0 : exact >= 95 ? 100 : Math.round(exact / 10) * 10;
+  return { exact, official, steps };
+}
+
+function dpClass(d) {
+  if (!d) return 'def';
+  const s = d.toLowerCase();
+  if (s.includes('not service')) return 'den';
+  if (s.includes('deferred')) return 'def';
+  if (s.includes('service')) return 'sc';
+  return 'def';
+}
+function dpLabel(d) {
+  if (!d) return 'Pending';
+  const s = d.toLowerCase();
+  if (s.includes('not service')) return 'Denied';
+  if (s.includes('deferred')) return 'Deferred';
+  if (s.includes('service')) return 'Connected';
+  return d;
+}
+
+function nextSteps(data) {
+  const steps = [];
+  const deferred = data.filter(c => c.decision?.toLowerCase().includes('deferred'));
+  const denied   = data.filter(c => c.decision?.toLowerCase().includes('not service'));
+  const { official, exact } = calcCombined(data);
+
+  if (deferred.length)
+    steps.push({ icon:'⏳', title:`Follow up on ${deferred.length} deferred condition${deferred.length>1?'s':''}`, desc:`${deferred.map(c=>c.name).join(', ')} ${deferred.length>1?'are':'is'} still pending. Contact your VSO or check VA.gov for a status update.`, tag:'action required', amber:true });
+
+  if (denied.length)
+    steps.push({ icon:'⚡', title:`Consider appealing ${denied.length} denied condition${denied.length>1?'s':''}`, desc:`${denied.map(c=>c.name).join(', ')} ${denied.length>1?'were':'was'} denied. You have 1 year from the decision to file a supplemental claim with new evidence.`, tag:'potential increase', amber:false });
+
+  steps.push({ icon:'🔍', title:'Run the gap identifier', desc:'Your MOS and current conditions can surface additional unclaimed conditions — including secondaries you qualify for without a new in-service event.', tag:'find more', amber:false });
+
+  if (official < 100) {
+    const next = official + 10;
+    const toNext = (next - exact).toFixed(1);
+    const extra = Math.round((COMP_RATES[next]||0) - (COMP_RATES[official]||0));
+    steps.push({ icon:'📈', title:`Getting to ${next}% adds $${extra}/month`, desc:`You're ${toNext}% (exact) away from the ${next}% tier. If your conditions have worsened, request a new C&P exam to capture current severity.`, tag:'rating increase', amber:false });
+  }
+
+  steps.push({ icon:'🤝', title:'Connect with a VSO', desc:'DAV, VFW, and American Legion all have accredited reps who advocate for you at no cost.', tag:'free resource', amber:false });
+  return steps;
+}
+
+async function init() {
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (!session) { window.location.href = 'login.html'; return; }
+    currentUser = session.user;
+    document.getElementById('user-email').textContent = currentUser.email;
+    const { data, error } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('rating', { ascending:false });
+    if (error || !data || !data.length) {
+      document.getElementById('loading').innerHTML = `
+        <p style="font-size:14px;color:var(--ink-3)">No conditions found yet.</p>
+        <p style="font-size:13px;color:var(--ink-4);margin-top:6px">Upload your rating decision PDF to get started.</p>
+        <a href="dashboard.html" style="margin-top:16px;font-size:13px;color:var(--green)">← Back to dashboard</a>`;
+      return;
+    }
+    render(data);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  });
+}
+
+function render(data) {
+  const { exact, official, steps } = calcCombined(data);
+  const connected = data.filter(c => c.decision?.toLowerCase().includes('service connected') && !c.decision?.toLowerCase().includes('not')).length;
+
+  // Stats
+  document.getElementById('stat-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">${official}%</div><div class="stat-sub">Exact ${exact.toFixed(1)}% → rounded to ${official}%</div></div>
+    <div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">${connected}</div><div class="stat-sub">of ${data.length} total conditions</div></div>
+    <div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$${(COMP_RATES[official]||0).toLocaleString('en-US',{minimumFractionDigits:0})}</div><div class="stat-sub">Veteran alone, no dependents</div></div>`;
+
+  // Conditions
+  document.getElementById('cond-list').innerHTML = data.map(c => `
+    <div class="cond-row">
+      <div class="cond-name">${c.name||'—'}</div>
+      ${c.diagnostic_code ? `<div class="cond-meta">DC ${c.diagnostic_code}</div>` : ''}
+      <div class="dpill ${dpClass(c.decision)}">${dpLabel(c.decision)}</div>
+      ${c.rating && parseInt(c.rating)>0 ? `<div class="cond-rating">${c.rating}%</div>` : `<div class="cond-rating tbd">TBD</div>`}
+    </div>`).join('');
+
+  // Math
+  document.getElementById('math-steps').innerHTML = steps.map(s =>
+    `<div class="math-row"><span class="math-label">${s.name}</span><span class="math-formula">${s.remaining_before}% × ${s.rating}%</span><span class="math-value">−${s.taken}%</span></div>`
+  ).join('') + `<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to ${official}%</span><span class="math-value">${exact.toFixed(1)}%</span></div>`;
+
+  // Tier
+  document.getElementById('tier-fill').style.width = Math.min(official,100)+'%';
+  document.getElementById('tier-label').textContent = 'Current rating: ' + official + '%';
+  if (official < 100) {
+    const next = official + 10;
+    const extra = Math.round((COMP_RATES[next]||0) - (COMP_RATES[official]||0));
+    document.getElementById('next-tier').innerHTML = `You're <strong>${(next-exact).toFixed(1)}% away from ${next}%</strong> — worth <strong>$${extra}/month</strong> more.`;
+  } else {
+    document.getElementById('next-tier').textContent = 'You are at the maximum rating.';
+  }
+
+  // Comp table
+  document.getElementById('comp-table').innerHTML = [10,20,30,40,50,60,70,80,90,100].map(t =>
+    `<div class="comp-row${t===official?' active':''}"><span>${t}%${t===official?' ← you are here':''}</span><span style="font-family:var(--ff-mono);font-size:13px">$${(COMP_RATES[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}/mo</span></div>`
+  ).join('');
+
+  // Next steps
+  document.getElementById('step-list').innerHTML = nextSteps(data).map(s =>
+    `<div class="step-item"><div class="step-icon">${s.icon}</div><div class="step-content"><div class="step-title">${s.title}</div><div class="step-desc">${s.desc}</div><span class="step-tag${s.amber?' amber':''}">${s.tag}</span></div></div>`
+  ).join('');
+}
+
+async function handleSignout() { await sb.auth.signOut(); window.location.href = 'login.html'; }
+init();
+</script>
+</body>
+</html>
