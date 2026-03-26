@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gap Identifier — UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
+    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
+    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
+    --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);
+    --blue:#1A6FA8;--blue-bg:rgba(26,111,168,0.08);--blue-border:rgba(26,111,168,0.25);
+    --red:#C43030;--red-bg:rgba(196,48,48,0.07);
+    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+  .nav-logo span{color:var(--green)}
+  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
+  .nav-links a.active{font-weight:500}
+  .nav-right{display:flex;align-items:center;gap:12px}
+  .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+  .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
+  .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+
+  .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+  .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+  .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+  .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px;align-items:start}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+  .card:last-child{margin-bottom:0}
+  .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+  .card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+
+  .form-group{margin-bottom:14px}
+  .form-label{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-bottom:5px;font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase}
+  .form-select,.form-input{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+  .form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
+  .form-select:focus,.form-input:focus{border-color:var(--green);background:var(--surface)}
+  .form-input::placeholder{color:var(--ink-4)}
+  .form-hint{font-size:11px;color:var(--ink-4);margin-top:4px;font-family:var(--ff-mono)}
+
+  .run-btn{width:100%;padding:13px;margin-top:6px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .run-btn:hover{background:var(--green-l);transform:translateY(-1px)}
+  .run-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+  .cond-list{display:flex;flex-direction:column;gap:6px}
+  .cond-chip{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+  .cond-name{font-size:13px;color:var(--ink)}
+  .cond-rating{font-family:var(--ff-mono);font-size:12px;color:var(--green);font-weight:500}
+  .cond-empty{font-size:13px;color:var(--ink-3);padding:4px 0}
+  .calc-link{font-size:13px;color:var(--green);margin-top:10px;display:inline-block}
+  .calc-link:hover{text-decoration:underline}
+
+  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 28px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px}
+  .empty-icon{width:52px;height:52px;border-radius:14px;background:var(--green-bg);border:1.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .empty-icon svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .empty-title{font-family:var(--ff-display);font-size:24px;font-weight:800;color:var(--ink);margin-bottom:8px}
+  .empty-sub{font-size:14px;color:var(--ink-3);max-width:280px;line-height:1.6}
+
+  .summary-banner{background:var(--ink);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .sb-stat{text-align:center;min-width:60px}
+  .sb-num{font-family:var(--ff-display);font-size:34px;font-weight:800;line-height:1}
+  .sb-num.green{color:#23BF8D}
+  .sb-num.white{color:#fff}
+  .sb-label{font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--ff-mono);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  .sb-divider{width:1px;height:36px;background:rgba(255,255,255,0.1)}
+
+  .section-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:4px}
+  .section-badge{font-family:var(--ff-mono);font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;white-space:nowrap}
+  .section-badge.secondary{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+  .section-badge.exposure{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)}
+  .section-badge.presumptive{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+  .section-count{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
+
+  .gap-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:10px;transition:border-color .2s}
+  .gap-card:hover{border-color:var(--border-2)}
+  .gap-card:last-child{margin-bottom:0}
+  .gap-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .gap-name{font-size:15px;font-weight:500;color:var(--ink);line-height:1.3;flex:1}
+  .gap-meta{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+  .gap-rating{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);background:var(--bg-2);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+  .confidence-badge{font-size:10px;font-weight:500;font-family:var(--ff-mono);letter-spacing:.06em;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+  .confidence-badge.high{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+  .confidence-badge.medium{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+
+  .gap-reason{font-size:13px;color:var(--ink-2);line-height:1.65;margin-bottom:10px}
+  .gap-evidence{font-size:12px;color:var(--ink-3);line-height:1.55;padding:8px 11px;background:var(--bg);border-radius:7px;border:1px solid var(--border)}
+  .gap-evidence strong{color:var(--ink-2);font-weight:500;font-family:var(--ff-mono);font-size:11px;display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:.05em}
+  .gap-impact{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .gap-impact-label{font-size:12px;color:var(--ink-3)}
+  .gap-impact-val{font-size:13px;font-weight:500;color:var(--green);font-family:var(--ff-mono)}
+  .gap-impact-val.neutral{color:var(--ink-3)}
+  .smc-note{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:7px;padding:8px 11px;font-size:12px;color:var(--amber);margin-top:10px;line-height:1.55}
+  .no-gaps{font-size:14px;color:var(--ink-3);padding:24px;text-align:center;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;line-height:1.6}
+
+  .section-gap{margin-top:20px}
+
+  .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .animate-in{animation:slideIn .3s ease both}
+
+  @media(max-width:780px){
+    .layout{grid-template-columns:1fr}
+    .nav-links,.user-pill{display:none}
+    .summary-banner{gap:10px}
+    .sb-divider{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html" class="active">Gap identifier</a>
+      <a href="vault.html">Vault</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Step 2 of 3</div>
+  <div class="page-title">Gap identifier</div>
+  <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed — and explain exactly why you likely qualify.</p>
+
+  <div class="layout">
+    <div>
+      <div class="card">
+        <div class="card-title">Your service profile</div>
+        <div class="card-sub">This is how we match conditions to your specific job and exposure history.</div>
+
+        <div class="form-group">
+          <label class="form-label" for="branch">Branch of service</label>
+          <select class="form-select" id="branch">
+            <option value="">Select branch…</option>
+            <option value="army">Army</option>
+            <option value="marines">Marine Corps</option>
+            <option value="navy">Navy</option>
+            <option value="air_force">Air Force</option>
+            <option value="coast_guard">Coast Guard</option>
+            <option value="space_force">Space Force</option>
+            <option value="national_guard">National Guard / Reserve</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="mos">MOS / Rate / AFSC</label>
+          <input class="form-input" type="text" id="mos" placeholder="e.g. 11B, 0311, HM, 1C4X1…" autocomplete="off">
+          <div class="form-hint">Type your job code — or describe it (e.g. "infantry", "medic", "pilot")</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="era">Service era</label>
+          <select class="form-select" id="era">
+            <option value="">Select era…</option>
+            <option value="post_911">Post-9/11 (2001–present)</option>
+            <option value="gulf_war">Gulf War (1990–2001)</option>
+            <option value="vietnam">Vietnam Era (1964–1975)</option>
+            <option value="korea_dmz">Korea / DMZ (1967–1971)</option>
+            <option value="cold_war">Cold War / Peacetime</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <button class="run-btn" id="run-btn" onclick="runAnalysis()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg>
+          Run gap analysis
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Your current conditions</div>
+        <div class="card-sub">Loaded from your calculator. We'll use these to find secondary conditions.</div>
+        <div class="cond-list" id="cond-list">
+          <div class="cond-empty">Loading…</div>
+        </div>
+        <a href="calculator.html" class="calc-link">← Add or edit conditions in the calculator</a>
+      </div>
+    </div>
+
+    <div id="results-panel">
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg>
+        </div>
+        <div class="empty-title">Ready to find your gaps</div>
+        <p class="empty-sub">Fill in your service profile and hit "Run gap analysis" — takes about 2 seconds.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let userConditions = [];
+
+// ── CONDITION METADATA ──
+const CONDITION_META = {
+  'Tinnitus (ringing in ears)':                         { default: 10, range: '10%' },
+  'Hearing loss':                                       { default: 10, range: '0–100%' },
+  'PTSD':                                               { default: 30, range: '0–100%' },
+  'Depression / major depressive disorder':             { default: 30, range: '0–100%' },
+  'Anxiety / generalized anxiety disorder':             { default: 30, range: '0–100%' },
+  'Sleep apnea (obstructive)':                          { default: 50, range: '0–100%' },
+  'Knee — limitation of flexion':                       { default: 10, range: '0–30%' },
+  'Knee — limitation of extension':                     { default: 10, range: '0–30%' },
+  'Knee — instability / impairment':                    { default: 10, range: '10–30%' },
+  'Low back / lumbar strain':                           { default: 10, range: '0–100%' },
+  'Neck / cervical strain':                             { default: 10, range: '0–100%' },
+  'Sciatica / radiculopathy (leg nerve pain)':          { default: 20, range: '10–80%' },
+  'Migraines':                                          { default: 10, range: '0–50%' },
+  'TBI — traumatic brain injury':                       { default: 10, range: '0–100%' },
+  'Shoulder — limitation of arm motion':                { default: 10, range: '10–40%' },
+  'Hypertension (high blood pressure)':                 { default: 10, range: '0–60%' },
+  'Diabetes mellitus type 2':                           { default: 20, range: '10–100%' },
+  'Peripheral neuropathy (nerve damage in hands/feet)': { default: 10, range: '10–80%' },
+  'Ischemic heart disease / coronary artery disease':   { default: 30, range: '10–100%' },
+  'GERD / acid reflux':                                 { default: 10, range: '10–60%' },
+  'Rhinitis / sinusitis (chronic nasal problems)':      { default: 10, range: '0–50%' },
+  'Flat feet (pes planus)':                             { default: 10, range: '0–50%' },
+  'Plantar fasciitis':                                  { default: 10, range: '0–30%' },
+  'Hip — limitation of motion':                         { default: 10, range: '10–40%' },
+  'Erectile dysfunction':                               { default: 0,  range: '0% + SMC-K' },
+  'Asthma':                                             { default: 10, range: '10–100%' },
+  'Chronic fatigue syndrome':                           { default: 20, range: '10–100%' },
+  'Fibromyalgia':                                       { default: 20, range: '10–40%' },
+  'Scars — painful or disfiguring':                     { default: 10, range: '0–80%' },
+};
+
+const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+
+// ── SECONDARY CONDITIONS ──
+const SECONDARY_MAP = {
+  'PTSD': [
+    { condition:'Sleep apnea (obstructive)', confidence:'high', reason:'PTSD hyperarousal directly disrupts sleep architecture and is one of the most established causes of obstructive sleep apnea in veterans. C&P examiners see this secondary relationship constantly — it\'s one of the strongest secondaries available.', evidence:'Sleep study (polysomnography) + nexus letter from your mental health provider linking PTSD to the sleep disruption' },
+    { condition:'Hypertension (high blood pressure)', confidence:'high', reason:'Chronic PTSD triggers constant sympathetic nervous system activation — elevated cortisol, fight-or-flight response — which raises blood pressure over time. Extensively documented in combat veteran studies.', evidence:'Blood pressure readings over time + nexus letter from treating provider' },
+    { condition:'GERD / acid reflux', confidence:'high', reason:'PTSD medications (SSRIs, SNRIs) directly cause GI side effects, and chronic stress increases gastric acid production. Either mechanism supports a secondary connection — and you can use both.', evidence:'GI diagnosis + documentation of current PTSD medications + nexus letter' },
+    { condition:'Erectile dysfunction', confidence:'high', reason:'PTSD and its medications are well-established causes of sexual dysfunction. Rates at 0% on its own — but qualifies for Special Monthly Compensation (SMC-K), adding ~$132/month on top of your regular compensation. One of the most under-claimed benefits in the VA system.', evidence:'Any physician diagnosis + nexus letter connecting to PTSD or its medications', smc:true },
+    { condition:'Migraines', confidence:'medium', reason:'PTSD and chronic stress are documented migraine triggers. If you experience recurrent severe headaches, this is a straightforward secondary to add.', evidence:'Headache diary documenting frequency and severity + neurology evaluation + nexus letter' },
+    { condition:'Depression / major depressive disorder', confidence:'medium', reason:'PTSD and depression frequently co-occur as separate diagnoses. If they are clinically distinct, they can receive separate ratings — though VA tries to merge them. A private evaluation is the key.', evidence:'Private psychiatric evaluation clearly separating both diagnoses' },
+  ],
+  'TBI — traumatic brain injury': [
+    { condition:'Migraines', confidence:'high', reason:'Post-traumatic headaches are the most common TBI residual and among the easiest to document. Neurologists routinely connect this — it\'s a highly credible secondary claim.', evidence:'Headache diary + neurology evaluation + nexus letter' },
+    { condition:'Sleep apnea (obstructive)', confidence:'high', reason:'TBI causes neurological changes to sleep regulation centers in the brain, directly contributing to sleep-disordered breathing. Well-documented in TBI research.', evidence:'Sleep study + neurological nexus letter connecting TBI to sleep disruption' },
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Blast overpressure from TBI damages auditory nerve fibers and inner ear structures, causing tinnitus. If not already claimed as a direct service connection, file it as secondary to TBI.', evidence:'Audiological evaluation + nexus letter connecting blast/TBI to tinnitus' },
+    { condition:'Hearing loss', confidence:'high', reason:'Same blast mechanism as tinnitus — auditory damage from the TBI event. File alongside tinnitus as a separate diagnostic code with its own separate rating.', evidence:'Audiology exam without hearing aids + nexus letter' },
+    { condition:'PTSD', confidence:'high', reason:'TBI and PTSD co-occur at very high rates in combat veterans who experienced blast events. The trauma causing the TBI often meets the PTSD stressor criteria on its own.', evidence:'Mental health evaluation + buddy statements if no official incident record' },
+    { condition:'Depression / major depressive disorder', confidence:'medium', reason:'TBI affects the same brain regions that regulate mood. Secondary depression from TBI is separately ratable from PTSD and commonly overlooked.', evidence:'Psychiatric evaluation + nexus letter from neurologist or psychiatrist' },
+  ],
+  'Low back / lumbar strain': [
+    { condition:'Sciatica / radiculopathy (leg nerve pain)', confidence:'high', reason:'Lumbar disc degeneration from your back condition compresses the sciatic nerve, causing radiating leg pain, numbness, or weakness. No new in-service event needed — only a nexus letter. One of the most common and successful secondary claims.', evidence:'MRI showing disc compression or nerve involvement + EMG/nerve conduction study + nexus letter' },
+    { condition:'Hip — limitation of motion', confidence:'medium', reason:'Chronic back pain alters gait mechanics, transferring abnormal load to the hip joint and accelerating degeneration over time.', evidence:'Orthopedic evaluation documenting hip symptoms + nexus letter from your treating physician' },
+  ],
+  'Neck / cervical strain': [
+    { condition:'Sciatica / radiculopathy (leg nerve pain)', confidence:'high', reason:'Cervical disc compression causes radiating nerve pain into the arms — rated as upper extremity radiculopathy. File as secondary to your neck condition. Separate diagnostic code with significant additional rating potential.', evidence:'MRI showing cervical disc pathology + EMG study + nexus letter' },
+  ],
+  'Diabetes mellitus type 2': [
+    { condition:'Peripheral neuropathy (nerve damage in hands/feet)', confidence:'high', reason:'Diabetic peripheral neuropathy affects up to 50% of people with long-standing diabetes. Each affected extremity rates separately — bilateral leg neuropathy alone can add significant rating points. One of the strongest secondaries in the VA system.', evidence:'Nerve conduction study + nexus letter from endocrinologist or neurologist' },
+    { condition:'Hypertension (high blood pressure)', confidence:'high', reason:'Diabetes damages blood vessel walls and elevates blood pressure through several direct mechanisms. Secondary connection is medically textbook and VA routinely grants it.', evidence:'Blood pressure records + nexus letter from treating physician' },
+    { condition:'Erectile dysfunction', confidence:'high', reason:'Diabetes damages both blood vessels and nerves controlling sexual function. One of the most documentable secondary claims available, and qualifies for SMC-K ($132+/month extra).', evidence:'Any physician diagnosis + nexus letter connecting to diabetes vascular/nerve damage', smc:true },
+  ],
+  'Sleep apnea (obstructive)': [
+    { condition:'Hypertension (high blood pressure)', confidence:'high', reason:'Sleep apnea causes repeated oxygen drops at night, triggering stress hormones that chronically elevate blood pressure. The causal relationship is direct and very well-documented — this secondary grant is almost routine.', evidence:'Blood pressure records + nexus letter citing the sleep apnea to hypertension mechanism' },
+  ],
+  'Hypertension (high blood pressure)': [
+    { condition:'Erectile dysfunction', confidence:'medium', reason:'Hypertension damages arteries throughout the body including those serving sexual function. Many blood pressure medications (beta blockers, diuretics) directly cause ED as a listed side effect. Qualifies for SMC-K.', evidence:'Diagnosis + blood pressure medication documentation + nexus letter', smc:true },
+  ],
+  'Hearing loss': [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Hearing loss and tinnitus share the same noise-damage mechanism. Always file both — they have separate diagnostic codes and both get their own rating.', evidence:'Audiological evaluation + service records confirming noise exposure' },
+  ],
+  'Tinnitus (ringing in ears)': [
+    { condition:'Hearing loss', confidence:'high', reason:'Tinnitus and hearing loss come from the same exposure damage. If you have tinnitus but have never had a formal audiology exam, there may be separately ratable hearing loss you haven\'t claimed.', evidence:'Audiology exam without hearing aids' },
+  ],
+  'Flat feet (pes planus)': [
+    { condition:'Plantar fasciitis', confidence:'high', reason:'Flat foot arch collapse dramatically increases stress on the plantar fascia — plantar fasciitis secondary to flat feet is one of the most medically straightforward secondaries available.', evidence:'Podiatric exam + nexus letter' },
+    { condition:'Knee — limitation of flexion', confidence:'medium', reason:'Altered foot mechanics from flat feet create abnormal knee loading forces, accelerating joint degeneration. Worth pursuing if you have knee symptoms.', evidence:'Orthopedic exam + nexus letter connecting gait alteration to knee damage' },
+    { condition:'Low back / lumbar strain', confidence:'medium', reason:'Flat feet alter the entire kinetic chain — altered gait mechanics propagate upward through the knees into the lumbar spine over years of service.', evidence:'Orthopedic or podiatric nexus letter connecting flat feet to back symptoms' },
+  ],
+  'Knee — limitation of flexion': [
+    { condition:'Hip — limitation of motion', confidence:'medium', reason:'Chronic knee pain causes compensatory hip mechanics — the body shifts load to protect the knee, stressing the hip joint over time.', evidence:'Orthopedic evaluation + nexus letter' },
+  ],
+  'Knee — instability / impairment': [
+    { condition:'Hip — limitation of motion', confidence:'medium', reason:'Knee instability alters gait and loads the hip joint asymmetrically, accelerating hip degeneration over time.', evidence:'Orthopedic evaluation + nexus letter' },
+  ],
+  'Rhinitis / sinusitis (chronic nasal problems)': [
+    { condition:'Sleep apnea (obstructive)', confidence:'high', reason:'Chronic nasal obstruction from rhinitis forces mouth breathing during sleep — a major contributing factor to obstructive sleep apnea. This secondary relationship is well-established and commonly granted.', evidence:'Sleep study + ENT or pulmonology nexus letter' },
+    { condition:'Asthma', confidence:'medium', reason:'Chronic upper airway inflammation frequently extends to the lower airways. Post-9/11 veterans may also have direct PACT Act claims for both.', evidence:'Pulmonology evaluation + spirometry + nexus letter' },
+  ],
+  'Depression / major depressive disorder': [
+    { condition:'Sleep apnea (obstructive)', confidence:'medium', reason:'Depression disrupts sleep architecture and is a documented risk factor for sleep apnea. Antidepressants also contribute to sleep disruption in some patients.', evidence:'Sleep study + nexus letter from psychiatrist or sleep physician' },
+    { condition:'GERD / acid reflux', confidence:'medium', reason:'Antidepressants commonly cause GI side effects including GERD. Medication side effect secondary claims are valid and straightforward.', evidence:'GI diagnosis + documentation of antidepressants + nexus letter' },
+  ],
+  'Anxiety / generalized anxiety disorder': [
+    { condition:'Sleep apnea (obstructive)', confidence:'medium', reason:'Anxiety causes hyperarousal that disrupts sleep architecture — same mechanism as PTSD-related sleep apnea. If you have anxiety and wake exhausted, get a sleep study.', evidence:'Sleep study + nexus letter from mental health provider' },
+    { condition:'Hypertension (high blood pressure)', confidence:'medium', reason:'Chronic anxiety elevates blood pressure through the same sympathetic nervous system pathway as PTSD.', evidence:'Blood pressure records + nexus letter' },
+    { condition:'GERD / acid reflux', confidence:'medium', reason:'Anxiety directly increases gastric acid production — well-documented GI trigger.', evidence:'GI diagnosis + nexus letter' },
+  ],
+  'Ischemic heart disease / coronary artery disease': [
+    { condition:'Erectile dysfunction', confidence:'medium', reason:'Coronary artery disease reflects systemic vascular damage — the same arterial narrowing affects blood flow to sexual function. Strong vascular nexus and qualifies for SMC-K.', evidence:'Cardiac diagnosis + nexus letter from cardiologist', smc:true },
+  ],
+};
+
+// ── MOS CATEGORY MAPPING ──
+function getMOSCategory(mos) {
+  const m = mos.toLowerCase().replace(/[\s\-]/g, '');
+  const lookup = {
+    '11a':'infantry','11b':'infantry','11c':'infantry',
+    '18a':'special_ops','18b':'special_ops','18c':'special_ops','18d':'special_ops','18e':'special_ops','18f':'special_ops','18z':'special_ops',
+    '19a':'armor','19d':'armor','19k':'armor',
+    '13a':'artillery','13b':'artillery','13f':'artillery','13j':'artillery','13m':'artillery','13r':'artillery','13s':'artillery',
+    '15a':'aviation','15b':'aviation','15c':'aviation','15d':'aviation','15e':'aviation','15f':'aviation','15p':'aviation','15r':'aviation','15s':'aviation','15t':'aviation','15u':'aviation','15w':'aviation','15y':'aviation','153a':'aviation','153d':'aviation',
+    '68a':'medical','68c':'medical','68d':'medical','68e':'medical','68f':'medical','68g':'medical','68h':'medical','68j':'medical','68k':'medical','68m':'medical','68p':'medical','68q':'medical','68r':'medical','68s':'medical','68t':'medical','68w':'medical','68x':'medical',
+    '12a':'engineer','12b':'engineer','12c':'engineer','12d':'engineer','12g':'engineer','12h':'engineer','12k':'engineer','12m':'engineer','12n':'engineer','12p':'engineer','12r':'engineer','12t':'engineer','12w':'engineer','12y':'engineer',
+    '25a':'signal','25b':'signal','25c':'signal','25d':'signal','25e':'signal','25f':'signal','25l':'signal','25m':'signal','25n':'signal','25p':'signal','25q':'signal','25r':'signal','25s':'signal','25t':'signal','25u':'signal','25v':'signal','25w':'signal',
+    '31a':'military_police','31b':'military_police','31d':'military_police','31e':'military_police','31k':'military_police',
+    '35a':'intel','35b':'intel','35d':'intel','35e':'intel','35f':'intel','35g':'intel','35h':'intel','35l':'intel','35m':'intel','35n':'intel','35p':'intel','35q':'intel','35r':'intel','35s':'intel','35t':'intel','35u':'intel',
+    '88a':'logistics','88h':'logistics','88k':'logistics','88l':'logistics','88m':'logistics','88n':'logistics','88p':'logistics','88t':'logistics','88u':'logistics',
+    '0302':'infantry','0311':'infantry','0313':'infantry','0317':'infantry','0321':'special_ops','0323':'special_ops','0331':'infantry','0341':'infantry','0351':'infantry','0352':'infantry','0369':'infantry',
+    '0811':'artillery','0842':'artillery','0844':'artillery','0861':'artillery',
+    '7200':'aviation','7210':'aviation','7212':'aviation','7220':'aviation','7234':'aviation',
+    'eod':'special_ops','so':'special_ops','swcc':'special_ops',
+    'hm':'medical','dc':'medical',
+    'it':'signal','ct':'intel','is':'intel',
+    '1a0x1':'aviation','1a1x1':'aviation','1a2x1':'aviation','1a3x1':'aviation','1a7x1':'aviation',
+    '1b4x1':'special_ops','1c4x1':'special_ops','1t2x1':'special_ops',
+    '3d0x1':'signal','3d0x2':'signal','1n0x1':'intel','1n1x1':'intel',
+    '4n0x1':'medical','4n1x1':'medical',
+    '3p0x1':'military_police',
+  };
+  if (lookup[m]) return lookup[m];
+
+  if (/^11/.test(m)) return 'infantry';
+  if (/^18/.test(m)) return 'special_ops';
+  if (/^19/.test(m)) return 'armor';
+  if (/^13/.test(m)) return 'artillery';
+  if (/^15/.test(m)) return 'aviation';
+  if (/^68/.test(m)) return 'medical';
+  if (/^12/.test(m)) return 'engineer';
+  if (/^25/.test(m)) return 'signal';
+  if (/^31/.test(m)) return 'military_police';
+  if (/^35/.test(m)) return 'intel';
+  if (/^88/.test(m)) return 'logistics';
+  if (/^03/.test(m)) return 'infantry';
+  if (/^08/.test(m)) return 'artillery';
+
+  const kw = {
+    infantry:['infantry','grunt','rifleman','11b','0311','11bravo'],
+    special_ops:['specialforces','ranger','seal','delta','recon','marsoc','raider','pj','pararescue','sof','greenberet'],
+    artillery:['artillery','cannon','howitzer','firesupport','fist','13bravo','0811'],
+    armor:['armor','armour','tanker','tank','cavalry','cav','scout','19kilo','19delta'],
+    aviation:['pilot','aviation','aviator','helicopter','flight','aircrewman','uh60','ch47','apache','blackhawk'],
+    medical:['medic','corpsman','nurse','medical','physician','doctor','68w','68whiskey'],
+    signal:['signal','communications','comms','radio','network','cyber'],
+    military_police:['militarypolice','securityforces','lawenforcement'],
+    intel:['intelligence','intel','analyst','sigint','humint'],
+    engineer:['engineer','sapper','combatengineer','routeclearance'],
+    logistics:['supply','logistic','transport','driver','quartermaster','88mike'],
+  };
+  for (const [cat, words] of Object.entries(kw)) {
+    if (words.some(w => m.includes(w))) return cat;
+  }
+  return 'general';
+}
+
+// ── MOS CONDITIONS ──
+const MOS_CONDITIONS = {
+  infantry: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Infantry MOSs are exposed to weapons fire, IED blasts, mortar rounds, and heavy vehicle noise — all well above safe decibel thresholds. Tinnitus is the #1 most claimed VA condition by infantry veterans for exactly this reason.', evidence:'Buddy statements confirming noise exposure; in-service medical records mentioning hearing complaints' },
+    { condition:'Hearing loss', confidence:'high', reason:'Same noise exposure as tinnitus. Both conditions should always be filed together — separate diagnostic codes, separate ratings.', evidence:'Audiology exam (without hearing aids)' },
+    { condition:'PTSD', confidence:'high', reason:'Combat veterans do not need to prove a specific stressor — VA presumes it occurred if you served in a combat zone. Over 50% of PTSD claims are rated at 70% or higher.', evidence:'Service records confirming combat duty; buddy statements; private mental health evaluation' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Sustained heavy ruck loads (typically 60–120 lbs) cause cumulative spinal compression and disc degeneration. Thoroughly documented in military medicine literature for infantry populations.', evidence:'In-service sick call records; MRI or X-ray; orthopedic evaluation' },
+    { condition:'Knee — limitation of flexion', confidence:'high', reason:'High-mileage movement under load causes chronic knee degeneration. The VA\'s "painful motion" rule means even partial limitation with pain qualifies for at least 10%.', evidence:'Orthopedic exam; range of motion measurements; in-service sick call records' },
+    { condition:'Flat feet (pes planus)', confidence:'medium', reason:'Years of high-impact movement in military boots with heavy loads causes arch collapse — especially prevalent in infantry with high daily step counts and weight.', evidence:'Podiatric exam; in-service records showing foot complaints' },
+    { condition:'TBI — traumatic brain injury', confidence:'medium', reason:'Any IED blast exposure, vehicle rollover, or blunt head trauma qualifies. Many infantry veterans have undiagnosed TBI from blast overpressure alone — no direct head strike is required.', evidence:'Neurological evaluation; in-service records of blast exposure; buddy statements' },
+  ],
+  special_ops: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'SOF operations involve sustained high-level noise exposure across diverse weapon systems, breaching charges, and CQB environments.', evidence:'Audiological evaluation + service records' },
+    { condition:'Hearing loss', confidence:'high', reason:'Same noise exposure as tinnitus — always file both together.', evidence:'Audiology exam without hearing aids' },
+    { condition:'PTSD', confidence:'high', reason:'High operational tempo, repeated deployments, and direct combat in SOF environments create substantial PTSD risk. VA presumes the stressor for combat veterans.', evidence:'Mental health evaluation; buddy statements; deployment records' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Heavy equipment, parachute landings, fast-rope insertions, and extreme PT regimens cause significant cumulative spinal damage in SOF populations.', evidence:'Medical records; orthopedic evaluation; MRI' },
+    { condition:'Shoulder — limitation of arm motion', confidence:'high', reason:'HALO/HAHO jumps, fast-rope insertions, and heavy carrying loads cause shoulder joint damage at elevated rates in SOF. Rotator cuff and labrum injuries are common.', evidence:'MRI; orthopedic evaluation; nexus letter' },
+    { condition:'Knee — limitation of flexion', confidence:'high', reason:'High-volume jump operations and extreme physical training cause chronic knee pathology at higher rates than conventional units.', evidence:'Orthopedic exam; range of motion measurements' },
+    { condition:'TBI — traumatic brain injury', confidence:'high', reason:'SOF personnel sustain significantly higher rates of blast exposure. Repeated blast overpressure has cumulative neurological effects even without a single major event.', evidence:'Neurological evaluation; in-service records; buddy statements' },
+    { condition:'Flat feet (pes planus)', confidence:'medium', reason:'Extreme physical demands of SOF selection and service accelerate arch collapse.', evidence:'Podiatric exam' },
+  ],
+  artillery: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Artillery fire produces some of the highest impulse noise levels in the military. A single round can permanently damage hearing. Tinnitus is effectively universal for cannon crew.', evidence:'Buddy statements; service records confirming artillery MOS' },
+    { condition:'Hearing loss', confidence:'high', reason:'Artillery noise exposure is among the highest of any MOS. Audiological damage is near-universal in this population.', evidence:'Audiology exam without hearing aids' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Artillery rounds and shell casings require repeated heavy lifting under time pressure, causing significant cumulative lumbar injury.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Shoulder — limitation of arm motion', confidence:'medium', reason:'Repetitive heavy lifting of rounds and charges causes rotator cuff and shoulder joint damage over a career.', evidence:'Orthopedic evaluation; MRI; nexus letter' },
+  ],
+  armor: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Tank and armored vehicle operations produce sustained high decibel noise from engines, main gun fire, and machine guns — amplified in an enclosed metal environment.', evidence:'Buddy statements; service records confirming armor MOS' },
+    { condition:'Hearing loss', confidence:'high', reason:'Enclosed vehicle noise and main gun exposure are consistent causes of audiological damage in armor crews.', evidence:'Audiology exam without hearing aids' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Tank crew positions require sustained awkward postures and sustained vibration-induced spinal loading over thousands of miles of operation.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Knee — limitation of flexion', confidence:'medium', reason:'Tank hatches and driver positions require repeated knee flexion in confined spaces, causing cumulative joint wear.', evidence:'Orthopedic exam; range of motion measurements' },
+    { condition:'TBI — traumatic brain injury', confidence:'medium', reason:'Blast exposure from IEDs affects armor crews through vehicle hull transmission. Vehicle rollovers are also a documented source of head trauma.', evidence:'Neurological evaluation; incident records; buddy statements' },
+  ],
+  aviation: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Rotary wing operations produce sustained extremely high noise levels. Fixed wing flight also involves significant engine and wind noise. Hearing protection compliance was historically poor across aviation.', evidence:'Audiological evaluation; service records confirming aviation MOS' },
+    { condition:'Hearing loss', confidence:'high', reason:'Aviation noise exposure — particularly rotary wing — is among the most damaging in the military. File alongside tinnitus.', evidence:'Audiology exam without hearing aids' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Helicopter vibration causes cumulative lumbar disc compression well-documented in aviation medicine. Fixed wing pilots experience significant spinal loads as well.', evidence:'Medical records; MRI; orthopedic evaluation' },
+    { condition:'Neck / cervical strain', confidence:'medium', reason:'Helmet weight (especially NVG-equipped helmets) combined with sustained flight attitudes causes cervical spine degeneration in aviators.', evidence:'Medical records; orthopedic evaluation; MRI' },
+    { condition:'PTSD', confidence:'medium', reason:'Combat aviation, medevac missions, and crash events create substantial PTSD exposure.', evidence:'Mental health evaluation; operational records' },
+  ],
+  medical: [
+    { condition:'PTSD', confidence:'high', reason:'Combat medics and corpsmen experience extreme operational stress — treating severe wounds under fire, often with limited resources. Secondary trauma from casualty care is well-documented and the VA recognizes it.', evidence:'Mental health evaluation; buddy statements; operational records' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Patient lifts, carrying medical equipment, and casualty extraction create significant lumbar loading injuries in medical personnel.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Tinnitus (ringing in ears)', confidence:'medium', reason:'Combat medics operate in the same high-noise environments as the units they support.', evidence:'Audiological evaluation; service records' },
+    { condition:'Hearing loss', confidence:'medium', reason:'Same noise exposure as combat units — file alongside tinnitus if applicable.', evidence:'Audiology exam without hearing aids' },
+  ],
+  military_police: [
+    { condition:'PTSD', confidence:'high', reason:'Military police face combat exposure, IED incidents, detainee operations, and high-stress law enforcement duties — all documented PTSD stressors.', evidence:'Mental health evaluation; incident reports; buddy statements' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Wearing heavy duty gear (ballistic vest, duty belt) for long shifts causes significant cumulative lumbar loading.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Knee — limitation of flexion', confidence:'medium', reason:'Patrol duties in heavy gear cause cumulative knee joint wear over a career.', evidence:'Orthopedic exam' },
+    { condition:'Tinnitus (ringing in ears)', confidence:'medium', reason:'Weapons qualification and operational use creates noise exposure.', evidence:'Audiological evaluation' },
+  ],
+  engineer: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'high', reason:'Combat engineers use demolition charges, power tools, and heavy equipment — all significant noise exposure sources.', evidence:'Audiological evaluation; service records' },
+    { condition:'Hearing loss', confidence:'high', reason:'Same demolition and equipment exposure as tinnitus — file both together.', evidence:'Audiology exam without hearing aids' },
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Heavy equipment operation, construction tasks, and carrying demolition materials cause significant lumbar loading.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'TBI — traumatic brain injury', confidence:'medium', reason:'Demolition operations and route clearance involve blast overpressure exposure that can cause TBI without a direct head strike.', evidence:'Neurological evaluation; service records' },
+  ],
+  signal: [
+    { condition:'Low back / lumbar strain', confidence:'medium', reason:'Carrying and setting up heavy communications equipment, antenna systems, and generator units causes cumulative back strain.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Tinnitus (ringing in ears)', confidence:'medium', reason:'Generator operation and weapons qualification create noise exposure common across all MOSs.', evidence:'Audiological evaluation' },
+    { condition:'PTSD', confidence:'medium', reason:'Signal soldiers deployed in combat zones face the same operational stressors as other combat-area veterans.', evidence:'Mental health evaluation; deployment records' },
+  ],
+  intel: [
+    { condition:'PTSD', confidence:'medium', reason:'Intelligence analysts working with graphic combat imagery, casualty reporting, and high-value target packages face documented secondary trauma exposure.', evidence:'Mental health evaluation; unit records documenting type of work' },
+    { condition:'Low back / lumbar strain', confidence:'medium', reason:'Sustained sedentary analytical work combined with field operations creates cumulative back issues.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Migraines', confidence:'medium', reason:'Sustained screen-intensive work in high-stress environments is a documented migraine trigger.', evidence:'Headache diary; neurology evaluation; nexus letter' },
+  ],
+  logistics: [
+    { condition:'Low back / lumbar strain', confidence:'high', reason:'Logistics MOSs involve sustained heavy lifting, materials handling, and vehicle operation — all significant lumbar loading activities.', evidence:'Medical records; orthopedic evaluation' },
+    { condition:'Hearing loss', confidence:'medium', reason:'Heavy vehicle operation and material handling equipment create consistent noise exposure.', evidence:'Audiology exam' },
+    { condition:'Tinnitus (ringing in ears)', confidence:'medium', reason:'Same heavy vehicle and equipment noise — file both together.', evidence:'Audiological evaluation' },
+    { condition:'Knee — limitation of flexion', confidence:'medium', reason:'Vehicle operation and material handling creates cumulative knee joint stress.', evidence:'Orthopedic exam' },
+  ],
+  general: [
+    { condition:'Tinnitus (ringing in ears)', confidence:'medium', reason:'Military service involves weapons qualification and equipment noise regardless of MOS. Tinnitus is the most commonly claimed condition across all military branches for this reason.', evidence:'Audiological evaluation; service records confirming weapons qualification' },
+    { condition:'Low back / lumbar strain', confidence:'medium', reason:'Physical training requirements, field operations, and equipment carrying are universal across all military service regardless of MOS.', evidence:'Medical records; orthopedic evaluation' },
+  ],
+};
+
+// ── ERA PRESUMPTIVES ──
+const ERA_PRESUMPTIVES = {
+  vietnam: [
+    { condition:'Diabetes mellitus type 2', confidence:'high', note:'Agent Orange', reason:'Agent Orange presumptive — VA must grant service connection without any nexus letter or proof of herbicide exposure if you served in Vietnam between January 9, 1962 and May 7, 1975. One of the highest-value presumptive claims available.', evidence:'DD-214 confirming Vietnam service + current diagnosis from any physician. No nexus letter required.' },
+    { condition:'Ischemic heart disease / coronary artery disease', confidence:'high', note:'Agent Orange', reason:'Agent Orange presumptive for Vietnam veterans. No proof of herbicide exposure needed — presence in-country is the only requirement.', evidence:'DD-214 confirming Vietnam service + current cardiac diagnosis. No nexus letter required.' },
+    { condition:'Hypertension (high blood pressure)', confidence:'high', note:'Agent Orange', reason:'Added to the Agent Orange presumptive list in recent years — Vietnam veterans no longer need a nexus letter for high blood pressure. If you have it and served in Vietnam, this is a straightforward grant.', evidence:'DD-214 + current blood pressure diagnosis. No nexus letter required.' },
+  ],
+  gulf_war: [
+    { condition:'Chronic fatigue syndrome', confidence:'high', note:'Gulf War Illness', reason:'Gulf War illness presumptive — VA must grant service connection for veterans who served in the Southwest Asia theater after August 2, 1990. No nexus letter, no proof of specific exposure required.', evidence:'DD-214 confirming Gulf War deployment + current diagnosis. No nexus letter required.' },
+    { condition:'Fibromyalgia', confidence:'high', note:'Gulf War Illness', reason:'Gulf War illness presumptive with the same theater and date qualifications as chronic fatigue syndrome. Massively under-claimed.', evidence:'DD-214 + current rheumatology diagnosis confirming fibromyalgia. No nexus letter required.' },
+  ],
+  post_911: [
+    { condition:'Rhinitis / sinusitis (chronic nasal problems)', confidence:'high', note:'PACT Act / Burn Pit', reason:'PACT Act presumptive for burn pit exposure — applies to veterans who served in Southwest Asia, Afghanistan, Djibouti, or other covered locations after September 11, 2001. VA dramatically expanded burn pit eligibility in 2022.', evidence:'DD-214 confirming covered deployment + current diagnosis. No nexus letter required.' },
+    { condition:'Asthma', confidence:'high', note:'PACT Act / Burn Pit', reason:'PACT Act burn pit presumptive — same eligibility as rhinitis. Respiratory conditions from burn pit exposure are broadly covered. Get a pulmonology evaluation if you have breathing symptoms.', evidence:'DD-214 + spirometry / pulmonology diagnosis. No nexus letter required.' },
+  ],
+  korea_dmz: [
+    { condition:'Diabetes mellitus type 2', confidence:'high', note:'Agent Orange (DMZ)', reason:'Veterans who served along the Korean DMZ between September 1, 1967 and August 31, 1971 are presumed exposed to Agent Orange and qualify for the same presumptives as Vietnam veterans.', evidence:'DD-214 confirming DMZ service during qualifying period + current diagnosis. No nexus letter required.' },
+  ],
+  cold_war: [],
+  other: [],
+};
+
+// ── VA MATH ──
+function calcCombined(conds) {
+  const valid = conds.filter(c => c.rating > 0);
+  if (!valid.length) return { exact:0, official:0 };
+  const sorted = [...valid].sort((a,b) => b.rating - a.rating);
+  let remaining = 100;
+  for (const c of sorted) remaining = remaining * (1 - c.rating / 100);
+  const exact = parseFloat((100 - remaining).toFixed(2));
+  const official = exact < 1 ? 0 : exact >= 95 ? 100 : Math.round(exact / 10) * 10;
+  return { exact, official };
+}
+
+function calcImpact(newCondition) {
+  const meta = CONDITION_META[newCondition];
+  if (!meta || meta.default === 0) return null;
+  const { official: curr } = calcCombined(userConditions);
+  const hypo = [...userConditions, { name: newCondition, rating: meta.default }];
+  const { official: newOff } = calcCombined(hypo);
+  const ratingBump = newOff - curr;
+  const dollarsMore = (COMP_RATES[newOff] || 0) - (COMP_RATES[curr] || 0);
+  return { curr, newOff, ratingBump, dollarsMore, assumedRating: meta.default, range: meta.range };
+}
+
+// ── AUTH ──
+async function init() {
+  const saved = JSON.parse(localStorage.getItem('ur_profile') || '{}');
+  if (saved.branch) document.getElementById('branch').value = saved.branch;
+  if (saved.mos)    document.getElementById('mos').value = saved.mos;
+  if (saved.era)    document.getElementById('era').value = saved.era;
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (!session) { window.location.href = 'login.html'; return; }
+    currentUser = session.user;
+    document.getElementById('user-email').textContent = currentUser.email;
+    await loadConditions();
+    renderCurrentConditions();
+  });
+}
+
+async function loadConditions() {
+  const { data } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('sort_order');
+  userConditions = (data || []).map(d => ({ name: d.name, rating: d.rating }));
+}
+
+async function handleSignout() {
+  await sb.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+function renderCurrentConditions() {
+  const list = document.getElementById('cond-list');
+  if (!userConditions.length) {
+    list.innerHTML = '<div class="cond-empty">No conditions entered yet. Start in the rating calculator.</div>';
+    return;
+  }
+  list.innerHTML = userConditions.map(c => `
+    <div class="cond-chip">
+      <span class="cond-name">${c.name}</span>
+      <span class="cond-rating">${c.rating}%</span>
+    </div>`).join('');
+}
+
+// ── ANALYSIS ENGINE ──
+function runAnalysis() {
+  const mos = document.getElementById('mos').value.trim();
+  const era = document.getElementById('era').value;
+  const branch = document.getElementById('branch').value;
+  if (!mos) { alert('Enter your MOS, rate, or AFSC first.'); return; }
+  if (!era) { alert('Select your service era first.'); return; }
+
+  localStorage.setItem('ur_profile', JSON.stringify({ branch, mos, era }));
+
+  const btn = document.getElementById('run-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Analyzing…';
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg> Re-run analysis`;
+    const results = buildAnalysis(mos, era);
+    renderResults(results);
+  }, 900);
+}
+
+function buildAnalysis(mos, era) {
+  const claimed = new Set(userConditions.map(c => c.name));
+  const seen = new Set(claimed);
+  const secondary = [], mosGaps = [], presumptive = [];
+
+  // Secondary conditions from existing claims
+  for (const cond of userConditions) {
+    for (const s of (SECONDARY_MAP[cond.name] || [])) {
+      if (!seen.has(s.condition)) {
+        seen.add(s.condition);
+        secondary.push({ ...s, sourceCondition: cond.name });
+      }
+    }
+  }
+
+  // MOS-based conditions
+  const cat = getMOSCategory(mos);
+  for (const m of (MOS_CONDITIONS[cat] || MOS_CONDITIONS.general)) {
+    if (!seen.has(m.condition)) {
+      seen.add(m.condition);
+      mosGaps.push({ ...m, mosCategory: cat });
+    }
+  }
+
+  // Era presumptives
+  for (const e of (ERA_PRESUMPTIVES[era] || [])) {
+    if (!seen.has(e.condition)) {
+      seen.add(e.condition);
+      presumptive.push(e);
+    }
+  }
+
+  return { secondary, mosGaps, presumptive, mosCategory: cat };
+}
+
+function estimateMaxImpact(secondary, mosGaps, presumptive) {
+  const all = [...secondary, ...mosGaps, ...presumptive];
+  let sim = [...userConditions];
+  for (const g of all) {
+    const meta = CONDITION_META[g.condition];
+    if (meta && meta.default > 0) sim.push({ name: g.condition, rating: meta.default });
+  }
+  const { official } = calcCombined(sim);
+  const { official: curr } = calcCombined(userConditions);
+  const extra = (COMP_RATES[official] || 0) - (COMP_RATES[curr] || 0);
+  return { official, extra };
+}
+
+function renderResults({ secondary, mosGaps, presumptive, mosCategory }) {
+  const panel = document.getElementById('results-panel');
+  const total = secondary.length + mosGaps.length + presumptive.length;
+  const { official: curr } = calcCombined(userConditions);
+  let html = '';
+
+  if (total > 0) {
+    const max = estimateMaxImpact(secondary, mosGaps, presumptive);
+    html += `<div class="summary-banner animate-in">
+      <div class="sb-stat"><div class="sb-num green">${total}</div><div class="sb-label">Gaps found</div></div>
+      <div class="sb-divider"></div>
+      <div class="sb-stat"><div class="sb-num white">${curr}%</div><div class="sb-label">Current rating</div></div>
+      <div class="sb-divider"></div>
+      <div class="sb-stat"><div class="sb-num green">${max.official}%</div><div class="sb-label">Potential rating</div></div>
+      <div class="sb-divider"></div>
+      <div class="sb-stat"><div class="sb-num white">$${Math.round(max.extra).toLocaleString()}</div><div class="sb-label">Potential extra /mo</div></div>
+    </div>`;
+  }
+
+  if (secondary.length > 0) {
+    html += `<div class="section-head animate-in" style="animation-delay:.04s">
+      <div class="section-badge secondary">Secondary conditions</div>
+      <span class="section-count">${secondary.length} found — from your current service-connected conditions</span>
+    </div>`;
+    secondary.forEach((g, i) => { html += buildCard(g, 'secondary', i * 0.04 + 0.04); });
+  }
+
+  if (mosGaps.length > 0) {
+    const catLabel = mosCategory.replace(/_/g,' ').replace(/\b\w/g, l => l.toUpperCase());
+    html += `<div class="section-head animate-in section-gap" style="animation-delay:.08s">
+      <div class="section-badge exposure">MOS exposure</div>
+      <span class="section-count">${mosGaps.length} found — based on ${catLabel} job exposure</span>
+    </div>`;
+    mosGaps.forEach((g, i) => { html += buildCard(g, 'exposure', i * 0.04 + 0.08); });
+  }
+
+  if (presumptive.length > 0) {
+    html += `<div class="section-head animate-in section-gap" style="animation-delay:.12s">
+      <div class="section-badge presumptive">Presumptive conditions</div>
+      <span class="section-count">${presumptive.length} found — no nexus letter required</span>
+    </div>`;
+    presumptive.forEach((g, i) => { html += buildCard(g, 'presumptive', i * 0.04 + 0.12); });
+  }
+
+  if (total === 0) {
+    html += `<div class="no-gaps animate-in">No additional gaps identified based on your current profile. Try adding more conditions in the calculator — the more conditions you have entered, the more secondary connections we can surface.</div>`;
+  }
+
+  panel.innerHTML = html;
+}
+
+function buildCard(gap, type, delay) {
+  const impact = calcImpact(gap.condition);
+  const meta = CONDITION_META[gap.condition];
+
+  let bottomHtml = '';
+  if (gap.smc) {
+    bottomHtml = `<div class="smc-note">⚠ SMC-K eligible — adds ~$132/month on top of your regular compensation regardless of your combined rating. One of the most under-claimed VA benefits.</div>`;
+  } else if (impact) {
+    if (impact.ratingBump > 0) {
+      bottomHtml = `<div class="gap-impact">
+        <span class="gap-impact-label">At estimated ${impact.assumedRating}% (${meta.range}):</span>
+        <span class="gap-impact-val">${impact.curr}% → ${impact.newOff}% · +$${Math.round(impact.dollarsMore).toLocaleString()}/mo</span>
+      </div>`;
+    } else {
+      bottomHtml = `<div class="gap-impact">
+        <span class="gap-impact-label">At ${impact.assumedRating}%:</span>
+        <span class="gap-impact-val neutral">Adds to exact % without moving official tier — still worth filing for future increases</span>
+      </div>`;
+    }
+  }
+
+  const sourceNote = gap.sourceCondition ? ` <span style="font-size:11px;color:var(--ink-4);font-family:var(--ff-mono)">← from ${gap.sourceCondition}</span>` : '';
+  const presumptiveTag = gap.note ? ` <span style="font-size:11px;color:var(--amber);font-family:var(--ff-mono);font-weight:500;margin-left:4px">${gap.note}</span>` : '';
+
+  return `<div class="gap-card animate-in" style="animation-delay:${delay}s">
+    <div class="gap-card-top">
+      <div class="gap-name">${gap.condition}${presumptiveTag}${sourceNote}</div>
+      <div class="gap-meta">
+        ${meta ? `<span class="gap-rating">${meta.range}</span>` : ''}
+        <span class="confidence-badge ${gap.confidence}">${gap.confidence}</span>
+      </div>
+    </div>
+    <div class="gap-reason">${gap.reason}</div>
+    <div class="gap-evidence"><strong>Evidence needed</strong>${gap.evidence}</div>
+    ${bottomHtml}
+  </div>`;
+}
+
+init();
+</script>
+</body>
+</html>
