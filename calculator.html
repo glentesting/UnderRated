@@ -291,7 +291,7 @@
 <script>
 const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const RATINGS = [0,10,20,30,40,50,60,70,80,90,100];
 const HYPO_OPTIONS = [10,20,30,40,50,60,70];
@@ -311,7 +311,7 @@ let saveTimer = null;
 
 // ── AUTH ──
 async function init() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'login.html'; return; }
   currentUser = session.user;
   document.getElementById('user-email').textContent = currentUser.email;
@@ -320,13 +320,13 @@ async function init() {
 }
 
 async function handleSignout() {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   window.location.href = 'login.html';
 }
 
 // ── SUPABASE DATA ──
 async function loadConditions() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('conditions')
     .select('*')
     .eq('user_id', currentUser.id)
@@ -346,14 +346,14 @@ async function saveConditions() {
   status.className = 'save-status saving';
 
   // Delete existing, re-insert
-  await supabase.from('conditions').delete().eq('user_id', currentUser.id);
+  await sb.from('conditions').delete().eq('user_id', currentUser.id);
 
   const rows = conditions
     .filter(c => c.name.trim())
     .map((c, i) => ({ user_id: currentUser.id, name: c.name.trim(), rating: c.rating, sort_order: i }));
 
   if (rows.length > 0) {
-    const { error } = await supabase.from('conditions').insert(rows);
+    const { error } = await sb.from('conditions').insert(rows);
     if (error) {
       status.textContent = 'Error saving — try again';
       status.className = 'save-status';
