@@ -19,6 +19,7 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+
   nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
   .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
   .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
@@ -31,26 +32,61 @@
   .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
   .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
   .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+
   .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
   .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
   .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
   .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+
+  /* LOADING */
   #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:14px;text-align:center}
   .spinner{width:28px;height:28px;border:2px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   #loading p{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
+
+  /* UPLOAD STATE */
+  #upload-state{display:none}
+  .upload-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:40px;max-width:560px;margin:0 auto;text-align:center}
+  .upload-card h2{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);margin-bottom:8px}
+  .upload-card p{font-size:14px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+  .drop-zone{border:2px dashed var(--border-2);border-radius:12px;padding:40px 20px;cursor:pointer;transition:all .2s;background:var(--bg);position:relative}
+  .drop-zone:hover,.drop-zone.dragover{border-color:var(--green);background:var(--green-bg)}
+  .drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .drop-icon{font-size:36px;margin-bottom:12px}
+  .drop-label{font-size:14px;color:var(--ink-2);margin-bottom:4px;font-weight:500}
+  .drop-sub{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
+  .upload-progress{margin-top:20px;display:none}
+  .progress-step{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:8px;margin-bottom:8px;font-size:13px;color:var(--ink-3);border:1px solid var(--border)}
+  .progress-step.active{color:var(--ink);border-color:var(--green-border);background:var(--green-bg)}
+  .progress-step.done{color:var(--green);border-color:var(--green-border)}
+  .progress-step .step-spinner{width:14px;height:14px;border:2px solid rgba(14,138,99,0.2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+  .progress-step .step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
+  .progress-step .step-dot{width:14px;height:14px;border-radius:50%;background:var(--border);flex-shrink:0}
+  .upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
+  .reupload-btn{margin-top:16px;font-size:13px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:8px;padding:8px 18px;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+  .reupload-btn:hover{background:var(--green-bg)}
+
+  /* DASHBOARD */
   #dashboard{display:none}
+  .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .dash-header-left h2{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);line-height:1}
+  .dash-header-left p{font-size:13px;color:var(--ink-3);margin-top:3px}
+  .reupload-link{font-size:13px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+  .reupload-link:hover{background:var(--green-bg)}
+
   .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
   .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px}
   .stat-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
   .stat-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
   .stat-number.green{color:var(--green)}
   .stat-sub{font-size:12px;color:var(--ink-3);margin-top:5px}
+
   .layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
   .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
   .card:last-child{margin-bottom:0}
   .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
   .card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+
   .cond-list{display:flex;flex-direction:column;gap:8px}
   .cond-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;transition:border-color .15s}
   .cond-row:hover{border-color:var(--border-2)}
@@ -62,6 +98,7 @@
   .dpill.sc{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
   .dpill.def{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
   .dpill.den{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+
   .math-explainer{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:10px;padding:12px 14px;margin-bottom:16px}
   .math-explainer p{font-size:13px;color:var(--green);line-height:1.6}
   .math-explainer strong{font-weight:500}
@@ -73,25 +110,28 @@
   .math-value{font-weight:500;color:var(--ink)}
   .math-row.total .math-label{font-weight:500}
   .math-row.total .math-value{color:var(--green);font-size:16px}
+
   .tier-wrap{background:var(--bg-2);border-radius:10px;padding:14px 16px;margin-bottom:14px}
   .tier-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0 10px}
   .tier-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
   .tier-markers{display:flex;justify-content:space-between;font-family:var(--ff-mono);font-size:10px;color:var(--ink-4)}
   .next-tier{font-size:13px;color:var(--ink-2);line-height:1.55}
   .next-tier strong{color:var(--green);font-weight:500}
+
   .comp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:13px}
   .comp-row:last-child{margin-bottom:0}
   .comp-row.active{background:var(--green-bg);border-color:var(--green-border)}
   .comp-row.active span{color:var(--green);font-weight:500}
+
   .step-list{display:flex;flex-direction:column;gap:8px}
-  .step-item{display:flex;align-items:flex-start;gap:12px;padding:13px;background:var(--bg);border-radius:10px;border:1px solid var(--border);transition:border-color .15s}
-  .step-item:hover{border-color:var(--border-2)}
+  .step-item{display:flex;align-items:flex-start;gap:12px;padding:13px;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
   .step-icon{font-size:17px;flex-shrink:0;margin-top:1px}
   .step-content{flex:1}
   .step-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
   .step-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
   .step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
   .step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   @media(max-width:780px){.stat-row{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.nav-links,.user-pill{display:none}}
 </style>
@@ -116,20 +156,60 @@
 <div class="page">
   <div class="page-eyebrow">Your records</div>
   <div class="page-title">Vault</div>
-  <p class="page-sub">Your extracted conditions, combined rating breakdown, and what to do next.</p>
+  <p class="page-sub">Upload your VA rating decision PDF — we'll extract every condition automatically.</p>
 
+  <!-- Loading -->
   <div id="loading">
     <div class="spinner"></div>
     <p>Loading your records…</p>
   </div>
 
+  <!-- Upload state -->
+  <div id="upload-state">
+    <div class="upload-card">
+      <h2>Upload your rating decision</h2>
+      <p>Drop your VA rating decision PDF here. We'll extract all your conditions, ratings, and decisions automatically — takes about 30 seconds.</p>
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" accept=".pdf" id="file-input" onchange="handleFile(this.files[0])">
+        <div class="drop-icon">📄</div>
+        <div class="drop-label">Drop your PDF here or click to browse</div>
+        <div class="drop-sub">VA rating decision, C&P exam results, or combined rating letter</div>
+      </div>
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-step" id="step-upload">
+          <div class="step-dot"></div>
+          Uploading PDF…
+        </div>
+        <div class="progress-step" id="step-extract">
+          <div class="step-dot"></div>
+          Extracting conditions with AI…
+        </div>
+        <div class="progress-step" id="step-save">
+          <div class="step-dot"></div>
+          Saving to your vault…
+        </div>
+      </div>
+      <div class="upload-error" id="upload-error"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
   <div id="dashboard">
+    <div class="dash-header">
+      <div class="dash-header-left">
+        <h2>Your conditions</h2>
+        <p id="last-updated"></p>
+      </div>
+      <button class="reupload-link" onclick="showUpload()">+ Upload new PDF</button>
+    </div>
+
     <div class="stat-row" id="stat-row"></div>
+
     <div class="layout">
       <div>
         <div class="card">
-          <div class="card-title">Your conditions</div>
-          <div class="card-sub">Extracted from your rating decision document.</div>
+          <div class="card-title">Extracted conditions</div>
+          <div class="card-sub">From your rating decision document.</div>
           <div class="cond-list" id="cond-list"></div>
         </div>
         <div class="card">
@@ -169,18 +249,174 @@
 <script>
 const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const VERCEL_URL = 'https://getunderrated.vercel.app/api/extract-pdf';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
 let currentUser = null;
 
-function calcCombined(conds) {
-  const valid = conds.filter(c => c.rating && parseInt(c.rating) > 0).sort((a,b) => parseInt(b.rating) - parseInt(a.rating));
+// ── AUTH ──
+async function init() {
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (!session) { window.location.href = 'login.html'; return; }
+    currentUser = session.user;
+    document.getElementById('user-email').textContent = currentUser.email;
+    await loadData();
+  });
+}
+
+async function loadData() {
+  const { data, error } = await sb
+    .from('conditions')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('rating', { ascending: false });
+
+  document.getElementById('loading').style.display = 'none';
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('upload-state').style.display = 'block';
+    setupDropZone();
+    return;
+  }
+
+  renderDashboard(data);
+  document.getElementById('dashboard').style.display = 'block';
+}
+
+// ── UPLOAD ──
+function setupDropZone() {
+  const zone = document.getElementById('drop-zone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') handleFile(file);
+    else showUploadError('Please upload a PDF file.');
+  });
+}
+
+function showUpload() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('upload-state').style.display = 'block';
+  document.getElementById('upload-progress').style.display = 'none';
+  document.getElementById('upload-error').style.display = 'none';
+  setupDropZone();
+}
+
+function setStep(stepId, status) {
+  const el = document.getElementById(stepId);
+  const dot = el.querySelector('.step-dot, .step-spinner, .step-check');
+  el.className = 'progress-step' + (status === 'active' ? ' active' : status === 'done' ? ' done' : '');
+  if (status === 'active') {
+    dot.outerHTML = '<div class="step-spinner"></div>';
+  } else if (status === 'done') {
+    el.querySelector('.step-spinner, .step-dot') && (el.querySelector('.step-spinner, .step-dot').outerHTML = '<span class="step-check">✓</span>');
+  }
+}
+
+function showUploadError(msg) {
+  const el = document.getElementById('upload-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+  // Reset steps
+  ['step-upload','step-extract','step-save'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'progress-step';
+    const inner = el.querySelector('.step-spinner, .step-check');
+    if (inner) inner.outerHTML = '<div class="step-dot"></div>';
+  });
+}
+
+async function handleFile(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf') { showUploadError('Please upload a PDF file.'); return; }
+
+  document.getElementById('upload-error').style.display = 'none';
+  document.getElementById('upload-progress').style.display = 'block';
+  document.getElementById('drop-zone').style.pointerEvents = 'none';
+  document.getElementById('drop-zone').style.opacity = '0.5';
+
+  try {
+    // Step 1: Upload to Supabase Storage
+    setStep('step-upload', 'active');
+    const fileName = `${currentUser.id}/${Date.now()}_${file.name}`;
+    const { data: uploadData, error: uploadError } = await sb.storage
+      .from('rating-decisions')
+      .upload(fileName, file, { upsert: true });
+
+    if (uploadError) throw new Error('Upload failed: ' + uploadError.message);
+    setStep('step-upload', 'done');
+
+    // Get public URL
+    const { data: urlData } = sb.storage.from('rating-decisions').getPublicUrl(fileName);
+    const fileUrl = urlData.publicUrl;
+
+    // Step 2: Extract with Vercel function
+    setStep('step-extract', 'active');
+    const extractRes = await fetch(VERCEL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ file_url: fileUrl, user_id: currentUser.id })
+    });
+
+    if (!extractRes.ok) {
+      const err = await extractRes.json();
+      throw new Error(err.error || 'Extraction failed');
+    }
+
+    const extracted = await extractRes.json();
+    if (!extracted.success || !extracted.conditions?.length) {
+      throw new Error('No conditions found in this document. Make sure it\'s a VA rating decision letter.');
+    }
+    setStep('step-extract', 'done');
+
+    // Step 3: Save to Supabase
+    setStep('step-save', 'active');
+
+    // Delete existing conditions for this user first
+    await sb.from('conditions').delete().eq('user_id', currentUser.id);
+
+    // Insert new ones
+    const rows = extracted.conditions.map((c, i) => ({
+      user_id: currentUser.id,
+      name: c.condition_name,
+      rating: c.rating?.toString() || null,
+      diagnostic_code: c.diagnostic_code || null,
+      decision: c.decision || null,
+      effective_date: c.effective_date || null,
+      sort_order: i
+    }));
+
+    const { error: insertError } = await sb.from('conditions').insert(rows);
+    if (insertError) throw new Error('Save failed: ' + insertError.message);
+    setStep('step-save', 'done');
+
+    // Load dashboard
+    setTimeout(async () => {
+      document.getElementById('upload-state').style.display = 'none';
+      const { data } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('rating', { ascending: false });
+      renderDashboard(data);
+      document.getElementById('dashboard').style.display = 'block';
+    }, 800);
+
+  } catch (err) {
+    document.getElementById('drop-zone').style.pointerEvents = '';
+    document.getElementById('drop-zone').style.opacity = '';
+    showUploadError(err.message);
+  }
+}
+
+// ── RENDER ──
+function calcCombined(data) {
+  const valid = data.filter(c => c.rating && parseInt(c.rating) > 0).sort((a,b) => parseInt(b.rating) - parseInt(a.rating));
   if (!valid.length) return { exact:0, official:0, steps:[] };
   let remaining = 100;
   const steps = valid.map(c => {
     const r = parseInt(c.rating);
     const taken = remaining * (r / 100);
-    const row = { name: c.name, rating: r, taken: taken.toFixed(1), remaining_before: remaining.toFixed(1) };
+    const row = { name:c.name, rating:r, taken:taken.toFixed(1), remaining_before:remaining.toFixed(1) };
     remaining -= taken;
     return row;
   });
@@ -206,53 +442,11 @@ function dpLabel(d) {
   return d;
 }
 
-function nextSteps(data) {
-  const steps = [];
-  const deferred = data.filter(c => c.decision?.toLowerCase().includes('deferred'));
-  const denied   = data.filter(c => c.decision?.toLowerCase().includes('not service'));
-  const { official, exact } = calcCombined(data);
-
-  if (deferred.length)
-    steps.push({ icon:'⏳', title:`Follow up on ${deferred.length} deferred condition${deferred.length>1?'s':''}`, desc:`${deferred.map(c=>c.name).join(', ')} ${deferred.length>1?'are':'is'} still pending. Contact your VSO or check VA.gov for a status update.`, tag:'action required', amber:true });
-
-  if (denied.length)
-    steps.push({ icon:'⚡', title:`Consider appealing ${denied.length} denied condition${denied.length>1?'s':''}`, desc:`${denied.map(c=>c.name).join(', ')} ${denied.length>1?'were':'was'} denied. You have 1 year from the decision to file a supplemental claim with new evidence.`, tag:'potential increase', amber:false });
-
-  steps.push({ icon:'🔍', title:'Run the gap identifier', desc:'Your MOS and current conditions can surface additional unclaimed conditions — including secondaries you qualify for without a new in-service event.', tag:'find more', amber:false });
-
-  if (official < 100) {
-    const next = official + 10;
-    const toNext = (next - exact).toFixed(1);
-    const extra = Math.round((COMP_RATES[next]||0) - (COMP_RATES[official]||0));
-    steps.push({ icon:'📈', title:`Getting to ${next}% adds $${extra}/month`, desc:`You're ${toNext}% (exact) away from the ${next}% tier. If your conditions have worsened, request a new C&P exam to capture current severity.`, tag:'rating increase', amber:false });
-  }
-
-  steps.push({ icon:'🤝', title:'Connect with a VSO', desc:'DAV, VFW, and American Legion all have accredited reps who advocate for you at no cost.', tag:'free resource', amber:false });
-  return steps;
-}
-
-async function init() {
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (!session) { window.location.href = 'login.html'; return; }
-    currentUser = session.user;
-    document.getElementById('user-email').textContent = currentUser.email;
-    const { data, error } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('rating', { ascending:false });
-    if (error || !data || !data.length) {
-      document.getElementById('loading').innerHTML = `
-        <p style="font-size:14px;color:var(--ink-3)">No conditions found yet.</p>
-        <p style="font-size:13px;color:var(--ink-4);margin-top:6px">Upload your rating decision PDF to get started.</p>
-        <a href="dashboard.html" style="margin-top:16px;font-size:13px;color:var(--green)">← Back to dashboard</a>`;
-      return;
-    }
-    render(data);
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-  });
-}
-
-function render(data) {
+function renderDashboard(data) {
   const { exact, official, steps } = calcCombined(data);
   const connected = data.filter(c => c.decision?.toLowerCase().includes('service connected') && !c.decision?.toLowerCase().includes('not')).length;
+
+  document.getElementById('last-updated').textContent = data.length + ' conditions · last updated ' + new Date().toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
 
   // Stats
   document.getElementById('stat-row').innerHTML = `
@@ -291,7 +485,20 @@ function render(data) {
   ).join('');
 
   // Next steps
-  document.getElementById('step-list').innerHTML = nextSteps(data).map(s =>
+  const deferred = data.filter(c => c.decision?.toLowerCase().includes('deferred'));
+  const denied   = data.filter(c => c.decision?.toLowerCase().includes('not service'));
+  const stepItems = [];
+  if (deferred.length) stepItems.push({ icon:'⏳', title:`Follow up on ${deferred.length} deferred condition${deferred.length>1?'s':''}`, desc:`${deferred.map(c=>c.name).join(', ')} ${deferred.length>1?'are':'is'} still pending. Contact your VSO or check VA.gov.`, tag:'action required', amber:true });
+  if (denied.length) stepItems.push({ icon:'⚡', title:`Appeal ${denied.length} denied condition${denied.length>1?'s':''}`, desc:`You have 1 year from the decision to file a supplemental claim with new evidence.`, tag:'potential increase', amber:false });
+  stepItems.push({ icon:'🔍', title:'Run the gap identifier', desc:'Find additional unclaimed conditions based on your MOS and service era.', tag:'find more', amber:false });
+  if (official < 100) {
+    const next = official + 10;
+    const extra = Math.round((COMP_RATES[next]||0)-(COMP_RATES[official]||0));
+    stepItems.push({ icon:'📈', title:`Getting to ${next}% adds $${extra}/month`, desc:`If your conditions have worsened, request a new C&P exam to capture current severity.`, tag:'rating increase', amber:false });
+  }
+  stepItems.push({ icon:'🤝', title:'Connect with a VSO', desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.', tag:'free resource', amber:false });
+
+  document.getElementById('step-list').innerHTML = stepItems.map(s =>
     `<div class="step-item"><div class="step-icon">${s.icon}</div><div class="step-content"><div class="step-title">${s.title}</div><div class="step-desc">${s.desc}</div><span class="step-tag${s.amber?' amber':''}">${s.tag}</span></div></div>`
   ).join('');
 }
