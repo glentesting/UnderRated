@@ -3,97 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — UNDERRATED</title>
+<title>Dashboard &mdash; UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
-    --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
-    --ff-display:\'Barlow Condensed\',sans-serif;--ff-body:\'DM Sans\',sans-serif;--ff-mono:\'DM Mono\',monospace;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  #loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
-  .loading-logo{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-4)}
-  .loading-logo span{color:var(--green)}
-  #app{display:none}
-  nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
-  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
-  .nav-logo span{color:var(--green)}
-  .nav-links{display:flex;align-items:center;gap:24px}
-  .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
-  .nav-links a:hover{color:var(--ink)}
-  .nav-right{display:flex;align-items:center;gap:14px}
-  .user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
-  .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
-  .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
-  .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
-  .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
-  .page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
-  .greeting{margin-bottom:20px}
-  .greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
-  .greeting p{font-size:14px;color:var(--ink-3)}
-  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:20px}
-  .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:14px}
-  .grid-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:14px;margin-bottom:14px}
-  .big-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
-  .big-number span{font-size:18px;font-weight:400;color:var(--ink-3)}
-  .number-label{font-size:12px;color:var(--ink-3);margin-bottom:8px;font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.06em}
-  .number-sub{font-size:12px;color:var(--ink-3);margin-top:6px}
-  .btn-green{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;margin-top:14px;font-family:var(--ff-body)}
-  .btn-green:hover{background:var(--green-l)}
-  .btn-outline{display:inline-flex;align-items:center;gap:6px;background:none;color:var(--green);font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid var(--green-border);cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-  .btn-outline:hover{background:var(--green-bg)}
-  .gap-intro{font-size:14px;color:var(--ink-2);line-height:1.55;margin-bottom:14px}
-  .pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
-  .pill{font-size:12px;padding:4px 11px;border-radius:20px}
-  .pill.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-  .pill.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(196,127,10,0.25)}
-  .pill.gray{background:var(--bg-2);color:var(--ink-3);border:1px solid var(--border)}
-  .grid-bottom{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}
-  .doc-row{display:flex;flex-direction:column;gap:8px}
-  .doc-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg);border-radius:9px;border:1px solid var(--border)}
-  .doc-left{display:flex;align-items:center;gap:10px}
-  .doc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .doc-icon.green{background:var(--green-bg)}
-  .doc-icon.amber{background:var(--amber-bg)}
-  .doc-icon.gray{background:var(--bg-2);border:1px solid var(--border)}
-  .doc-name{font-size:13px;color:var(--ink)}
-  .doc-sub{font-size:11px;color:var(--ink-3);margin-top:1px}
-  .upload-btn{font-size:12px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-  .upload-btn:hover{background:var(--green-bg)}
-  .steps-list{display:flex;flex-direction:column;gap:8px}
-  .step-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-  .step-item:hover{background:var(--surface);border-color:var(--border)}
-  .step-item.disabled{opacity:.45;pointer-events:none}
-  .step-num{width:20px;height:20px;border-radius:50%;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--ff-mono)}
-  .step-num.muted{background:var(--bg-2);color:var(--ink-4)}
-  .step-text{font-size:13px;color:var(--ink);line-height:1.4}
-  .step-text small{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
-  .setup-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .setup-banner p{font-size:14px;color:var(--green);line-height:1.5}
-  .setup-banner strong{font-weight:500}
-  .rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:700px){
-    .grid-top,.grid-bottom{grid-template-columns:1fr}
-    .hamburger{display:flex}
-    .user-email{display:none}
-    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
-    .nav-links.open{display:flex}
-    .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
-    .nav-links a:last-child{border-bottom:none}
-  }
+:root {
+  --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
+  --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
+  --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
+  --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
+  --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+#loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
+.loading-logo{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-4)}
+.loading-logo span{color:var(--green)}
+#app{display:none}
+
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
+.greeting{margin-bottom:20px}
+.greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.greeting p{font-size:14px;color:var(--ink-3)}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:20px}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:14px}
+.grid-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:14px;margin-bottom:14px}
+.number-label{font-size:12px;color:var(--ink-3);margin-bottom:8px;font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.06em}
+.number-sub{font-size:12px;color:var(--ink-3);margin-top:6px}
+.rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1;color:var(--ink-3)}
+.rating-display span{font-size:18px;font-weight:400;color:var(--ink-3)}
+.btn-green{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;margin-top:14px;font-family:var(--ff-body)}
+.btn-green:hover{background:var(--green-l)}
+.btn-outline{display:inline-flex;align-items:center;gap:6px;background:none;color:var(--green);font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid var(--green-border);cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
+.btn-outline:hover{background:var(--green-bg)}
+.gap-intro{font-size:14px;color:var(--ink-2);line-height:1.55;margin-bottom:14px}
+.pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:12px;padding:4px 11px;border-radius:20px}
+.pill.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.pill.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(196,127,10,0.25)}
+.pill.gray{background:var(--bg-2);color:var(--ink-3);border:1px solid var(--border)}
+.grid-bottom{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}
+.doc-row{display:flex;flex-direction:column;gap:8px}
+.doc-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg);border-radius:9px;border:1px solid var(--border)}
+.doc-left{display:flex;align-items:center;gap:10px}
+.doc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc-icon.amber{background:var(--amber-bg)}
+.doc-icon.gray{background:var(--bg-2);border:1px solid var(--border)}
+.doc-name{font-size:13px;color:var(--ink)}
+.doc-sub{font-size:11px;color:var(--ink-3);margin-top:1px}
+.upload-btn{font-size:12px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
+.upload-btn:hover{background:var(--green-bg)}
+.steps-list{display:flex;flex-direction:column;gap:8px}
+.step-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+.step-item:hover{background:var(--surface);border-color:var(--border)}
+.step-item.disabled{opacity:.45;pointer-events:none}
+.step-num{width:20px;height:20px;border-radius:50%;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--ff-mono)}
+.step-num.muted{background:var(--bg-2);color:var(--ink-4)}
+.step-text{font-size:13px;color:var(--ink);line-height:1.4}
+.step-text small{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+.setup-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.setup-banner p{font-size:14px;color:var(--green);line-height:1.5}
+.setup-banner strong{font-weight:500}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:780px){
+  .grid-top,.grid-bottom{grid-template-columns:1fr}
+  .hamburger{display:flex}
+  .user-email{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links a:last-child{border-bottom:none}
+}
 </style>
 </head>
 <body>
+
 <div id="loading-screen"><div class="loading-logo">UNDER<span>RATED</span></div></div>
+
 <div id="app">
   <nav>
     <div class="nav-inner">
@@ -105,26 +110,29 @@
       </div>
       <div class="nav-right">
         <span class="user-email" id="user-email"></span>
-        <button class="hamburger" onclick="toggleNav()">☰ Menu</button>
+        <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
         <button class="signout-btn" onclick="handleSignout()">Sign out</button>
       </div>
     </div>
   </nav>
+
   <div class="page">
-    <div class="setup-banner" id="setup-banner" style="display:none">
-      <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating — it takes 60 seconds and unlocks your personalized gap analysis.</p>
-      <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating →</a>
+    <div class="setup-banner" id="setup-banner">
+      <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating &mdash; it takes 60 seconds and unlocks your personalized gap analysis.</p>
+      <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating &rarr;</a>
     </div>
+
     <div class="greeting">
       <h1 id="greeting-text">Welcome back</h1>
       <p id="greeting-sub">Here's where things stand.</p>
     </div>
+
     <div class="grid-top">
       <div class="card">
         <div class="number-label">Combined VA rating</div>
-        <div class="rating-display" id="rating-display" style="color:var(--ink-3)">—</div>
+        <div class="rating-display" id="rating-display">&mdash;</div>
         <div class="number-sub" id="rating-sub">Not entered yet</div>
-        <a href="calculator.html" class="btn-green">Enter my rating →</a>
+        <a href="calculator.html" class="btn-green" id="rating-btn">Enter my rating &rarr;</a>
       </div>
       <div class="card">
         <div class="card-title">Potential unclaimed conditions</div>
@@ -135,14 +143,15 @@
           <span class="pill amber">PTSD (secondary)</span>
           <span class="pill gray">Run analysis to see yours</span>
         </div>
-        <a href="gap.html" class="btn-green">Run gap analysis →</a>
+        <a href="gap.html" class="btn-green">Run gap analysis &rarr;</a>
       </div>
     </div>
+
     <div class="grid-bottom">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
           <div class="card-title" style="margin:0">Document vault</div>
-          <a href="vault.html" class="btn-outline">Manage all →</a>
+          <a href="vault.html" class="btn-outline">Manage all &rarr;</a>
         </div>
         <div class="doc-row">
           <div class="doc-item">
@@ -168,7 +177,7 @@
               <div class="doc-icon gray">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#8A8780" stroke-width="1.2"/><path d="M6 6h4M6 9h4" stroke="#8A8780" stroke-width="1.2" stroke-linecap="round"/></svg>
               </div>
-              <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional · strengthens claims</div></div>
+              <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional &middot; strengthens claims</div></div>
             </div>
             <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
           </div>
@@ -191,65 +200,93 @@
           </div>
           <div class="step-item disabled">
             <div class="step-num muted">4</div>
-            <div class="step-text">Build claim package<small>Unlocks after steps 1–3</small></div>
+            <div class="step-text">Build claim package<small>Unlocks after steps 1&ndash;3</small></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  function toggleNav() {
-    document.getElementById('nav-links').classList.toggle('open');
-  }
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
 
-  function init(){
-    sb.auth.onAuthStateChange(async (event, session) => {
-      if (!session) { window.location.href = "login.html"; return; }
+function showApp() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+function init() {
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
       const email = session.user.email;
-      const name = email.split("@")[0];
-      document.getElementById("user-email").textContent = email;
-      document.getElementById("greeting-text").textContent = "Welcome back, " + name;
-      document.getElementById("greeting-sub").textContent = "Logged in as " + email;
+      const name = email.split('@')[0];
+      document.getElementById('user-email').textContent = email;
+      document.getElementById('greeting-text').textContent = 'Welcome back, ' + name;
+      document.getElementById('greeting-sub').textContent = 'Logged in as ' + email;
 
-      const { data } = await sb.from("conditions").select("*").eq("user_id", session.user.id);
+      const { data, error } = await sb
+        .from('conditions')
+        .select('*')
+        .eq('user_id', session.user.id);
 
       if (data && data.length > 0) {
         // Hide setup banner — user has conditions
-        document.getElementById("setup-banner").style.display = "none";
+        document.getElementById('setup-banner').style.display = 'none';
 
-        const sorted = [...data].sort((a,b) => b.rating - a.rating);
-        let remaining = 100;
-        for (const c of sorted) { remaining = remaining * (1 - c.rating / 100); }
-        const exact = 100 - remaining;
-        const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
+        // Calculate combined rating
+        const valid = data.filter(c => c.rating && parseInt(c.rating) > 0);
+        if (valid.length > 0) {
+          const sorted = [...valid].sort((a, b) => parseInt(b.rating) - parseInt(a.rating));
+          let remaining = 100;
+          for (const c of sorted) {
+            remaining = remaining * (1 - parseInt(c.rating) / 100);
+          }
+          const exact = parseFloat((100 - remaining).toFixed(2));
+          const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
 
-        if (official > 0) {
-          document.getElementById("rating-display").innerHTML = official + "<span>%</span>";
-          document.getElementById("rating-display").style.color = "var(--ink)";
-          document.getElementById("rating-sub").textContent = data.length + " condition" + (data.length !== 1 ? "s" : "") + " entered";
+          const display = document.getElementById('rating-display');
+          display.style.color = 'var(--ink)';
+          display.innerHTML = official + '<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
+          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
+          document.getElementById('rating-btn').textContent = 'Update my rating';
+        } else {
+          // Has conditions but all are 0% (e.g. ED only)
+          document.getElementById('rating-display').textContent = '0%';
+          document.getElementById('rating-display').style.color = 'var(--ink)';
+          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
+          document.getElementById('rating-btn').textContent = 'Update my rating';
         }
       } else {
-        // Show setup banner — no conditions yet
-        document.getElementById("setup-banner").style.display = "flex";
+        // No conditions yet — show setup banner
+        document.getElementById('setup-banner').style.display = 'flex';
       }
+    } catch (err) {
+      console.error('Dashboard error:', err);
+    } finally {
+      showApp();
+    }
+  });
+}
 
-      document.getElementById("loading-screen").style.display = "none";
-      document.getElementById("app").style.display = "block";
-    });
-  }
+async function handleSignout() {
+  await sb.auth.signOut();
+  window.location.href = 'login.html';
+}
 
-  async function handleSignout(){
-    await sb.auth.signOut();
-    window.location.href='login.html';
-  }
-
-  init();
+init();
 </script>
 </body>
 </html>
