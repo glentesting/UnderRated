@@ -284,35 +284,55 @@ let conditions = [];
 let currentUser = null;
 
 async function init() {
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (!session) { window.location.href = "login.html"; return; }
-    if (currentUser) return;
-    currentUser = session.user;
-    document.getElementById("user-email").textContent = currentUser.email;
-    await loadConditions();
-    if (conditions.length === 0) addCondition();
+  // Free tool - no login required
+  // If logged in, load saved conditions. If not, still works fine.
+  sb.auth.getSession().then(function(res) {
+    var session = res && res.data && res.data.session ? res.data.session : null;
+    if (session) {
+      currentUser = session.user;
+      document.getElementById("user-email").textContent = currentUser.email;
+      loadConditions().then(function() {
+        if (conditions.length === 0) addCondition();
+        render();
+      });
+    } else {
+      // Not logged in - tool still works, save will prompt signup
+      addCondition();
+      render();
+    }
+  }).catch(function() {
+    addCondition();
     render();
   });
 }
 
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
+function handleSignout() {
+  sb.auth.signOut().then(function() { window.location.href = 'login.html'; });
 }
 
-async function loadConditions() {
-  const { data } = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('sort_order');
-  if (!data || data.length === 0) return;
-  conditions = data.map(d => ({
-    id: d.id,
-    conditionName: d.name,
-    rating: d.rating,
-    conditionData: CONDITIONS.find(c => c.name === d.name) || null
-  }));
+function loadConditions() {
+  return sb.from('conditions').select('*').eq('user_id', currentUser.id).order('sort_order')
+    .then(function(res) {
+      var data = res.data;
+      if (!data || data.length === 0) return;
+      conditions = data.map(function(d) { return {
+        id: d.id,
+        conditionName: d.name,
+        rating: d.rating,
+        conditionData: CONDITIONS.find(function(c) { return c.name === d.name; }) || null
+      };});
+    })
+    .catch(function() {});
 }
 
 async function saveConditions() {
-  if (!currentUser) return;
+  if (!currentUser) {
+    // Not logged in - prompt to sign up
+    if (confirm('Create a free account to save your conditions. Sign up now?')) {
+      window.location.href = 'signup.html';
+    }
+    return;
+  }
   const btn = document.getElementById('save-btn');
   const status = document.getElementById('save-status');
   btn.disabled = true;
