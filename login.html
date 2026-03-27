@@ -3,51 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Log in — UNDERRATED</title>
+<title>Log in &mdash; UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#F5F2EC;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--red:#C43030;--red-bg:rgba(196,48,48,0.08);
-    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
-  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
-  .nav-logo span{color:var(--green)}
-  .nav-link{font-size:14px;color:var(--ink-3)}
-  .nav-link a{color:var(--green)}
-  .nav-link a:hover{text-decoration:underline}
-  .page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px}
-  .card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06);animation:fadeUp .4s ease both}
-  .card-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
-  .card-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
-  .card-sub{font-size:14px;color:var(--ink-3);margin-bottom:28px}
-  .form-group{margin-bottom:16px}
-  .form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px}
-  .form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
-  .form-input:focus{border-color:var(--green);background:var(--surface)}
-  .form-input::placeholder{color:var(--ink-3)}
-  .forgot-row{display:flex;justify-content:flex-end;margin-top:5px}
-  .forgot-link{font-size:12px;color:var(--green);cursor:pointer}
-  .forgot-link:hover{text-decoration:underline}
-  .btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;margin-top:8px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s}
-  .btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
-  .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
-  .error-box{background:var(--red-bg);border:1px solid rgba(196,48,48,0.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);line-height:1.5;margin-bottom:16px;display:none}
-  .reset-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--green);line-height:1.5;margin-bottom:16px;display:none}
-  .signup-prompt{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-3)}
-  .signup-prompt a{color:var(--green);font-weight:500}
-  .signup-prompt a:hover{text-decoration:underline}
-  .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+:root{--bg:#F5F2EC;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--red:#C43030;--red-bg:rgba(196,48,48,0.08);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-link{font-size:14px;color:var(--ink-3)}
+.nav-link a{color:var(--green)}
+.nav-link a:hover{text-decoration:underline}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06);animation:fadeUp .4s ease both}
+.card-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+.card-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.card-sub{font-size:14px;color:var(--ink-3);margin-bottom:28px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px}
+.form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-input::placeholder{color:var(--ink-3)}
+.forgot-row{display:flex;justify-content:flex-end;margin-top:5px}
+.forgot-link{font-size:12px;color:var(--green);cursor:pointer}
+.forgot-link:hover{text-decoration:underline}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;margin-top:8px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.error-box{background:var(--red-bg);border:1px solid rgba(196,48,48,0.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);line-height:1.5;margin-bottom:16px;display:none}
+.reset-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--green);line-height:1.5;margin-bottom:16px;display:none}
+.signup-prompt{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-3)}
+.signup-prompt a{color:var(--green);font-weight:500}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -77,53 +71,54 @@
     <div class="signup-prompt">Don't have an account? <a href="signup.html">Sign up free</a></div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/supabase.min.js"></script>
 <script>
-  const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-  const emailEl  = document.getElementById('email');
-  const passEl   = document.getElementById('password');
-  const btn      = document.getElementById('login-btn');
-  const errorBox = document.getElementById('error-box');
-  const resetBox = document.getElementById('reset-box');
+const emailEl=document.getElementById('email');
+const passEl=document.getElementById('password');
+const btn=document.getElementById('login-btn');
+const errorBox=document.getElementById('error-box');
+const resetBox=document.getElementById('reset-box');
 
-  function showError(msg){errorBox.textContent=msg;errorBox.style.display='block';resetBox.style.display='none'}
-  function clearError(){errorBox.style.display='none'}
-  function setLoading(on){btn.disabled=on;btn.innerHTML=on?'<div class="spinner"></div> Logging in…':'Log in'}
+function showError(msg){errorBox.textContent=msg;errorBox.style.display='block';resetBox.style.display='none';}
+function clearError(){errorBox.style.display='none';}
+function setLoading(on){btn.disabled=on;btn.innerHTML=on?'<div class="spinner"></div> Logging in...':'Log in';}
 
-  async function handleLogin(){
-    clearError();
-    const email=emailEl.value.trim();
-    const pass=passEl.value;
-    if(!email) return showError('Email is required.');
-    if(!pass)  return showError('Password is required.');
-    setLoading(true);
-    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
-    setLoading(false);
-    if(error){
-      if(error.message.toLowerCase().includes('invalid')){showError('Email or password is incorrect. Try again.')}
-      else if(error.message.toLowerCase().includes('confirm')){showError('Please confirm your email first — check your inbox.')}
-      else{showError(error.message)}
-      return;
-    }
-    window.location.href='dashboard.html';
+async function handleLogin(){
+  clearError();
+  const email=emailEl.value.trim();
+  const pass=passEl.value;
+  if(!email)return showError('Email is required.');
+  if(!pass)return showError('Password is required.');
+  setLoading(true);
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  setLoading(false);
+  if(error){
+    if(error.message.toLowerCase().includes('invalid'))showError('Email or password is incorrect.');
+    else if(error.message.toLowerCase().includes('confirm'))showError('Please confirm your email first — check your inbox.');
+    else showError(error.message);
+    return;
   }
+  window.location.href='dashboard.html';
+}
 
-  async function handleReset(){
-    clearError();
-    const email=emailEl.value.trim();
-    if(!email) return showError('Enter your email address first, then click "Forgot password?"');
-    const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/update-password.html'});
-    if(error){showError(error.message);return}
-    resetBox.textContent='Password reset email sent to '+email+'. Check your inbox.';
-    resetBox.style.display='block';
-  }
+async function handleReset(){
+  clearError();
+  const email=emailEl.value.trim();
+  if(!email)return showError('Enter your email address first, then click "Forgot password?"');
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/update-password.html'});
+  if(error){showError(error.message);return;}
+  resetBox.textContent='Password reset email sent to '+email+'. Check your inbox.';
+  resetBox.style.display='block';
+}
 
-  [emailEl,passEl].forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin()})});
+[emailEl,passEl].forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin();});});
 
-  sb.auth.getSession().then(({data})=>{if(data.session)window.location.href='dashboard.html'});
+// Only redirect if already logged in
+sb.auth.getSession().then(({data})=>{if(data.session)window.location.href='dashboard.html';});
 </script>
 </body>
 </html>
