@@ -1,8 +1,54 @@
 export const config = { runtime: 'edge' };
 
+// Simple rate limiting via in-memory store (resets on cold start, good enough for MVP)
+const requestLog = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const windowMs = 60 * 1000; // 1 minute
+  const maxRequests = 5;
+  const key = ip || 'unknown';
+  const requests = requestLog.get(key) || [];
+  const recent = requests.filter(t => now - t < windowMs);
+  if (recent.length >= maxRequests) return true;
+  recent.push(now);
+  requestLog.set(key, recent);
+  return false;
+}
+
+function isValidSupabaseUrl(url) {
+  // Only allow URLs from our own Supabase storage bucket
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname === 'bglhfmwjfnmybcrjlscm.supabase.co' &&
+           parsed.pathname.includes('/storage/v1/object/') &&
+           parsed.pathname.includes('rating-decisions');
+  } catch {
+    return false;
+  }
+}
+
 export default async function handler(req) {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
+  }
+
+  // Rate limiting
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip');
+  if (isRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: 'Too many requests. Please wait a minute.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // Auth check - require Supabase JWT
+  const authHeader = req.headers.get('authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   try {
@@ -15,15 +61,33 @@ export default async function handler(req) {
       });
     }
 
+    // SSRF protection - only allow our own Supabase bucket
+    if (!isValidSupabaseUrl(file_url)) {
+      return new Response(JSON.stringify({ error: 'Invalid file URL' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Fetch the PDF
     const pdfResponse = await fetch(file_url);
     if (!pdfResponse.ok) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch PDF', status: pdfResponse.status }), {
+      return new Response(JSON.stringify({ error: 'Failed to fetch PDF' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    // Convert to base64 in chunks to avoid call stack overflow on large PDFs
+    // File size check - reject anything over 20MB
+    const contentLength = pdfResponse.headers.get('content-length');
+    if (contentLength && parseInt(contentLength) > 20 * 1024 * 1024) {
+      return new Response(JSON.stringify({ error: 'File too large. Max 20MB.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Convert to base64 in chunks to avoid call stack overflow
     const pdfBuffer = await pdfResponse.arrayBuffer();
     const uint8Array = new Uint8Array(pdfBuffer);
     let binary = '';
@@ -34,6 +98,7 @@ export default async function handler(req) {
     }
     const pdfBase64 = btoa(binary);
 
+    // Call Claude API
     const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -50,11 +115,7 @@ export default async function handler(req) {
             content: [
               {
                 type: 'document',
-                source: {
-                  type: 'base64',
-                  media_type: 'application/pdf',
-                  data: pdfBase64
-                }
+                source: { type: 'base64', media_type: 'application/pdf', data: pdfBase64 }
               },
               {
                 type: 'text',
@@ -77,16 +138,16 @@ Format:
 }
 
 Rules for combined_rating:
-- Extract the official combined disability rating percentage stated in the document (e.g. "COMBINED DISABILITY RATING: 90%")
-- This must be the number as printed in the document — do NOT calculate or estimate it
+- Extract the official combined disability rating percentage EXACTLY as stated in the document
+- Do NOT calculate or estimate it — use only what is printed
 - Use null if no combined rating is stated
 
 Rules for conditions:
 - Extract every condition listed — service connected, not service connected, and deferred
-- rating must be a number (integer), not a string. Use null if no rating assigned.
-- decision must be exactly one of: "service connected", "not service connected", "deferred"
+- rating must be a number (integer) or null if no rating assigned
+- decision must be exactly: "service connected", "not service connected", or "deferred"
 - effective_date format: YYYY-MM-DD, or null if not found
-- diagnostic_code is a string (e.g. "9411"), or null if not found
+- diagnostic_code is a string or null
 - Include ALL conditions, even denied ones`
               }
             ]
@@ -96,8 +157,7 @@ Rules for conditions:
     });
 
     if (!claudeResponse.ok) {
-      const err = await claudeResponse.text();
-      return new Response(JSON.stringify({ error: 'Claude API error', details: err }), {
+      return new Response(JSON.stringify({ error: 'Claude API error' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -110,32 +170,26 @@ Rules for conditions:
     try {
       const cleaned = rawText.replace(/```json|```/g, '').trim();
       parsed = JSON.parse(cleaned);
-    } catch (parseErr) {
-      return new Response(JSON.stringify({
-        error: 'Failed to parse Claude response',
-        raw: rawText
-      }), {
+    } catch {
+      return new Response(JSON.stringify({ error: 'Failed to parse response' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    const conditions = parsed.conditions || [];
-    const combined_rating = parsed.combined_rating || null;
-
     return new Response(JSON.stringify({
       success: true,
       user_id: user_id || null,
-      combined_rating: combined_rating,
-      conditions: conditions,
-      count: conditions.length
+      combined_rating: parsed.combined_rating || null,
+      conditions: parsed.conditions || [],
+      count: (parsed.conditions || []).length
     }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
