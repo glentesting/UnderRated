@@ -168,6 +168,29 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   .final-cta h2{font-size:44px}
 }
 @media(max-width:560px){.features-grid{grid-template-columns:1fr}.hero-headline{font-size:44px}}
+
+  /* TEASER PREVIEW */
+  .teaser-section{padding:72px 28px;background:var(--surface);border-top:1.5px solid var(--border)}
+  .teaser-inner{max-width:1080px;margin:0 auto}
+  .teaser-header{text-align:center;margin-bottom:36px}
+  .teaser-header h2{font-family:var(--ff-display);font-size:42px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:10px}
+  .teaser-header p{font-size:16px;color:var(--ink-3);max-width:480px;margin:0 auto}
+  .teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;position:relative}
+  .teaser-card{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden;min-height:200px}
+  .teaser-card.locked{filter:blur(3px);pointer-events:none;user-select:none;opacity:0.7}
+  .teaser-card-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+  .teaser-card-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px}
+  .teaser-line{height:10px;background:var(--bg-2);border-radius:4px;margin-bottom:8px}
+  .teaser-line.short{width:60%}
+  .teaser-line.med{width:80%}
+  .teaser-line.green{background:var(--green-bg)}
+  .teaser-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);z-index:10;text-align:center;padding:20px}
+  .lock-icon{font-size:28px;margin-bottom:10px}
+  .teaser-overlay h3{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .teaser-overlay p{font-size:13px;color:var(--ink-3);margin-bottom:16px;max-width:200px;line-height:1.5}
+  .teaser-cta{background:var(--green);color:#fff;font-family:var(--ff-body);font-size:13px;font-weight:500;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;text-decoration:none;display:inline-block}
+  .teaser-cta:hover{background:var(--green-l)}
+  @media(max-width:780px){.teaser-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -365,6 +388,85 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
     </div>
   </div>
 </section>
+
+
+<!-- TEASER PREVIEW -->
+<div class="teaser-section">
+  <div class="teaser-inner">
+    <div class="teaser-header">
+      <h2>See what's inside</h2>
+      <p>The rating calculator and gap identifier are free. Here's a preview of what you unlock with full access.</p>
+    </div>
+    <div class="teaser-grid">
+
+      <!-- Free tool preview - Rating Calculator -->
+      <div class="teaser-card">
+        <div class="teaser-card-label">Free tool</div>
+        <div class="teaser-card-title">Rating calculator</div>
+        <div class="teaser-line med green"></div>
+        <div class="teaser-line short"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="flex:1;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--green)">70%</div>
+            <div style="font-size:10px;color:var(--ink-3);font-family:var(--ff-mono)">YOUR RATING</div>
+          </div>
+          <div style="flex:1;background:var(--bg-2);border-radius:8px;padding:10px;text-align:center">
+            <div style="font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink)">80%</div>
+            <div style="font-size:10px;color:var(--ink-3);font-family:var(--ff-mono)">POTENTIAL</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--green);font-family:var(--ff-mono)">&#10003; Free — no account required to try</div>
+        <a href="calculator.html" style="display:inline-block;margin-top:12px;font-size:13px;font-weight:500;color:var(--green)">Try the calculator &rarr;</a>
+      </div>
+
+      <!-- Locked - Claim Builder -->
+      <div style="position:relative">
+        <div class="teaser-card locked">
+          <div class="teaser-card-label">Paid feature</div>
+          <div class="teaser-card-title">Claim builder</div>
+          <div class="teaser-line med"></div>
+          <div class="teaser-line short"></div>
+          <div class="teaser-line med green"></div>
+          <div class="teaser-line short green"></div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
+            <div style="background:var(--green-bg);border-radius:6px;padding:8px;height:32px"></div>
+            <div style="background:var(--bg-2);border-radius:6px;padding:8px;height:32px"></div>
+            <div style="background:var(--bg-2);border-radius:6px;padding:8px;height:32px"></div>
+          </div>
+        </div>
+        <div class="teaser-overlay">
+          <div class="lock-icon">&#128274;</div>
+          <h3>Claim builder</h3>
+          <p>Ready-to-file packages with evidence checklists and form instructions</p>
+          <a href="signup.html" class="teaser-cta">Unlock for $19/mo</a>
+        </div>
+      </div>
+
+      <!-- Locked - Nexus Letter Generator -->
+      <div style="position:relative">
+        <div class="teaser-card locked">
+          <div class="teaser-card-label">Paid feature</div>
+          <div class="teaser-card-title">Nexus letter generator</div>
+          <div class="teaser-line med"></div>
+          <div class="teaser-line med"></div>
+          <div class="teaser-line short"></div>
+          <div style="margin-top:12px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:12px">
+            <div class="teaser-line med green"></div>
+            <div class="teaser-line med green"></div>
+            <div class="teaser-line short green"></div>
+          </div>
+        </div>
+        <div class="teaser-overlay">
+          <div class="lock-icon">&#128274;</div>
+          <h3>Nexus letter generator</h3>
+          <p>AI-drafted letters connecting secondary conditions to your primary ones</p>
+          <a href="signup.html" class="teaser-cta">Unlock for $19/mo</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- FINAL CTA -->
 <div class="final-cta">
