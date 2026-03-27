@@ -3,205 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard &mdash; UNDERRATED</title>
+<title>Vault &mdash; UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-  --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-  --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
-  --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
-  --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
-}
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-
-#loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
-.loading-logo{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-4)}
-.loading-logo span{color:var(--green)}
-#app{display:none}
-
-nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
 .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
 .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
 .nav-logo span{color:var(--green)}
 .nav-links{display:flex;align-items:center;gap:24px}
 .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
-.nav-links a:hover{color:var(--ink)}
-.nav-right{display:flex;align-items:center;gap:14px}
-.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
 .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
 .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
-
-.page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
-.greeting{margin-bottom:20px}
-.greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
-.greeting p{font-size:14px;color:var(--ink-3)}
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:20px}
-.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:14px}
-.grid-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:14px;margin-bottom:14px}
-.number-label{font-size:12px;color:var(--ink-3);margin-bottom:8px;font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.06em}
-.number-sub{font-size:12px;color:var(--ink-3);margin-top:6px}
-.rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1;color:var(--ink-3)}
-.rating-display span{font-size:18px;font-weight:400;color:var(--ink-3)}
-.btn-green{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;margin-top:14px;font-family:var(--ff-body)}
-.btn-green:hover{background:var(--green-l)}
-.btn-outline{display:inline-flex;align-items:center;gap:6px;background:none;color:var(--green);font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid var(--green-border);cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-.btn-outline:hover{background:var(--green-bg)}
-.gap-intro{font-size:14px;color:var(--ink-2);line-height:1.55;margin-bottom:14px}
-.pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
-.pill{font-size:12px;padding:4px 11px;border-radius:20px}
-.pill.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.pill.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(196,127,10,0.25)}
-.pill.gray{background:var(--bg-2);color:var(--ink-3);border:1px solid var(--border)}
-.grid-bottom{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px}
-.doc-row{display:flex;flex-direction:column;gap:8px}
-.doc-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg);border-radius:9px;border:1px solid var(--border)}
-.doc-left{display:flex;align-items:center;gap:10px}
-.doc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.doc-icon.amber{background:var(--amber-bg)}
-.doc-icon.gray{background:var(--bg-2);border:1px solid var(--border)}
-.doc-name{font-size:13px;color:var(--ink)}
-.doc-sub{font-size:11px;color:var(--ink-3);margin-top:1px}
-.upload-btn{font-size:12px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-.upload-btn:hover{background:var(--green-bg)}
-.steps-list{display:flex;flex-direction:column;gap:8px}
-.step-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--bg);border-radius:9px;cursor:pointer;transition:background .15s;border:1px solid transparent}
-.step-item:hover{background:var(--surface);border-color:var(--border)}
-.step-item.disabled{opacity:.45;pointer-events:none}
-.step-num{width:20px;height:20px;border-radius:50%;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:var(--ff-mono)}
-.step-num.muted{background:var(--bg-2);color:var(--ink-4)}
-.step-text{font-size:13px;color:var(--ink);line-height:1.4}
-.step-text small{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
-.setup-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.setup-banner p{font-size:14px;color:var(--green);line-height:1.5}
-.setup-banner strong{font-weight:500}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-@media(max-width:780px){
-  .grid-top,.grid-bottom{grid-template-columns:1fr}
-  .hamburger{display:flex}
-  .user-email{display:none}
-  .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
-  .nav-links.open{display:flex}
-  .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
-  .nav-links a:last-child{border-bottom:none}
-}
+.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+/* NO LOADING SPINNER - start on upload screen always */
+#upload-state{display:block}
+.upload-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:40px;max-width:560px;margin:0 auto;text-align:center}
+.upload-card h2{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.upload-card p{font-size:14px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+.drop-zone{border:2px dashed var(--border-2);border-radius:12px;padding:40px 20px;cursor:pointer;transition:all .2s;background:var(--bg);position:relative}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--green);background:var(--green-bg)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:36px;margin-bottom:12px}
+.drop-label{font-size:14px;color:var(--ink-2);margin-bottom:4px;font-weight:500}
+.drop-sub{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
+.upload-progress{margin-top:20px;display:none}
+.progress-step{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-radius:8px;margin-bottom:8px;font-size:13px;color:var(--ink-3);border:1px solid var(--border)}
+.progress-step.active{color:var(--ink);border-color:var(--green-border);background:var(--green-bg)}
+.progress-step.done{color:var(--green);border-color:var(--green-border)}
+.step-dot{width:14px;height:14px;border-radius:50%;background:var(--border-2);flex-shrink:0}
+.step-spin{width:14px;height:14px;border:2px solid rgba(14,138,99,0.2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+.step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
+.loading-note{margin-top:14px;font-size:13px;color:var(--ink-3);font-family:var(--ff-mono);text-align:center;display:none}
+.alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
+.alt-action a{color:var(--green)}
+#dashboard{display:none}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.dash-header-left h2{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);line-height:1}
+.dash-header-left p{font-size:13px;color:var(--ink-3);margin-top:3px}
+.reupload-link{font-size:13px;color:var(--green);background:none;border:1px solid var(--green-border);border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+.reupload-link:hover{background:var(--green-bg)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px}
+.stat-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.stat-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
+.stat-number.green{color:var(--green)}
+.stat-sub{font-size:12px;color:var(--ink-3);margin-top:5px}
+.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.card:last-child{margin-bottom:0}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+.cond-list{display:flex;flex-direction:column;gap:8px}
+.cond-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+.cond-name{flex:1;font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
+.cond-meta{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4)}
+.cond-rating{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);line-height:1;min-width:36px;text-align:right}
+.cond-rating.tbd{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);font-weight:400}
+.dpill{font-size:10px;font-family:var(--ff-mono);padding:3px 8px;border-radius:4px;border:1px solid;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+.dpill.sc{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.dpill.def{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+.dpill.den{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.math-explainer{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.math-explainer p{font-size:13px;color:var(--green);line-height:1.6}
+.math-explainer strong{font-weight:500}
+.math-steps{display:flex;flex-direction:column}
+.math-row{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px}
+.math-row:last-child{border-bottom:none}
+.math-label{color:var(--ink-2);flex:1}
+.math-formula{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);margin:0 10px}
+.math-value{font-weight:500;color:var(--ink)}
+.math-row.total .math-label{font-weight:500}
+.math-row.total .math-value{color:var(--green);font-size:16px}
+.tier-wrap{background:var(--bg-2);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.tier-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0 10px}
+.tier-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
+.tier-markers{display:flex;justify-content:space-between;font-family:var(--ff-mono);font-size:10px;color:var(--ink-4)}
+.next-tier{font-size:13px;color:var(--ink-2);line-height:1.55}
+.next-tier strong{color:var(--green);font-weight:500}
+.comp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:13px}
+.comp-row:last-child{margin-bottom:0}
+.comp-row.active{background:var(--green-bg);border-color:var(--green-border)}
+.comp-row.active span{color:var(--green);font-weight:500}
+.step-list{display:flex;flex-direction:column;gap:8px}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:13px;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
+.step-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.step-content{flex:1}
+.step-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
+.step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
+.step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+@media(max-width:780px){.stat-row{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.hamburger{display:flex}.user-pill{display:none}.nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}.nav-links.open{display:flex}.nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}.nav-links a:last-child{border-bottom:none}}
 </style>
 </head>
 <body>
-
-<div id="loading-screen"><div class="loading-logo">UNDER<span>RATED</span></div></div>
-
-<div id="app">
-  <nav>
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
-      <div class="nav-links" id="nav-links">
-        <a href="calculator.html">Rating calculator</a>
-        <a href="gap.html">Gap identifier</a>
-        <a href="vault.html">Vault</a>
-      </div>
-      <div class="nav-right">
-        <span class="user-email" id="user-email"></span>
-        <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
-        <button class="signout-btn" onclick="handleSignout()">Sign out</button>
-      </div>
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html" class="active">Vault</a>
     </div>
-  </nav>
-
-  <div class="page">
-    <div class="setup-banner" id="setup-banner">
-      <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating &mdash; it takes 60 seconds and unlocks your personalized gap analysis.</p>
-      <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating &rarr;</a>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
     </div>
+  </div>
+</nav>
 
-    <div class="greeting">
-      <h1 id="greeting-text">Welcome back</h1>
-      <p id="greeting-sub">Here's where things stand.</p>
-    </div>
+<div class="page">
+  <div class="page-eyebrow">Your records</div>
+  <div class="page-title">Vault</div>
+  <p class="page-sub">Upload your VA rating decision PDF &mdash; we'll extract every condition automatically.</p>
 
-    <div class="grid-top">
-      <div class="card">
-        <div class="number-label">Combined VA rating</div>
-        <div class="rating-display" id="rating-display">&mdash;</div>
-        <div class="number-sub" id="rating-sub">Not entered yet</div>
-        <a href="calculator.html" class="btn-green" id="rating-btn">Enter my rating &rarr;</a>
+  <div id="upload-state">
+    <div class="upload-card">
+      <h2>Upload your rating decision</h2>
+      <p>Drop your VA rating decision PDF here. We'll extract all your conditions, ratings, and decisions automatically &mdash; takes about 30 seconds.</p>
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" accept=".pdf" id="file-input">
+        <div class="drop-icon">&#128196;</div>
+        <div class="drop-label">Drop your PDF here or click to browse</div>
+        <div class="drop-sub">VA rating decision, C&amp;P exam results, or combined rating letter</div>
       </div>
-      <div class="card">
-        <div class="card-title">Potential unclaimed conditions</div>
-        <p class="gap-intro">Once you enter your MOS and current conditions, UNDERRATED will surface conditions you likely qualify for but haven't claimed.</p>
-        <div class="pill-row">
-          <span class="pill green">Sleep apnea</span>
-          <span class="pill green">Tinnitus</span>
-          <span class="pill amber">PTSD (secondary)</span>
-          <span class="pill gray">Run analysis to see yours</span>
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-step" id="step-upload"><div class="step-dot"></div>Uploading PDF...</div>
+        <div class="progress-step" id="step-extract"><div class="step-dot"></div>Extracting conditions with AI...</div>
+        <div class="progress-step" id="step-save"><div class="step-dot"></div>Saving to your vault...</div>
+      </div>
+      <div class="upload-error" id="upload-error"></div>
+      <div class="loading-note" id="loading-note">Checking for existing records...</div>
+    </div>
+    <div class="alt-action">Don't have a PDF yet? <a href="calculator.html">Enter conditions manually in the calculator</a></div>
+  </div>
+
+  <div id="dashboard">
+    <div class="dash-header">
+      <div class="dash-header-left">
+        <h2>Your conditions</h2>
+        <p id="last-updated"></p>
+      </div>
+      <button class="reupload-link" onclick="showUpload()">+ Upload new PDF</button>
+    </div>
+    <div class="stat-row" id="stat-row"></div>
+    <div class="layout">
+      <div>
+        <div class="card">
+          <div class="card-title">Extracted conditions</div>
+          <div class="card-sub">From your rating decision document.</div>
+          <div class="cond-list" id="cond-list"></div>
         </div>
-        <a href="gap.html" class="btn-green">Run gap analysis &rarr;</a>
-      </div>
-    </div>
-
-    <div class="grid-bottom">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
-          <div class="card-title" style="margin:0">Document vault</div>
-          <a href="vault.html" class="btn-outline">Manage all &rarr;</a>
-        </div>
-        <div class="doc-row">
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon amber">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">DD-214</div><div class="doc-sub">Required for all claims</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
-          </div>
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon amber">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">C&amp;P exam results</div><div class="doc-sub">Upload if you have them</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
-          </div>
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon gray">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#8A8780" stroke-width="1.2"/><path d="M6 6h4M6 9h4" stroke="#8A8780" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional &middot; strengthens claims</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
-          </div>
+        <div class="card">
+          <div class="card-title">Next steps</div>
+          <div class="card-sub">Based on your decisions and rating gaps.</div>
+          <div class="step-list" id="step-list"></div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">Next steps</div>
-        <div class="steps-list">
-          <div class="step-item" onclick="window.location.href='calculator.html'">
-            <div class="step-num">1</div>
-            <div class="step-text">Enter your current rating<small>Sets your baseline</small></div>
+      <div>
+        <div class="card">
+          <div class="card-title">How your rating is calculated</div>
+          <div class="math-explainer"><p>The VA uses <strong>"whole person" math</strong> &mdash; not a simple sum. Your highest condition takes from 100%. Each next one takes from what's left.</p></div>
+          <div class="math-steps" id="math-steps"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Compensation tier</div>
+          <div class="tier-wrap">
+            <div style="font-size:13px;color:var(--ink-2)" id="tier-label"></div>
+            <div class="tier-track"><div class="tier-fill" id="tier-fill" style="width:0%"></div></div>
+            <div class="tier-markers"><span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span><span>100%</span></div>
           </div>
-          <div class="step-item" onclick="window.location.href='gap.html'">
-            <div class="step-num">2</div>
-            <div class="step-text">Run gap analysis<small>Find unclaimed conditions</small></div>
-          </div>
-          <div class="step-item" onclick="window.location.href='vault.html'">
-            <div class="step-num">3</div>
-            <div class="step-text">Upload DD-214<small>Needed for all claims</small></div>
-          </div>
-          <div class="step-item disabled">
-            <div class="step-num muted">4</div>
-            <div class="step-text">Build claim package<small>Unlocks after steps 1&ndash;3</small></div>
-          </div>
+          <div class="next-tier" id="next-tier"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">2026 monthly compensation</div>
+          <div id="comp-table"></div>
+          <p style="font-size:12px;color:var(--ink-4);margin-top:10px;font-family:var(--ff-mono)">Veteran alone, no dependents.</p>
         </div>
       </div>
     </div>
@@ -210,90 +204,160 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    storage: window.sessionStorage,
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true
-  }
+var SURL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var VURL='https://getunderrated.vercel.app/api/extract-pdf';
+var COMP={0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+var sb=window.supabase.createClient(SURL,SKEY);
+var currentUser=null;
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+
+function safeStr(v){return(v!==null&&v!==undefined)?String(v).toLowerCase():'';}
+function dpClass(d){var s=safeStr(d);if(!s)return'def';if(s.indexOf('not service')!==-1)return'den';if(s.indexOf('deferred')!==-1)return'def';if(s.indexOf('service')!==-1)return'sc';return'def';}
+function dpLabel(d){var s=safeStr(d);if(!s)return'Pending';if(s.indexOf('not service')!==-1)return'Denied';if(s.indexOf('deferred')!==-1)return'Deferred';if(s.indexOf('service')!==-1)return'Connected';return String(d);}
+
+function showUpload(){
+  document.getElementById('upload-progress').style.display='none';
+  document.getElementById('upload-error').style.display='none';
+  document.getElementById('loading-note').style.display='none';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('upload-state').style.display='block';
+}
+
+function showDash(){
+  document.getElementById('upload-state').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+}
+
+function setStep(id,status){
+  var el=document.getElementById(id);if(!el)return;
+  el.className='progress-step'+(status==='active'?' active':status==='done'?' done':'');
+  var icon=el.querySelector('.step-dot,.step-spin,.step-check');
+  if(status==='active'&&icon)icon.outerHTML='<div class="step-spin"></div>';
+  else if(status==='done'){var s=el.querySelector('.step-spin,.step-dot');if(s)s.outerHTML='<span class="step-check">&#10003;</span>';}
+}
+
+function showErr(msg){
+  var el=document.getElementById('upload-error');el.textContent=msg;el.style.display='block';
+  var dz=document.getElementById('drop-zone');if(dz){dz.style.pointerEvents='';dz.style.opacity='';}
+}
+
+// Setup file drop zone
+document.getElementById('drop-zone').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('dragover');});
+document.getElementById('drop-zone').addEventListener('dragleave',function(){this.classList.remove('dragover');});
+document.getElementById('drop-zone').addEventListener('drop',function(e){
+  e.preventDefault();this.classList.remove('dragover');
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type==='application/pdf')handleFile(f);else showErr('Please upload a PDF file.');
+});
+document.getElementById('file-input').addEventListener('change',function(){
+  if(this.files&&this.files[0])handleFile(this.files[0]);
 });
 
-function toggleNav() {
-  document.getElementById('nav-links').classList.toggle('open');
+// AUTH - check session, silently swap to dashboard if data exists
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+  // Show a subtle note while we check for existing data
+  document.getElementById('loading-note').style.display='block';
+  // Query conditions
+  sb.from('conditions').select('id,name,rating,diagnostic_code,decision,effective_date,sort_order')
+    .eq('user_id',currentUser.id)
+    .then(function(qres){
+      document.getElementById('loading-note').style.display='none';
+      if(qres.error){console.error('query:',qres.error);return;} // stay on upload screen
+      var data=qres.data||[];
+      if(data.length===0)return; // stay on upload screen
+      data.sort(function(a,b){return(parseInt(b.rating)||0)-(parseInt(a.rating)||0);});
+      renderDashboard(data);
+      showDash();
+    })
+    .catch(function(e){console.error('query catch:',e);document.getElementById('loading-note').style.display='none';});
+}).catch(function(e){console.error('getSession:',e);});
+
+// UPLOAD
+function handleFile(file){
+  if(!currentUser){showErr('Please log in first.');return;}
+  if(!file||file.type!=='application/pdf'){showErr('Please upload a PDF file.');return;}
+  document.getElementById('upload-error').style.display='none';
+  document.getElementById('upload-progress').style.display='block';
+  var dz=document.getElementById('drop-zone');if(dz){dz.style.pointerEvents='none';dz.style.opacity='0.5';}
+  var fname=currentUser.id+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  setStep('step-upload','active');
+  sb.storage.from('rating-decisions').upload(fname,file,{upsert:true})
+    .then(function(r){
+      if(r.error)throw new Error('Upload failed: '+r.error.message);
+      setStep('step-upload','done');
+      var fileUrl=sb.storage.from('rating-decisions').getPublicUrl(fname).data.publicUrl;
+      setStep('step-extract','active');
+      return fetch(VURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file_url:fileUrl,user_id:currentUser.id})});
+    })
+    .then(function(res){
+      if(!res.ok)return res.json().then(function(e){throw new Error(e.error||'Extraction failed.');});
+      return res.json();
+    })
+    .then(function(extracted){
+      if(!extracted.success||!extracted.conditions||!extracted.conditions.length)throw new Error('No conditions found. Make sure this is a VA rating decision letter.');
+      setStep('step-extract','done');setStep('step-save','active');
+      return sb.from('conditions').delete().eq('user_id',currentUser.id).then(function(){
+        var rows=extracted.conditions.map(function(c,i){return{user_id:currentUser.id,name:c.condition_name||c.name||'Unknown',rating:c.rating!=null?String(c.rating):null,diagnostic_code:c.diagnostic_code||null,decision:c.decision||null,effective_date:c.effective_date||null,sort_order:i};});
+        return sb.from('conditions').insert(rows);
+      });
+    })
+    .then(function(r){
+      if(r.error)throw new Error('Save failed: '+r.error.message);
+      setStep('step-save','done');
+      setTimeout(function(){
+        sb.from('conditions').select('*').eq('user_id',currentUser.id).then(function(r2){
+          var d=r2.data||[];d.sort(function(a,b){return(parseInt(b.rating)||0)-(parseInt(a.rating)||0);});
+          renderDashboard(d);showDash();
+        });
+      },800);
+    })
+    .catch(function(err){console.error('upload:',err);showErr(err.message);});
 }
 
-function showApp() {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+// RENDER
+function calcCombined(data){
+  var valid=data.filter(function(c){return c.rating&&parseInt(c.rating)>0;});
+  if(!valid.length)return{exact:0,official:0,steps:[]};
+  var remaining=100,steps=[];
+  valid.forEach(function(c){var r=parseInt(c.rating);var taken=remaining*r/100;steps.push({name:c.name,rating:r,taken:taken.toFixed(1),rb:remaining.toFixed(1)});remaining-=taken;});
+  var exact=parseFloat((100-remaining).toFixed(2));
+  var official=exact<1?0:exact>=95?100:Math.round(exact/10)*10;
+  return{exact:exact,official:official,steps:steps};
 }
 
-function init() {
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (!session) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    try {
-      const email = session.user.email;
-      const name = email.split('@')[0];
-      document.getElementById('user-email').textContent = email;
-      document.getElementById('greeting-text').textContent = 'Welcome back, ' + name;
-      document.getElementById('greeting-sub').textContent = 'Logged in as ' + email;
-
-      const { data, error } = await sb
-        .from('conditions')
-        .select('*')
-        .eq('user_id', session.user.id);
-
-      if (data && data.length > 0) {
-        // Hide setup banner — user has conditions
-        document.getElementById('setup-banner').style.display = 'none';
-
-        // Calculate combined rating
-        const valid = data.filter(c => c.rating && parseInt(c.rating) > 0);
-        if (valid.length > 0) {
-          const sorted = [...valid].sort((a, b) => parseInt(b.rating) - parseInt(a.rating));
-          let remaining = 100;
-          for (const c of sorted) {
-            remaining = remaining * (1 - parseInt(c.rating) / 100);
-          }
-          const exact = parseFloat((100 - remaining).toFixed(2));
-          const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
-
-          const display = document.getElementById('rating-display');
-          display.style.color = 'var(--ink)';
-          display.innerHTML = official + '<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
-          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
-          document.getElementById('rating-btn').textContent = 'Update my rating';
-        } else {
-          // Has conditions but all are 0% (e.g. ED only)
-          document.getElementById('rating-display').textContent = '0%';
-          document.getElementById('rating-display').style.color = 'var(--ink)';
-          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
-          document.getElementById('rating-btn').textContent = 'Update my rating';
-        }
-      } else {
-        // No conditions yet — show setup banner
-        document.getElementById('setup-banner').style.display = 'flex';
-      }
-    } catch (err) {
-      console.error('Dashboard error:', err);
-    } finally {
-      showApp();
-    }
-  });
+function renderDashboard(data){
+  try{
+    var c=calcCombined(data);var exact=c.exact,official=c.official,steps=c.steps;
+    var conn=data.filter(function(x){return safeStr(x.decision).indexOf('service connected')!==-1&&safeStr(x.decision).indexOf('not')===-1;}).length;
+    var dc=conn>0?conn:data.filter(function(x){return x.rating&&parseInt(x.rating)>0;}).length;
+    document.getElementById('last-updated').textContent=data.length+' condition'+(data.length!==1?'s':'')+' · updated '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+official+'%</div><div class="stat-sub">Exact '+exact.toFixed(1)+'% → rounded to '+official+'%</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[official]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
+    document.getElementById('cond-list').innerHTML=data.map(function(x){return'<div class="cond-row"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<div class="dpill '+dpClass(x.decision)+'">'+dpLabel(x.decision)+'</div>'+(x.rating&&parseInt(x.rating)>0?'<div class="cond-rating">'+x.rating+'%</div>':'<div class="cond-rating tbd">TBD</div>')+'</div>';}).join('');
+    document.getElementById('math-steps').innerHTML=steps.map(function(s){return'<div class="math-row"><span class="math-label">'+s.name+'</span><span class="math-formula">'+s.rb+'% x '+s.rating+'%</span><span class="math-value">−'+s.taken+'%</span></div>';}).join('')+'<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to '+official+'%</span><span class="math-value">'+exact.toFixed(1)+'%</span></div>';
+    document.getElementById('tier-fill').style.width=Math.min(official,100)+'%';
+    document.getElementById('tier-label').textContent='Current rating: '+official+'%';
+    if(official<100){var nxt=official+10;var ex=Math.round((COMP[nxt]||0)-(COMP[official]||0));document.getElementById('next-tier').innerHTML='You're <strong>'+(nxt-exact).toFixed(1)+'% away from '+nxt+'%</strong> &mdash; worth <strong>$'+ex+'/month</strong> more.';}
+    else{document.getElementById('next-tier').textContent='You are at the maximum rating.';}
+    document.getElementById('comp-table').innerHTML=[10,20,30,40,50,60,70,80,90,100].map(function(t){return'<div class="comp-row'+(t===official?' active':'')+'"><span>'+t+'%'+(t===official?' ← you are here':'')+'</span><span style="font-family:var(--ff-mono);font-size:13px">$'+(COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo</span></div>';}).join('');
+    var def=data.filter(function(x){return safeStr(x.decision).indexOf('deferred')!==-1;});
+    var den=data.filter(function(x){return safeStr(x.decision).indexOf('not service')!==-1;});
+    var si=[];
+    if(def.length)si.push({icon:'&#9203;',title:'Follow up on '+def.length+' deferred condition'+(def.length>1?'s':''),desc:def.map(function(x){return x.name;}).join(', ')+' still pending. Contact your VSO or check VA.gov.',tag:'action required',amber:true});
+    if(den.length)si.push({icon:'&#9889;',title:'Appeal '+den.length+' denied condition'+(den.length>1?'s':''),desc:'You have 1 year from the decision to file a supplemental claim with new evidence.',tag:'potential increase',amber:false});
+    si.push({icon:'&#128269;',title:'Run the gap identifier',desc:'Find additional unclaimed conditions based on your MOS and service era.',tag:'find more',amber:false});
+    if(official<100){var nx2=official+10;var ex2=Math.round((COMP[nx2]||0)-(COMP[official]||0));si.push({icon:'&#128200;',title:'Getting to '+nx2+'% adds $'+ex2+'/month',desc:'If your conditions have worsened, request a new C&P exam to capture current severity.',tag:'rating increase',amber:false});}
+    si.push({icon:'&#129309;',title:'Connect with a VSO',desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.',tag:'free resource',amber:false});
+    document.getElementById('step-list').innerHTML=si.map(function(s){return'<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';}).join('');
+  }catch(err){console.error('render:',err);}
 }
 
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
-}
-
-init();
+async function handleSignout(){await sb.auth.signOut();window.location.href='login.html';}
 </script>
 </body>
 </html>
