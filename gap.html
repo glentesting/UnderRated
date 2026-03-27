@@ -137,7 +137,21 @@
 <div class="page">
   <div class="page-eyebrow">Step 2 of 3</div>
   <div class="page-title">Gap identifier</div>
-  <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed — and explain exactly why you likely qualify.</p>
+  <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed &mdash; and explain exactly why you likely qualify.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
+    <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Secondary conditions</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions caused or worsened by ones you already have. Example: PTSD causing sleep apnea. No new in-service event needed &mdash; just a nexus letter.</div>
+    </div>
+    <div style="background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">MOS exposure</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions common to your specific military job. Infantry veterans get tinnitus and back injuries. Artillery gets hearing loss. Your MOS tells the story.</div>
+    </div>
+    <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--amber);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Presumptive conditions</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions the VA automatically grants based on where/when you served. Vietnam? Agent Orange. Post-9/11? Burn pits. No proof of connection required.</div>
+    </div>
+  </div>
 
   <div class="layout">
     <div>
@@ -456,37 +470,51 @@ function calcImpact(newCondition) {
   return {curr, newOff, ratingBump, dollarsMore, assumedRating:meta.default, range:meta.range};
 }
 
-async function init() {
+function init() {
   const saved = JSON.parse(localStorage.getItem('ur_profile') || '{}');
   if (saved.branch) document.getElementById('branch').value = saved.branch;
   if (saved.mos)    document.getElementById('mos').value = saved.mos;
   if (saved.era)    document.getElementById('era').value = saved.era;
-  sb.auth.onAuthStateChange(async (event, session) => {
+
+  // Set loading state immediately so it never just says "Loading..."
+  document.getElementById('cond-list').innerHTML = '<div class="cond-empty">Checking for saved conditions...</div>';
+
+  sb.auth.getSession().then(function(res) {
+    var session = res && res.data && res.data.session ? res.data.session : null;
     if (!session) { window.location.href = 'login.html'; return; }
     currentUser = session.user;
     document.getElementById('user-email').textContent = currentUser.email;
-    await loadConditions();
-    renderCurrentConditions();
+    loadConditions();
+  }).catch(function() {
+    window.location.href = 'login.html';
   });
 }
 
-async function loadConditions() {
-  const {data} = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('sort_order');
-  userConditions = (data || []).map(d => ({name:d.name, rating:d.rating}));
+function loadConditions() {
+  sb.from('conditions').select('*').eq('user_id', currentUser.id)
+    .then(function(res) {
+      userConditions = (res.data || []).map(function(d) { return {name:d.name, rating:d.rating}; });
+      renderCurrentConditions();
+    })
+    .catch(function() {
+      userConditions = [];
+      renderCurrentConditions();
+    });
 }
 
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
+function handleSignout() {
+  sb.auth.signOut().then(function() { window.location.href = 'login.html'; });
 }
 
 function renderCurrentConditions() {
-  const list = document.getElementById('cond-list');
+  var list = document.getElementById('cond-list');
   if (!userConditions.length) {
-    list.innerHTML = '<div class="cond-empty">No conditions entered yet. Start in the rating calculator.</div>';
+    list.innerHTML = '<div class="cond-empty" style="line-height:1.6">No conditions saved yet.<br><a href="calculator.html" style="color:var(--green);font-size:13px">Enter your conditions in the calculator first &rarr;</a></div>';
     return;
   }
-  list.innerHTML = userConditions.map(c => `<div class="cond-chip"><span class="cond-name">${c.name}</span><span class="cond-rating">${c.rating}%</span></div>`).join('');
+  list.innerHTML = userConditions.map(function(c) {
+    return '<div class="cond-chip"><span class="cond-name">'+c.name+'</span><span class="cond-rating">'+c.rating+'%</span></div>';
+  }).join('');
 }
 
 function runAnalysis() {
