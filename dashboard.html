@@ -187,6 +187,7 @@ var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
 
 function handleSignout(){
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
   sb.auth.signOut().then(function(){window.location.href='login.html';});
 }
 

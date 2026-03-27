@@ -406,7 +406,7 @@ function renderDashboard(data){
   }catch(err){console.error('render:',err);}
 }
 
-async function handleSignout(){await sb.auth.signOut();window.location.href='login.html';}
+async function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});await sb.auth.signOut();window.location.href='login.html';}
 </script>
 </body>
 </html>

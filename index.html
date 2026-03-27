@@ -500,6 +500,7 @@ sb.auth.getSession().then(function(res) {
 }).catch(function() {});
 
 function handleSignout() {
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
   sb.auth.signOut().then(function() {
     window.location.href = 'index.html';
   });
