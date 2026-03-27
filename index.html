@@ -24,20 +24,18 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .nav-inner{max-width:1080px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
 .nav-logo span{color:var(--green)}
-/* Marketing nav (logged out) */
-.nav-marketing{display:flex;align-items:center;gap:32px}
-.nav-marketing a{font-size:15px;color:var(--ink-3);transition:color .15s}
-.nav-marketing a:hover{color:var(--ink)}
-.nav-cta{display:flex;align-items:center;gap:10px}
-/* App nav (logged in) */
-.nav-app{display:none;align-items:center;gap:18px}
-.nav-app a{font-size:13px;color:var(--ink-3);transition:color .15s}
-.nav-app a:hover{color:var(--ink)}
-.nav-app-right{display:none;align-items:center;gap:10px}
+/* Marketing nav - hidden, replaced by static nav */
+.nav-marketing{display:none}
+  .nav-links-static{display:none}
+.nav-cta{display:none}
+/* Static nav - always shown */
+.nav-links-static{display:flex;align-items:center;gap:20px}
+.nav-links-static a{font-size:13px;color:var(--ink-3);transition:color .15s}
+.nav-links-static a:hover{color:var(--ink)}
+.nav-divider{width:1px;height:16px;background:var(--border-2);display:inline-block}
+.nav-cta-static{display:flex;align-items:center;gap:10px}
 .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
-.dash-btn{font-size:13px;font-weight:500;background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-.dash-btn:hover{background:var(--green-l)}
 /* HERO */
 .hero{padding:88px 28px 72px;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
 .hero-eyebrow{margin-bottom:18px}
@@ -163,6 +161,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   .trust-inner{gap:24px}
   .trust-divider{display:none}
   .nav-marketing{display:none}
+  .nav-links-static{display:none}
   .validate-h{font-size:40px}
   .section-title{font-size:38px}
   .final-cta h2{font-size:44px}
@@ -199,30 +198,20 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
 
-    <!-- Logged-OUT nav (default) -->
-    <div class="nav-marketing" id="nav-marketing">
+    <!-- Single static nav - always visible, no JS needed -->
+    <div class="nav-links-static">
       <a href="#how-it-works">How it works</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-    </div>
-    <div class="nav-cta" id="nav-cta">
-      <a href="login.html" class="btn-ghost">Log in</a>
-      <a href="signup.html" class="btn-primary">Sign up free</a>
-    </div>
-
-    <!-- Logged-IN nav (hidden until auth check) -->
-    <div class="nav-app" id="nav-app">
-      <a href="#how-it-works">How it works</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <span style="width:1px;height:16px;background:var(--border-2);display:inline-block;margin:0 4px"></span>
+      <span class="nav-divider"></span>
       <a href="calculator.html">Calculator</a>
       <a href="gap.html">Gap identifier</a>
       <a href="vault.html">Vault</a>
     </div>
-    <div class="nav-app-right" id="nav-app-right">
-      <button class="dash-btn" onclick="window.location.href='dashboard.html'">My dashboard</button>
-      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    <div class="nav-cta-static">
+      <a href="dashboard.html" class="btn-ghost" style="font-size:13px;padding:8px 14px">My dashboard</a>
+      <a href="login.html" class="btn-ghost" id="nav-login">Log in</a>
+      <a href="signup.html" class="btn-primary" id="nav-signup">Sign up free</a>
     </div>
   </div>
 </nav>
@@ -493,28 +482,22 @@ var sb = window.supabase.createClient(
   'https://bglhfmwjfnmybcrjlscm.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI');
 
-// Check auth state and swap nav accordingly
+// Check auth - if logged in, swap CTAs and show sign out instead of log in/sign up
 sb.auth.getSession().then(function(res) {
   var session = res && res.data && res.data.session ? res.data.session : null;
   if (session) {
-    // Logged IN — show app nav, hide marketing nav
-    document.getElementById('nav-marketing').style.display = 'none';
-    document.getElementById('nav-cta').style.display = 'none';
-    document.getElementById('nav-app').style.display = 'flex';
-    document.getElementById('nav-app-right').style.display = 'flex';
-    // Update hero CTA to go to dashboard
+    // Logged in - update CTAs
     var heroCta = document.getElementById('hero-cta');
-    heroCta.textContent = 'Go to my dashboard';
-    heroCta.href = 'dashboard.html';
-    // Update final CTA too
+    if (heroCta) { heroCta.textContent = 'Go to my dashboard'; heroCta.href = 'dashboard.html'; }
     var finalCta = document.getElementById('final-cta');
-    finalCta.textContent = 'Go to my dashboard';
-    finalCta.href = 'dashboard.html';
+    if (finalCta) { finalCta.textContent = 'Go to my dashboard'; finalCta.href = 'dashboard.html'; }
+    // Hide log in / sign up, show sign out
+    var login = document.getElementById('nav-login');
+    var signup = document.getElementById('nav-signup');
+    if (login) login.style.display = 'none';
+    if (signup) { signup.textContent = 'Sign out'; signup.href = '#'; signup.onclick = function(e) { e.preventDefault(); handleSignout(); }; }
   }
-  // If not logged in, keep defaults (marketing nav + sign up buttons)
-}).catch(function() {
-  // Session check failed — keep defaults, no problem
-});
+}).catch(function() {});
 
 function handleSignout() {
   sb.auth.signOut().then(function() {
