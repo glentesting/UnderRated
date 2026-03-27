@@ -30,8 +30,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .nav-marketing a:hover{color:var(--ink)}
 .nav-cta{display:flex;align-items:center;gap:10px}
 /* App nav (logged in) */
-.nav-app{display:none;align-items:center;gap:24px}
-.nav-app a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-app{display:none;align-items:center;gap:18px}
+.nav-app a{font-size:13px;color:var(--ink-3);transition:color .15s}
 .nav-app a:hover{color:var(--ink)}
 .nav-app-right{display:none;align-items:center;gap:10px}
 .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
@@ -189,7 +189,11 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
 
     <!-- Logged-IN nav (hidden until auth check) -->
     <div class="nav-app" id="nav-app">
-      <a href="calculator.html">Rating calculator</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <span style="width:1px;height:16px;background:var(--border-2);display:inline-block;margin:0 4px"></span>
+      <a href="calculator.html">Calculator</a>
       <a href="gap.html">Gap identifier</a>
       <a href="vault.html">Vault</a>
     </div>
