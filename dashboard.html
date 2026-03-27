@@ -217,17 +217,27 @@ sb.auth.getSession().then(function(res){
         return;
       }
 
-      // Calculate combined rating
+      // Use official rating from PDF if stored, otherwise calculate
+      var storedRating = localStorage.getItem('ur_combined_rating_' + session.user.id);
       var valid=data.filter(function(c){return c.rating&&parseInt(c.rating)>0;});
-      if(valid.length>0){
+      var displayRating = null;
+
+      if (storedRating != null) {
+        // Official rating from uploaded VA decision PDF
+        displayRating = parseInt(storedRating);
+      } else if (valid.length > 0) {
+        // Calculate from manually entered conditions
         valid.sort(function(a,b){return parseInt(b.rating)-parseInt(a.rating);});
         var remaining=100;
         valid.forEach(function(c){remaining=remaining*(1-parseInt(c.rating)/100);});
         var exact=parseFloat((100-remaining).toFixed(2));
-        var official=exact>=95?100:Math.round(exact/10)*10;
+        displayRating = exact>=95?100:Math.round(exact/10)*10;
+      }
+
+      if (displayRating !== null) {
         var display=document.getElementById('rating-display');
         display.style.color='var(--ink)';
-        display.innerHTML=official+'<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
+        display.innerHTML=displayRating+'<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
         document.getElementById('rating-sub').textContent=data.length+' condition'+(data.length!==1?'s':'')+' entered';
         document.getElementById('rating-btn').textContent='Update my rating';
       }
