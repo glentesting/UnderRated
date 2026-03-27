@@ -301,6 +301,10 @@ function handleFile(file){
     })
     .then(function(extracted){
       if(!extracted.success||!extracted.conditions||!extracted.conditions.length)throw new Error('No conditions found. Make sure this is a VA rating decision letter.');
+      // Store the official combined rating from the PDF
+      if(extracted.combined_rating!=null){
+        localStorage.setItem('ur_combined_rating_'+currentUser.id, extracted.combined_rating);
+      }
       setStep('step-extract','done');setStep('step-save','active');
       return sb.from('conditions').delete().eq('user_id',currentUser.id).then(function(){
         var rows=extracted.conditions.map(function(c,i){return{user_id:currentUser.id,name:c.condition_name||c.name||'Unknown',rating:c.rating!=null?String(c.rating):null,diagnostic_code:c.diagnostic_code||null,decision:c.decision||null,effective_date:c.effective_date||null,sort_order:i};});
@@ -337,21 +341,24 @@ function renderDashboard(data){
     var conn=data.filter(function(x){return safeStr(x.decision).indexOf('service connected')!==-1&&safeStr(x.decision).indexOf('not')===-1;}).length;
     var dc=conn>0?conn:data.filter(function(x){return x.rating&&parseInt(x.rating)>0;}).length;
     document.getElementById('last-updated').textContent=data.length+' condition'+(data.length!==1?'s':'')+' · updated '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+official+'%</div><div class="stat-sub">Exact '+exact.toFixed(1)+'% → rounded to '+official+'%</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[official]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
+    var officialStored=localStorage.getItem('ur_combined_rating_'+currentUser.id);
+    var displayRating=officialStored!=null?parseInt(officialStored):official;
+    var ratingSubText=officialStored!=null?'As stated in your VA rating decision':'Exact '+exact.toFixed(1)+'% \u2192 rounded to '+official+'%';
+    document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+displayRating+'%</div><div class="stat-sub">'+ratingSubText+'</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[displayRating]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
     document.getElementById('cond-list').innerHTML=data.map(function(x){return'<div class="cond-row"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<div class="dpill '+dpClass(x.decision)+'">'+dpLabel(x.decision)+'</div>'+(x.rating&&parseInt(x.rating)>0?'<div class="cond-rating">'+x.rating+'%</div>':'<div class="cond-rating tbd">TBD</div>')+'</div>';}).join('');
     document.getElementById('math-steps').innerHTML=steps.map(function(s){return'<div class="math-row"><span class="math-label">'+s.name+'</span><span class="math-formula">'+s.rb+'% x '+s.rating+'%</span><span class="math-value">−'+s.taken+'%</span></div>';}).join('')+'<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to '+official+'%</span><span class="math-value">'+exact.toFixed(1)+'%</span></div>';
-    document.getElementById('tier-fill').style.width=Math.min(official,100)+'%';
-    document.getElementById('tier-label').textContent='Current rating: '+official+'%';
-    if(official<100){var nxt=official+10;var ex=Math.round((COMP[nxt]||0)-(COMP[official]||0));document.getElementById('next-tier').innerHTML='You\'re <strong>'+(nxt-exact).toFixed(1)+'% away from '+nxt+'%</strong> &mdash; worth <strong>$'+ex+'/month</strong> more.';}
+    document.getElementById('tier-fill').style.width=Math.min(displayRating,100)+'%';
+    document.getElementById('tier-label').textContent='Current rating: '+displayRating+'%';
+    if(displayRating<100){var nxt=displayRating+10;var ex=Math.round((COMP[nxt]||0)-(COMP[displayRating]||0));document.getElementById('next-tier').innerHTML='You\'re <strong>'+nxt+'% is the next tier</strong> &mdash; worth <strong>$'+ex+'/month</strong> more.';}
     else{document.getElementById('next-tier').textContent='You are at the maximum rating.';}
-    document.getElementById('comp-table').innerHTML=[10,20,30,40,50,60,70,80,90,100].map(function(t){return'<div class="comp-row'+(t===official?' active':'')+'"><span>'+t+'%'+(t===official?' ← you are here':'')+'</span><span style="font-family:var(--ff-mono);font-size:13px">$'+(COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo</span></div>';}).join('');
+    document.getElementById('comp-table').innerHTML=[10,20,30,40,50,60,70,80,90,100].map(function(t){return'<div class="comp-row'+(t===displayRating?' active':'')+'"><span>'+t+'%'+(t===official?' ← you are here':'')+'</span><span style="font-family:var(--ff-mono);font-size:13px">$'+(COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo</span></div>';}).join('');
     var def=data.filter(function(x){return safeStr(x.decision).indexOf('deferred')!==-1;});
     var den=data.filter(function(x){return safeStr(x.decision).indexOf('not service')!==-1;});
     var si=[];
     if(def.length)si.push({icon:'&#9203;',title:'Follow up on '+def.length+' deferred condition'+(def.length>1?'s':''),desc:def.map(function(x){return x.name;}).join(', ')+' still pending. Contact your VSO or check VA.gov.',tag:'action required',amber:true});
     if(den.length)si.push({icon:'&#9889;',title:'Appeal '+den.length+' denied condition'+(den.length>1?'s':''),desc:'You have 1 year from the decision to file a supplemental claim with new evidence.',tag:'potential increase',amber:false});
     si.push({icon:'&#128269;',title:'Run the gap identifier',desc:'Find additional unclaimed conditions based on your MOS and service era.',tag:'find more',amber:false});
-    if(official<100){var nx2=official+10;var ex2=Math.round((COMP[nx2]||0)-(COMP[official]||0));si.push({icon:'&#128200;',title:'Getting to '+nx2+'% adds $'+ex2+'/month',desc:'If your conditions have worsened, request a new C&P exam to capture current severity.',tag:'rating increase',amber:false});}
+    if(displayRating<100){var nx2=displayRating+10;var ex2=Math.round((COMP[nx2]||0)-(COMP[displayRating]||0));si.push({icon:'&#128200;',title:'Getting to '+nx2+'% adds $'+ex2+'/month',desc:'If your conditions have worsened, request a new C&P exam to capture current severity.',tag:'rating increase',amber:false});}
     si.push({icon:'&#129309;',title:'Connect with a VSO',desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.',tag:'free resource',amber:false});
     document.getElementById('step-list').innerHTML=si.map(function(s){return'<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';}).join('');
   }catch(err){console.error('render:',err);}
