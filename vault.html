@@ -75,7 +75,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .cond-name{flex:1;font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
 .cond-meta{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4)}
 .cond-rating{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);line-height:1;min-width:36px;text-align:right}
-.cond-rating.tbd{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);font-weight:400}
+.cond-rating.tbd{font-family:var(--ff-mono);font-size:11px;color:var(--amber);font-weight:500;cursor:help}
+.cond-rating.denied{font-family:var(--ff-mono);font-size:11px;color:var(--red);font-weight:500;background:var(--red-bg);padding:3px 8px;border-radius:4px;border:1px solid var(--red-border)}
+.cond-note{font-size:11px;padding:6px 10px;border-radius:6px;margin:2px 0 6px 0;line-height:1.4}
+.def-note{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.den-note{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.cond-row.has-note{border-bottom:none;border-radius:10px 10px 0 0}
 .dpill{font-size:10px;font-family:var(--ff-mono);padding:3px 8px;border-radius:4px;border:1px solid;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
 .dpill.sc{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
 .dpill.def{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
@@ -345,7 +350,25 @@ function renderDashboard(data){
     var displayRating=officialStored!=null?parseInt(officialStored):official;
     var ratingSubText=officialStored!=null?'As stated in your VA rating decision':'Exact '+exact.toFixed(1)+'% \u2192 rounded to '+official+'%';
     document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+displayRating+'%</div><div class="stat-sub">'+ratingSubText+'</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[displayRating]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
-    document.getElementById('cond-list').innerHTML=data.map(function(x){return'<div class="cond-row"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<div class="dpill '+dpClass(x.decision)+'">'+dpLabel(x.decision)+'</div>'+(x.rating&&parseInt(x.rating)>0?'<div class="cond-rating">'+x.rating+'%</div>':'<div class="cond-rating tbd">TBD</div>')+'</div>';}).join('');
+    document.getElementById('cond-list').innerHTML=data.map(function(x){
+      var ratingHtml;
+      var cls=dpClass(x.decision);
+      if(x.rating&&parseInt(x.rating)>0){
+        ratingHtml='<div class="cond-rating">'+x.rating+'%</div>';
+      } else if(cls==='def'){
+        // Deferred - show TBD with amber color and explain
+        ratingHtml='<div class="cond-rating tbd" title="Deferred means the VA needs more time or evidence to decide. You should follow up.">TBD ?</div>';
+      } else if(cls==='den'){
+        // Denied - show what they could potentially get
+        ratingHtml='<div class="cond-rating denied" title="Denied - but you can appeal within 1 year with new evidence">Appeal</div>';
+      } else {
+        ratingHtml='<div class="cond-rating tbd">TBD</div>';
+      }
+      var noteHtml='';
+      if(cls==='def') noteHtml='<div class="cond-note def-note">&#9432; Deferred: VA still deciding &mdash; follow up or add evidence</div>';
+      if(cls==='den') noteHtml='<div class="cond-note den-note">&#9889; Denied: File a supplemental claim within 1 year with new evidence</div>';
+      return'<div class="cond-row '+(noteHtml?'has-note':'')+'"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<div class="dpill '+cls+'">'+dpLabel(x.decision)+'</div>'+ratingHtml+'</div>'+(noteHtml?'<div>'+noteHtml+'</div>':'');
+    }).join('');
     document.getElementById('math-steps').innerHTML=steps.map(function(s){return'<div class="math-row"><span class="math-label">'+s.name+'</span><span class="math-formula">'+s.rb+'% x '+s.rating+'%</span><span class="math-value">−'+s.taken+'%</span></div>';}).join('')+'<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to '+official+'%</span><span class="math-value">'+exact.toFixed(1)+'%</span></div>';
     document.getElementById('tier-fill').style.width=Math.min(displayRating,100)+'%';
     document.getElementById('tier-label').textContent='Current rating: '+displayRating+'%';
