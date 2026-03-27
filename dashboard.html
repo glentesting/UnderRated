@@ -8,22 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-  --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-  --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
-  --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);
-  --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
-}
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-
-#loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
-.loading-logo{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-4)}
-.loading-logo span{color:var(--green)}
-#app{display:none}
-
 nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
 .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
 .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
@@ -37,7 +25,6 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
 .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
-
 .page{max-width:1080px;margin:0 auto;padding:36px 28px;animation:fadeUp .35s ease both}
 .greeting{margin-bottom:20px}
 .greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
@@ -48,7 +35,6 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .number-label{font-size:12px;color:var(--ink-3);margin-bottom:8px;font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.06em}
 .number-sub{font-size:12px;color:var(--ink-3);margin-top:6px}
 .rating-display{font-family:var(--ff-display);font-size:48px;font-weight:800;line-height:1;color:var(--ink-3)}
-.rating-display span{font-size:18px;font-weight:400;color:var(--ink-3)}
 .btn-green{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;margin-top:14px;font-family:var(--ff-body)}
 .btn-green:hover{background:var(--green-l)}
 .btn-outline{display:inline-flex;align-items:center;gap:6px;background:none;color:var(--green);font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid var(--green-border);cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
@@ -81,9 +67,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .setup-banner{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:none;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .setup-banner p{font-size:14px;color:var(--green);line-height:1.5}
 .setup-banner strong{font-weight:500}
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
 @media(max-width:780px){
   .grid-top,.grid-bottom{grid-template-columns:1fr}
   .hamburger{display:flex}
@@ -96,112 +80,98 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 </style>
 </head>
 <body>
-
-<div id="loading-screen"><div class="loading-logo">UNDER<span>RATED</span></div></div>
-
-<div id="app">
-  <nav>
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
-      <div class="nav-links" id="nav-links">
-        <a href="calculator.html">Rating calculator</a>
-        <a href="gap.html">Gap identifier</a>
-        <a href="vault.html">Vault</a>
-      </div>
-      <div class="nav-right">
-        <span class="user-email" id="user-email"></span>
-        <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
-        <button class="signout-btn" onclick="handleSignout()">Sign out</button>
-      </div>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html">Vault</a>
     </div>
-  </nav>
-
-  <div class="page">
-    <div class="setup-banner" id="setup-banner">
-      <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating &mdash; it takes 60 seconds and unlocks your personalized gap analysis.</p>
-      <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating &rarr;</a>
+    <div class="nav-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
     </div>
+  </div>
+</nav>
 
-    <div class="greeting">
-      <h1 id="greeting-text">Welcome back</h1>
-      <p id="greeting-sub">Here's where things stand.</p>
+<div class="page">
+  <div class="setup-banner" id="setup-banner">
+    <p><strong>Welcome to UNDERRATED.</strong> Start by entering your current VA rating &mdash; it takes 60 seconds and unlocks your personalized gap analysis.</p>
+    <a href="calculator.html" class="btn-green" style="white-space:nowrap">Set up my rating &rarr;</a>
+  </div>
+  <div class="greeting">
+    <h1 id="greeting-text">Welcome back</h1>
+    <p id="greeting-sub">Here's where things stand.</p>
+  </div>
+  <div class="grid-top">
+    <div class="card">
+      <div class="number-label">Combined VA rating</div>
+      <div class="rating-display" id="rating-display">&mdash;</div>
+      <div class="number-sub" id="rating-sub">Not entered yet</div>
+      <a href="calculator.html" class="btn-green" id="rating-btn">Enter my rating &rarr;</a>
     </div>
-
-    <div class="grid-top">
-      <div class="card">
-        <div class="number-label">Combined VA rating</div>
-        <div class="rating-display" id="rating-display">&mdash;</div>
-        <div class="number-sub" id="rating-sub">Not entered yet</div>
-        <a href="calculator.html" class="btn-green" id="rating-btn">Enter my rating &rarr;</a>
+    <div class="card">
+      <div class="card-title">Potential unclaimed conditions</div>
+      <p class="gap-intro">Once you enter your MOS and current conditions, UNDERRATED will surface conditions you likely qualify for but haven't claimed.</p>
+      <div class="pill-row">
+        <span class="pill green">Sleep apnea</span>
+        <span class="pill green">Tinnitus</span>
+        <span class="pill amber">PTSD (secondary)</span>
+        <span class="pill gray">Run analysis to see yours</span>
       </div>
-      <div class="card">
-        <div class="card-title">Potential unclaimed conditions</div>
-        <p class="gap-intro">Once you enter your MOS and current conditions, UNDERRATED will surface conditions you likely qualify for but haven't claimed.</p>
-        <div class="pill-row">
-          <span class="pill green">Sleep apnea</span>
-          <span class="pill green">Tinnitus</span>
-          <span class="pill amber">PTSD (secondary)</span>
-          <span class="pill gray">Run analysis to see yours</span>
+      <a href="gap.html" class="btn-green">Run gap analysis &rarr;</a>
+    </div>
+  </div>
+  <div class="grid-bottom">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+        <div class="card-title" style="margin:0">Document vault</div>
+        <a href="vault.html" class="btn-outline">Manage all &rarr;</a>
+      </div>
+      <div class="doc-row">
+        <div class="doc-item">
+          <div class="doc-left">
+            <div class="doc-icon amber"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="doc-name">DD-214</div><div class="doc-sub">Required for all claims</div></div>
+          </div>
+          <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
         </div>
-        <a href="gap.html" class="btn-green">Run gap analysis &rarr;</a>
-      </div>
-    </div>
-
-    <div class="grid-bottom">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
-          <div class="card-title" style="margin:0">Document vault</div>
-          <a href="vault.html" class="btn-outline">Manage all &rarr;</a>
+        <div class="doc-item">
+          <div class="doc-left">
+            <div class="doc-icon amber"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="doc-name">C&amp;P exam results</div><div class="doc-sub">Upload if you have them</div></div>
+          </div>
+          <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
         </div>
-        <div class="doc-row">
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon amber">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">DD-214</div><div class="doc-sub">Required for all claims</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
+        <div class="doc-item">
+          <div class="doc-left">
+            <div class="doc-icon gray"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#8A8780" stroke-width="1.2"/><path d="M6 6h4M6 9h4" stroke="#8A8780" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional &middot; strengthens claims</div></div>
           </div>
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon amber">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#C47F0A" stroke-width="1.2"/><path d="M8 6v2M8 10v.5" stroke="#C47F0A" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">C&amp;P exam results</div><div class="doc-sub">Upload if you have them</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
-          </div>
-          <div class="doc-item">
-            <div class="doc-left">
-              <div class="doc-icon gray">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="3" y="2" width="10" height="12" rx="2" stroke="#8A8780" stroke-width="1.2"/><path d="M6 6h4M6 9h4" stroke="#8A8780" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div><div class="doc-name">Private medical records</div><div class="doc-sub">Optional &middot; strengthens claims</div></div>
-            </div>
-            <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
-          </div>
+          <button class="upload-btn" onclick="window.location.href='vault.html'">Upload</button>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">Next steps</div>
-        <div class="steps-list">
-          <div class="step-item" onclick="window.location.href='calculator.html'">
-            <div class="step-num">1</div>
-            <div class="step-text">Enter your current rating<small>Sets your baseline</small></div>
-          </div>
-          <div class="step-item" onclick="window.location.href='gap.html'">
-            <div class="step-num">2</div>
-            <div class="step-text">Run gap analysis<small>Find unclaimed conditions</small></div>
-          </div>
-          <div class="step-item" onclick="window.location.href='vault.html'">
-            <div class="step-num">3</div>
-            <div class="step-text">Upload DD-214<small>Needed for all claims</small></div>
-          </div>
-          <div class="step-item disabled">
-            <div class="step-num muted">4</div>
-            <div class="step-text">Build claim package<small>Unlocks after steps 1&ndash;3</small></div>
-          </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Next steps</div>
+      <div class="steps-list">
+        <div class="step-item" onclick="window.location.href='calculator.html'">
+          <div class="step-num">1</div>
+          <div class="step-text">Enter your current rating<small>Sets your baseline</small></div>
+        </div>
+        <div class="step-item" onclick="window.location.href='gap.html'">
+          <div class="step-num">2</div>
+          <div class="step-text">Run gap analysis<small>Find unclaimed conditions</small></div>
+        </div>
+        <div class="step-item" onclick="window.location.href='vault.html'">
+          <div class="step-num">3</div>
+          <div class="step-text">Upload DD-214<small>Needed for all claims</small></div>
+        </div>
+        <div class="step-item disabled">
+          <div class="step-num muted">4</div>
+          <div class="step-text">Build claim package<small>Unlocks after steps 1&ndash;3</small></div>
         </div>
       </div>
     </div>
@@ -210,83 +180,66 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-function toggleNav() {
-  document.getElementById('nav-links').classList.toggle('open');
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+
+function handleSignout(){
+  sb.auth.signOut().then(function(){window.location.href='login.html';});
 }
 
-function showApp() {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-}
+// NO loading screen. Page renders immediately.
+// Just check session and populate data if logged in.
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
 
-function init() {
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (!session) {
-      window.location.href = 'login.html';
-      return;
-    }
+  if(!session){
+    window.location.href='login.html';
+    return;
+  }
 
-    try {
-      const email = session.user.email;
-      const name = email.split('@')[0];
-      document.getElementById('user-email').textContent = email;
-      document.getElementById('greeting-text').textContent = 'Welcome back, ' + name;
-      document.getElementById('greeting-sub').textContent = 'Logged in as ' + email;
+  // Set user info
+  var email=session.user.email;
+  var name=email.split('@')[0];
+  document.getElementById('user-email').textContent=email;
+  document.getElementById('greeting-text').textContent='Welcome back, '+name;
+  document.getElementById('greeting-sub').textContent='Logged in as '+email;
 
-      const { data, error } = await sb
-        .from('conditions')
-        .select('*')
-        .eq('user_id', session.user.id);
+  // Load conditions
+  sb.from('conditions').select('*').eq('user_id',session.user.id)
+    .then(function(qres){
+      var data=qres.data||[];
 
-      if (data && data.length > 0) {
-        // Hide setup banner — user has conditions
-        document.getElementById('setup-banner').style.display = 'none';
-
-        // Calculate combined rating
-        const valid = data.filter(c => c.rating && parseInt(c.rating) > 0);
-        if (valid.length > 0) {
-          const sorted = [...valid].sort((a, b) => parseInt(b.rating) - parseInt(a.rating));
-          let remaining = 100;
-          for (const c of sorted) {
-            remaining = remaining * (1 - parseInt(c.rating) / 100);
-          }
-          const exact = parseFloat((100 - remaining).toFixed(2));
-          const official = exact >= 95 ? 100 : Math.round(exact / 10) * 10;
-
-          const display = document.getElementById('rating-display');
-          display.style.color = 'var(--ink)';
-          display.innerHTML = official + '<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
-          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
-          document.getElementById('rating-btn').textContent = 'Update my rating';
-        } else {
-          // Has conditions but all are 0% (e.g. ED only)
-          document.getElementById('rating-display').textContent = '0%';
-          document.getElementById('rating-display').style.color = 'var(--ink)';
-          document.getElementById('rating-sub').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' entered';
-          document.getElementById('rating-btn').textContent = 'Update my rating';
-        }
-      } else {
-        // No conditions yet — show setup banner
-        document.getElementById('setup-banner').style.display = 'flex';
+      if(data.length===0){
+        document.getElementById('setup-banner').style.display='flex';
+        return;
       }
-    } catch (err) {
-      console.error('Dashboard error:', err);
-    } finally {
-      showApp();
-    }
-  });
-}
 
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
-}
+      // Calculate combined rating
+      var valid=data.filter(function(c){return c.rating&&parseInt(c.rating)>0;});
+      if(valid.length>0){
+        valid.sort(function(a,b){return parseInt(b.rating)-parseInt(a.rating);});
+        var remaining=100;
+        valid.forEach(function(c){remaining=remaining*(1-parseInt(c.rating)/100);});
+        var exact=parseFloat((100-remaining).toFixed(2));
+        var official=exact>=95?100:Math.round(exact/10)*10;
+        var display=document.getElementById('rating-display');
+        display.style.color='var(--ink)';
+        display.innerHTML=official+'<span style="font-size:18px;font-weight:400;color:var(--ink-3)">%</span>';
+        document.getElementById('rating-sub').textContent=data.length+' condition'+(data.length!==1?'s':'')+' entered';
+        document.getElementById('rating-btn').textContent='Update my rating';
+      }
+    })
+    .catch(function(err){
+      console.error('conditions query error:',err);
+    });
 
-init();
+}).catch(function(err){
+  console.error('getSession error:',err);
+  window.location.href='login.html';
+});
 </script>
 </body>
 </html>
