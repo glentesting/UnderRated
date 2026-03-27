@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>State Benefits &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+.controls{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.select-wrap{position:relative}
+.select-wrap select{appearance:none;background:var(--surface);border:1.5px solid var(--border-2);border-radius:10px;padding:10px 36px 10px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);cursor:pointer;min-width:220px}
+.select-wrap select:focus{outline:none;border-color:var(--green)}
+.select-wrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none;font-size:14px}
+.rating-pill{display:flex;align-items:center;gap:8px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:10px 16px}
+.rating-pill span{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.rating-pill strong{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--green)}
+.no-state{text-align:center;padding:60px 20px;color:var(--ink-3)}
+.no-state h3{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.state-header{margin-bottom:24px}
+.state-name{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.state-sub{font-size:14px;color:var(--ink-3)}
+.benefits-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.benefit-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px}
+.benefit-card.highlight{border-color:var(--green-border)}
+.benefit-icon{font-size:24px;margin-bottom:10px}
+.benefit-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.benefit-tiers{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.tier-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:7px;background:var(--bg);font-size:13px}
+.tier-row.active{background:var(--green-bg);border:1px solid var(--green-border)}
+.tier-pct{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3)}
+.tier-val{color:var(--ink-2)}
+.tier-row.active .tier-val{color:var(--green);font-weight:500}
+.tier-row.active .tier-pct{color:var(--green)}
+.qualifier-note{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.5;font-family:var(--ff-mono)}
+.disclaimer{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--amber);line-height:1.6;margin-top:24px}
+.disclaimer strong{font-weight:500}
+@media(max-width:700px){.benefits-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html">Vault</a>
+      <a href="profile.html">Profile</a>
+      <a href="state-benefits.html" class="active">State benefits</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Your benefits</div>
+  <div class="page-title">State Benefits</div>
+  <p class="page-sub">Your federal VA rating unlocks additional benefits in your state. Select your state to see what you qualify for.</p>
+
+  <div class="controls">
+    <div class="select-wrap">
+      <select id="state-select" onchange="render()">
+        <option value="">Select your state...</option>
+        <option value="AL">Alabama</option>
+        <option value="AK">Alaska</option>
+        <option value="AZ">Arizona</option>
+        <option value="AR">Arkansas</option>
+        <option value="CA">California</option>
+        <option value="CO">Colorado</option>
+        <option value="FL">Florida</option>
+        <option value="GA">Georgia</option>
+        <option value="IL">Illinois</option>
+        <option value="IN">Indiana</option>
+        <option value="KY">Kentucky</option>
+        <option value="LA">Louisiana</option>
+        <option value="MD">Maryland</option>
+        <option value="MI">Michigan</option>
+        <option value="MN">Minnesota</option>
+        <option value="MO">Missouri</option>
+        <option value="NC">North Carolina</option>
+        <option value="NJ">New Jersey</option>
+        <option value="NM">New Mexico</option>
+        <option value="NY">New York</option>
+        <option value="OH">Ohio</option>
+        <option value="OK">Oklahoma</option>
+        <option value="OR">Oregon</option>
+        <option value="PA">Pennsylvania</option>
+        <option value="SC">South Carolina</option>
+        <option value="TN">Tennessee</option>
+        <option value="TX">Texas</option>
+        <option value="VA">Virginia</option>
+        <option value="WA">Washington</option>
+        <option value="WI">Wisconsin</option>
+      </select>
+    </div>
+    <div class="rating-pill">
+      <span>Your rating</span>
+      <strong id="rating-display">—</strong>
+    </div>
+  </div>
+
+  <div id="output">
+    <div class="no-state">
+      <h3>Select your state above</h3>
+      <p>We'll show you every benefit your VA rating unlocks at the state level.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+var currentUser=null;
+var userRating=0;
+
+// State benefits data
+var STATE_DATA = {
+  TX: {
+    name: 'Texas',
+    property_tax: [
+      {pct:10, label:'10–29%', val:'$5,000 property value exemption'},
+      {pct:30, label:'30–49%', val:'$7,500 property value exemption'},
+      {pct:50, label:'50–69%', val:'$10,000 property value exemption'},
+      {pct:70, label:'70–99%', val:'$12,000 property value exemption'},
+      {pct:100, label:'100%', val:'Full exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free 1 set of specialty veteran plates'},
+      {pct:50, label:'50%+', val:'Free vehicle registration (1 vehicle)'},
+      {pct:100, label:'100%', val:'Free registration on all vehicles'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Hazlewood Act — 150 hrs tuition-free at TX public colleges (vet or dependents)'},
+      {pct:100, label:'100% P&T', val:'Children eligible for Hazlewood Legacy benefit'}
+    ],
+    hunting_fishing: [
+      {pct:50, label:'50%+', val:'Discounted hunting/fishing license'},
+      {pct:100, label:'100%', val:'Free hunting and fishing license'}
+    ],
+    note: 'Texas Veteran Commission: tvc.texas.gov'
+  },
+  CA: {
+    name: 'California',
+    property_tax: [
+      {pct:0, label:'Any rating', val:'$4,000 property tax exemption (basic)'},
+      {pct:100, label:'100% P&T', val:'$100,000–$150,000 exemption (low income) or $4,000 standard'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty license plate set'},
+      {pct:100, label:'100% P&T', val:'Free vehicle registration (1 vehicle)'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'CalVet College Fee Waiver for dependents at CA public colleges'},
+      {pct:100, label:'100% P&T', val:'Full fee waiver for spouse and children'}
+    ],
+    hunting_fishing: [
+      {pct:0, label:'Any rating', val:'Reduced fee fishing license'},
+      {pct:50, label:'50%+', val:'Free hunting and fishing license'}
+    ],
+    note: 'California DVA: cdva.ca.gov'
+  },
+  FL: {
+    name: 'Florida',
+    property_tax: [
+      {pct:10, label:'10%+', val:'$5,000 additional homestead exemption'},
+      {pct:100, label:'100% P&T', val:'Full homestead exemption — no property taxes on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free registration on 1 vehicle'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Tuition waiver at FL public colleges for eligible veterans'},
+      {pct:100, label:'100% P&T', val:'Dependents eligible for free tuition at FL public institutions'}
+    ],
+    hunting_fishing: [
+      {pct:0, label:'Any rating', val:'Discounted hunting/fishing licenses available'},
+      {pct:100, label:'100%', val:'Free lifetime hunting and fishing license'}
+    ],
+    note: 'Florida DVA: floridavets.org'
+  },
+  GA: {
+    name: 'Georgia',
+    property_tax: [
+      {pct:0, label:'Any rating', val:'Standard homestead exemption applies'},
+      {pct:100, label:'100% P&T', val:'Full property tax exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration (1 vehicle)'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'HOPE GI Bill — covers gaps at GA public colleges'},
+      {pct:100, label:'100% P&T', val:'Dependents may qualify for free tuition at GA public colleges'}
+    ],
+    hunting_fishing: [
+      {pct:0, label:'Any rating', val:'Free lifetime hunting and fishing license for disabled vets'}
+    ],
+    note: 'Georgia DVS: veterans.georgia.gov'
+  },
+  VA: {
+    name: 'Virginia',
+    property_tax: [
+      {pct:100, label:'100% P&T', val:'Full real property tax exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Virginia Military Survivors and Dependents Education Program'},
+      {pct:90, label:'90%+', val:'Dependents eligible for free tuition at VA public colleges'}
+    ],
+    hunting_fishing: [
+      {pct:70, label:'70%+', val:'Free lifetime hunting and fishing license'}
+    ],
+    note: 'Virginia DVS: dvs.virginia.gov'
+  },
+  NC: {
+    name: 'North Carolina',
+    property_tax: [
+      {pct:100, label:'100% P&T', val:'Full property tax exemption on primary residence up to $45,000 value, plus additional circuit breaker'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'NC Scholarships for Children of War Veterans'},
+      {pct:100, label:'100% P&T', val:'Dependents eligible for free tuition at NC public colleges'}
+    ],
+    hunting_fishing: [
+      {pct:50, label:'50%+', val:'Free lifetime hunting and fishing license'}
+    ],
+    note: 'NC Division of Veterans Affairs: milvets.nc.gov'
+  },
+  PA: {
+    name: 'Pennsylvania',
+    property_tax: [
+      {pct:0, label:'Any rating', val:'Real Estate Tax Exemption for eligible disabled veterans'},
+      {pct:100, label:'100% P&T', val:'Full property tax exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free registration on 1 vehicle'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Pennsylvania Veterans Educational Assistance Program (VEAP)'},
+      {pct:100, label:'100% P&T', val:'Dependents may qualify for educational gratuity'}
+    ],
+    hunting_fishing: [
+      {pct:0, label:'Any rating', val:'Discounted license available for disabled veterans'},
+      {pct:100, label:'100%', val:'Free hunting and fishing license'}
+    ],
+    note: 'PA Department of Military & Veterans Affairs: dmva.pa.gov'
+  },
+  OH: {
+    name: 'Ohio',
+    property_tax: [
+      {pct:100, label:'100% P&T', val:'Full homestead tax exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Ohio War Orphans Scholarship for dependents'},
+      {pct:100, label:'100% P&T', val:'Ohio Veterans Scholarship — tuition assistance at OH public colleges'}
+    ],
+    hunting_fishing: [
+      {pct:100, label:'100%', val:'Free hunting and fishing license'}
+    ],
+    note: 'Ohio DVS: dvs.ohio.gov'
+  },
+  NY: {
+    name: 'New York',
+    property_tax: [
+      {pct:0, label:'Any rating', val:'Alternative Veterans Exemption — up to 15% reduction'},
+      {pct:100, label:'100% P&T', val:'Cold War Veterans exemption or full exemption depending on municipality'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'NYS Veterans Tuition Award — up to $5,102/yr at NY public colleges'},
+      {pct:100, label:'100% P&T', val:'Dependents may qualify for Children of Deceased or Disabled Veterans scholarship'}
+    ],
+    hunting_fishing: [
+      {pct:40, label:'40%+', val:'Free hunting and fishing license'}
+    ],
+    note: 'NY Division of Veterans Services: veterans.ny.gov'
+  },
+  AZ: {
+    name: 'Arizona',
+    property_tax: [
+      {pct:100, label:'100% P&T', val:'Property tax exemption up to $3,000 assessed value reduction; additional exemptions for low income'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Arizona Veterans Donation Fund tuition assistance'},
+      {pct:100, label:'100% P&T', val:'Dependents eligible for tuition waiver at AZ public universities'}
+    ],
+    hunting_fishing: [
+      {pct:50, label:'50%+', val:'Discounted hunting and fishing license'},
+      {pct:100, label:'100%', val:'Free lifetime hunting and fishing license'}
+    ],
+    note: 'Arizona DVS: dvs.az.gov'
+  },
+  WA: {
+    name: 'Washington',
+    property_tax: [
+      {pct:80, label:'80%+', val:'Property tax exemption — amount varies by county and income'},
+      {pct:100, label:'100% P&T', val:'Full property tax exemption on primary residence'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Washington State Need Grant and veteran education benefits'},
+      {pct:100, label:'100% P&T', val:'Dependents eligible for free tuition at WA public colleges (survivors only)'}
+    ],
+    hunting_fishing: [
+      {pct:30, label:'30%+', val:'Free hunting and fishing license'}
+    ],
+    note: 'Washington DVA: dva.wa.gov'
+  },
+  CO: {
+    name: 'Colorado',
+    property_tax: [
+      {pct:100, label:'100% P&T', val:'Full property tax exemption on 50% of first $200,000 of primary residence value'}
+    ],
+    vehicle: [
+      {pct:0, label:'Any rating', val:'Free veteran specialty plates'},
+      {pct:100, label:'100%', val:'Free vehicle registration'}
+    ],
+    education: [
+      {pct:0, label:'Any rating', val:'Colorado Veteran Grant — up to $5,000/yr at CO public colleges'},
+      {pct:100, label:'100% P&T', val:'Dependents eligible for in-state tuition and additional grants'}
+    ],
+    hunting_fishing: [
+      {pct:60, label:'60%+', val:'Free lifetime hunting and fishing license'}
+    ],
+    note: 'Colorado DVA: dmva.colorado.gov'
+  }
+};
+
+// Generic fallback for states without detailed data
+var GENERIC_STATE = {
+  property_tax: [{pct:100, label:'100% P&T', val:'Many states offer full property tax exemptions — check your state DVA website'}],
+  vehicle: [{pct:0, label:'Any rating', val:'Free or reduced-cost veteran specialty plates available in most states'}],
+  education: [{pct:0, label:'Any rating', val:'GI Bill applies nationwide — check your state DVA for additional state programs'}],
+  hunting_fishing: [{pct:0, label:'Any rating', val:'Most states offer reduced-cost or free licenses for disabled veterans — check your state DVA'}],
+  note: 'Contact your State Department of Veterans Affairs for exact benefit amounts and eligibility.'
+};
+
+function getStateName(code) {
+  var names = {AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',FL:'Florida',GA:'Georgia',IL:'Illinois',IN:'Indiana',KY:'Kentucky',LA:'Louisiana',MD:'Maryland',MI:'Michigan',MN:'Minnesota',MO:'Missouri',NC:'North Carolina',NJ:'New Jersey',NM:'New Mexico',NY:'New York',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',SC:'South Carolina',TN:'Tennessee',TX:'Texas',VA:'Virginia',WA:'Washington',WI:'Wisconsin'};
+  return names[code] || code;
+}
+
+function buildBenefitCard(icon, title, tiers, note, rating) {
+  var rows = tiers.map(function(t) {
+    var active = rating >= t.pct;
+    return '<div class="tier-row'+(active?' active':'')+'"><span class="tier-pct">'+t.label+'</span><span class="tier-val">'+t.val+'</span></div>';
+  }).join('');
+  return '<div class="benefit-card'+(rating>0?' highlight':'')+'"><div class="benefit-icon">'+icon+'</div><div class="benefit-title">'+title+'</div><div class="benefit-tiers">'+rows+'</div>'+(note?'<div class="qualifier-note">'+note+'</div>':'')+'</div>';
+}
+
+function render() {
+  var state = document.getElementById('state-select').value;
+  var out = document.getElementById('output');
+  if (!state) {
+    out.innerHTML = '<div class="no-state"><h3>Select your state above</h3><p>We\'ll show you every benefit your VA rating unlocks at the state level.</p></div>';
+    return;
+  }
+  var data = STATE_DATA[state] || GENERIC_STATE;
+  var stateName = data.name || getStateName(state);
+  var rating = userRating || 0;
+
+  var html = '<div class="state-header"><div class="state-name">'+stateName+'</div><div class="state-sub">Benefits based on '+rating+'% VA rating &mdash; active tiers highlighted in green</div></div>';
+  html += '<div class="benefits-grid">';
+  html += buildBenefitCard('🏠', 'Property Tax Exemption', data.property_tax, '', rating);
+  html += buildBenefitCard('🚗', 'Vehicle Registration & Plates', data.vehicle, '', rating);
+  html += buildBenefitCard('🎓', 'Education Benefits', data.education, '', rating);
+  html += buildBenefitCard('🎣', 'Hunting & Fishing Licenses', data.hunting_fishing, '', rating);
+  html += '</div>';
+  if (data.note) {
+    html += '<div class="qualifier-note" style="margin-bottom:12px">📎 Official resource: '+data.note+'</div>';
+  }
+  html += '<div class="disclaimer"><strong>Important:</strong> Benefit amounts, eligibility rules, and income thresholds change regularly. Always verify directly with your State Department of Veterans Affairs before making financial decisions. Benefits listed are general — actual amounts may vary by county, municipality, or individual circumstances.</div>';
+  out.innerHTML = html;
+}
+
+function handleSignout() {
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
+  sb.auth.signOut().then(function(){window.location.href='login.html';});
+}
+
+sb.auth.getSession().then(function(res) {
+  var session = res&&res.data&&res.data.session?res.data.session:null;
+  if (!session) { window.location.href='login.html'; return; }
+  currentUser = session.user;
+  document.getElementById('user-email').textContent = currentUser.email;
+  // Load rating from localStorage
+  var stored = localStorage.getItem('ur_combined_rating_'+currentUser.id);
+  if (stored) {
+    userRating = parseInt(stored);
+    document.getElementById('rating-display').textContent = userRating+'%';
+  } else {
+    document.getElementById('rating-display').textContent = 'Not set';
+  }
+  // Load state from profile if available
+  sb.from('profiles').select('state').eq('user_id', currentUser.id).single()
+    .then(function(r) {
+      if (r.data && r.data.state) {
+        document.getElementById('state-select').value = r.data.state;
+        render();
+      }
+    }).catch(function(){});
+});
+</script>
+</body>
+</html>
