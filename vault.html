@@ -8,14 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-  --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-  --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
-  --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);
-  --red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);
-  --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
-}
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -37,11 +30,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
 .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
 .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
-#loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:14px;text-align:center}
-.spinner{width:28px;height:28px;border:2px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#loading p{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
-#upload-state{display:none}
+/* NO LOADING SPINNER - start on upload screen always */
+#upload-state{display:block}
 .upload-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:40px;max-width:560px;margin:0 auto;text-align:center}
 .upload-card h2{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);margin-bottom:8px}
 .upload-card p{font-size:14px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
@@ -58,7 +48,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step-dot{width:14px;height:14px;border-radius:50%;background:var(--border-2);flex-shrink:0}
 .step-spin{width:14px;height:14px;border:2px solid rgba(14,138,99,0.2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
 .step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
+@keyframes spin{to{transform:rotate(360deg)}}
 .upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
+.loading-note{margin-top:14px;font-size:13px;color:var(--ink-3);font-family:var(--ff-mono);text-align:center;display:none}
 .alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
 .alt-action a{color:var(--green)}
 #dashboard{display:none}
@@ -117,20 +109,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
 .step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
 .step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
-@media(max-width:780px){
-  .stat-row{grid-template-columns:1fr}
-  .layout{grid-template-columns:1fr}
-  .hamburger{display:flex}
-  .user-pill{display:none}
-  .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
-  .nav-links.open{display:flex}
-  .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
-  .nav-links a:last-child{border-bottom:none}
-}
+@media(max-width:780px){.stat-row{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.hamburger{display:flex}.user-pill{display:none}.nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}.nav-links.open{display:flex}.nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}.nav-links a:last-child{border-bottom:none}}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-inner">
     <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
@@ -152,11 +134,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
   <div class="page-title">Vault</div>
   <p class="page-sub">Upload your VA rating decision PDF &mdash; we'll extract every condition automatically.</p>
 
-  <div id="loading">
-    <div class="spinner"></div>
-    <p>Loading your records...</p>
-  </div>
-
   <div id="upload-state">
     <div class="upload-card">
       <h2>Upload your rating decision</h2>
@@ -173,6 +150,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
         <div class="progress-step" id="step-save"><div class="step-dot"></div>Saving to your vault...</div>
       </div>
       <div class="upload-error" id="upload-error"></div>
+      <div class="loading-note" id="loading-note">Checking for existing records...</div>
     </div>
     <div class="alt-action">Don't have a PDF yet? <a href="calculator.html">Enter conditions manually in the calculator</a></div>
   </div>
@@ -226,284 +204,160 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var SURL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-var VURL = 'https://getunderrated.vercel.app/api/extract-pdf';
-var COMP = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
-var sb = window.supabase.createClient(SURL, SKEY);
-var currentUser = null;
+var SURL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var VURL='https://getunderrated.vercel.app/api/extract-pdf';
+var COMP={0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+var sb=window.supabase.createClient(SURL,SKEY);
+var currentUser=null;
 
-function toggleNav() { document.getElementById('nav-links').classList.toggle('open'); }
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
 
-// ── GUARANTEED SPINNER KILL ──
-// No flags, no conditions. After 5 seconds the spinner is GONE, period.
-// If dashboard is already showing, nothing changes. If not, show upload screen.
-window.setTimeout(function() {
-  var loading = document.getElementById('loading');
-  var dash    = document.getElementById('dashboard');
-  var upload  = document.getElementById('upload-state');
-  loading.style.display = 'none';
-  if (dash.style.display !== 'block') {
-    upload.style.display = 'block';
-    setupDropZone();
-  }
-}, 5000);
+function safeStr(v){return(v!==null&&v!==undefined)?String(v).toLowerCase():'';}
+function dpClass(d){var s=safeStr(d);if(!s)return'def';if(s.indexOf('not service')!==-1)return'den';if(s.indexOf('deferred')!==-1)return'def';if(s.indexOf('service')!==-1)return'sc';return'def';}
+function dpLabel(d){var s=safeStr(d);if(!s)return'Pending';if(s.indexOf('not service')!==-1)return'Denied';if(s.indexOf('deferred')!==-1)return'Deferred';if(s.indexOf('service')!==-1)return'Connected';return String(d);}
 
-// ── UI HELPERS ──
-function hideLoading() { document.getElementById('loading').style.display = 'none'; }
-
-function showUploadScreen() {
-  hideLoading();
-  document.getElementById('upload-state').style.display = 'block';
-  document.getElementById('dashboard').style.display = 'none';
-  setupDropZone();
+function showUpload(){
+  document.getElementById('upload-progress').style.display='none';
+  document.getElementById('upload-error').style.display='none';
+  document.getElementById('loading-note').style.display='none';
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('upload-state').style.display='block';
 }
 
-function showDashboardScreen() {
-  hideLoading();
-  document.getElementById('upload-state').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
+function showDash(){
+  document.getElementById('upload-state').style.display='none';
+  document.getElementById('dashboard').style.display='block';
 }
 
-function safeStr(v) { return v !== null && v !== undefined ? String(v).toLowerCase() : ''; }
-function dpClass(d) {
-  var s = safeStr(d);
-  if (!s) return 'def';
-  if (s.indexOf('not service') !== -1) return 'den';
-  if (s.indexOf('deferred')    !== -1) return 'def';
-  if (s.indexOf('service')     !== -1) return 'sc';
-  return 'def';
-}
-function dpLabel(d) {
-  var s = safeStr(d);
-  if (!s) return 'Pending';
-  if (s.indexOf('not service') !== -1) return 'Denied';
-  if (s.indexOf('deferred')    !== -1) return 'Deferred';
-  if (s.indexOf('service')     !== -1) return 'Connected';
-  return String(d);
+function setStep(id,status){
+  var el=document.getElementById(id);if(!el)return;
+  el.className='progress-step'+(status==='active'?' active':status==='done'?' done':'');
+  var icon=el.querySelector('.step-dot,.step-spin,.step-check');
+  if(status==='active'&&icon)icon.outerHTML='<div class="step-spin"></div>';
+  else if(status==='done'){var s=el.querySelector('.step-spin,.step-dot');if(s)s.outerHTML='<span class="step-check">&#10003;</span>';}
 }
 
-// ── AUTH ──
-function init() {
-  sb.auth.getSession().then(function(result) {
-    var session = result.data && result.data.session ? result.data.session : null;
-    if (session) {
-      currentUser = session.user;
-      document.getElementById('user-email').textContent = currentUser.email;
-      loadData();
-    } else {
-      window.location.href = 'login.html';
-    }
-  }).catch(function(err) {
-    console.error('getSession error:', err);
-    showUploadScreen();
-  });
+function showErr(msg){
+  var el=document.getElementById('upload-error');el.textContent=msg;el.style.display='block';
+  var dz=document.getElementById('drop-zone');if(dz){dz.style.pointerEvents='';dz.style.opacity='';}
 }
 
-// ── DATA ──
-function loadData() {
-  sb.from('conditions')
-    .select('id, name, rating, diagnostic_code, decision, effective_date, sort_order')
-    .eq('user_id', currentUser.id)
-    .then(function(result) {
-      hideLoading();
-      var data = result.data;
-      var err  = result.error;
-      if (err) { console.error('query error:', err); showUploadScreen(); return; }
-      if (!data || data.length === 0) { showUploadScreen(); return; }
-      // Sort by rating descending in JS to avoid DB type issues
-      data.sort(function(a, b) { return (parseInt(b.rating) || 0) - (parseInt(a.rating) || 0); });
+// Setup file drop zone
+document.getElementById('drop-zone').addEventListener('dragover',function(e){e.preventDefault();this.classList.add('dragover');});
+document.getElementById('drop-zone').addEventListener('dragleave',function(){this.classList.remove('dragover');});
+document.getElementById('drop-zone').addEventListener('drop',function(e){
+  e.preventDefault();this.classList.remove('dragover');
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type==='application/pdf')handleFile(f);else showErr('Please upload a PDF file.');
+});
+document.getElementById('file-input').addEventListener('change',function(){
+  if(this.files&&this.files[0])handleFile(this.files[0]);
+});
+
+// AUTH - check session, silently swap to dashboard if data exists
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+  // Show a subtle note while we check for existing data
+  document.getElementById('loading-note').style.display='block';
+  // Query conditions
+  sb.from('conditions').select('id,name,rating,diagnostic_code,decision,effective_date,sort_order')
+    .eq('user_id',currentUser.id)
+    .then(function(qres){
+      document.getElementById('loading-note').style.display='none';
+      if(qres.error){console.error('query:',qres.error);return;} // stay on upload screen
+      var data=qres.data||[];
+      if(data.length===0)return; // stay on upload screen
+      data.sort(function(a,b){return(parseInt(b.rating)||0)-(parseInt(a.rating)||0);});
       renderDashboard(data);
-      showDashboardScreen();
-    }).catch(function(err) {
-      console.error('loadData error:', err);
-      hideLoading();
-      showUploadScreen();
-    });
-}
-
-// ── UPLOAD ──
-function setupDropZone() {
-  var zone  = document.getElementById('drop-zone');
-  var input = document.getElementById('file-input');
-  if (!zone || zone._setup) return;
-  zone._setup = true;
-  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
-  zone.addEventListener('drop', function(e) {
-    e.preventDefault();
-    zone.classList.remove('dragover');
-    var f = e.dataTransfer.files[0];
-    if (f && f.type === 'application/pdf') handleFile(f);
-    else showErr('Please upload a PDF file.');
-  });
-  input.addEventListener('change', function() {
-    if (input.files && input.files[0]) handleFile(input.files[0]);
-  });
-}
-
-function showUpload() {
-  document.getElementById('upload-progress').style.display = 'none';
-  document.getElementById('upload-error').style.display = 'none';
-  showUploadScreen();
-}
-
-function showErr(msg) {
-  var el = document.getElementById('upload-error');
-  el.textContent = msg;
-  el.style.display = 'block';
-  var dz = document.getElementById('drop-zone');
-  if (dz) { dz.style.pointerEvents = ''; dz.style.opacity = ''; }
-}
-
-function setStep(id, status) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.className = 'progress-step' + (status === 'active' ? ' active' : status === 'done' ? ' done' : '');
-  var icon = el.querySelector('.step-dot,.step-spin,.step-check');
-  if (status === 'active' && icon) icon.outerHTML = '<div class="step-spin"></div>';
-  else if (status === 'done') { var s = el.querySelector('.step-spin,.step-dot'); if (s) s.outerHTML = '<span class="step-check">&#10003;</span>'; }
-}
-
-function handleFile(file) {
-  if (!currentUser) { showErr('Please log in first.'); return; }
-  if (!file || file.type !== 'application/pdf') { showErr('Please upload a PDF file.'); return; }
-  document.getElementById('upload-error').style.display = 'none';
-  document.getElementById('upload-progress').style.display = 'block';
-  var dz = document.getElementById('drop-zone');
-  if (dz) { dz.style.pointerEvents = 'none'; dz.style.opacity = '0.5'; }
-
-  var fname = currentUser.id + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-  setStep('step-upload', 'active');
-
-  sb.storage.from('rating-decisions').upload(fname, file, { upsert: true })
-    .then(function(r) {
-      if (r.error) throw new Error('Upload failed: ' + r.error.message);
-      setStep('step-upload', 'done');
-      var fileUrl = sb.storage.from('rating-decisions').getPublicUrl(fname).data.publicUrl;
-      setStep('step-extract', 'active');
-      return fetch(VURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ file_url: fileUrl, user_id: currentUser.id })
-      });
+      showDash();
     })
-    .then(function(res) {
-      if (!res.ok) return res.json().then(function(e) { throw new Error(e.error || 'Extraction failed.'); });
+    .catch(function(e){console.error('query catch:',e);document.getElementById('loading-note').style.display='none';});
+}).catch(function(e){console.error('getSession:',e);});
+
+// UPLOAD
+function handleFile(file){
+  if(!currentUser){showErr('Please log in first.');return;}
+  if(!file||file.type!=='application/pdf'){showErr('Please upload a PDF file.');return;}
+  document.getElementById('upload-error').style.display='none';
+  document.getElementById('upload-progress').style.display='block';
+  var dz=document.getElementById('drop-zone');if(dz){dz.style.pointerEvents='none';dz.style.opacity='0.5';}
+  var fname=currentUser.id+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  setStep('step-upload','active');
+  sb.storage.from('rating-decisions').upload(fname,file,{upsert:true})
+    .then(function(r){
+      if(r.error)throw new Error('Upload failed: '+r.error.message);
+      setStep('step-upload','done');
+      var fileUrl=sb.storage.from('rating-decisions').getPublicUrl(fname).data.publicUrl;
+      setStep('step-extract','active');
+      return fetch(VURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file_url:fileUrl,user_id:currentUser.id})});
+    })
+    .then(function(res){
+      if(!res.ok)return res.json().then(function(e){throw new Error(e.error||'Extraction failed.');});
       return res.json();
     })
-    .then(function(extracted) {
-      if (!extracted.success || !extracted.conditions || !extracted.conditions.length) {
-        throw new Error('No conditions found. Make sure this is a VA rating decision letter.');
-      }
-      setStep('step-extract', 'done');
-      setStep('step-save', 'active');
-      return sb.from('conditions').delete().eq('user_id', currentUser.id)
-        .then(function() {
-          var rows = extracted.conditions.map(function(c, i) {
-            return { user_id: currentUser.id, name: c.condition_name || c.name || 'Unknown', rating: c.rating != null ? String(c.rating) : null, diagnostic_code: c.diagnostic_code || null, decision: c.decision || null, effective_date: c.effective_date || null, sort_order: i };
-          });
-          return sb.from('conditions').insert(rows);
+    .then(function(extracted){
+      if(!extracted.success||!extracted.conditions||!extracted.conditions.length)throw new Error('No conditions found. Make sure this is a VA rating decision letter.');
+      setStep('step-extract','done');setStep('step-save','active');
+      return sb.from('conditions').delete().eq('user_id',currentUser.id).then(function(){
+        var rows=extracted.conditions.map(function(c,i){return{user_id:currentUser.id,name:c.condition_name||c.name||'Unknown',rating:c.rating!=null?String(c.rating):null,diagnostic_code:c.diagnostic_code||null,decision:c.decision||null,effective_date:c.effective_date||null,sort_order:i};});
+        return sb.from('conditions').insert(rows);
+      });
+    })
+    .then(function(r){
+      if(r.error)throw new Error('Save failed: '+r.error.message);
+      setStep('step-save','done');
+      setTimeout(function(){
+        sb.from('conditions').select('*').eq('user_id',currentUser.id).then(function(r2){
+          var d=r2.data||[];d.sort(function(a,b){return(parseInt(b.rating)||0)-(parseInt(a.rating)||0);});
+          renderDashboard(d);showDash();
         });
+      },800);
     })
-    .then(function(r) {
-      if (r.error) throw new Error('Save failed: ' + r.error.message);
-      setStep('step-save', 'done');
-      window.setTimeout(function() {
-        sb.from('conditions').select('*').eq('user_id', currentUser.id)
-          .then(function(res2) {
-            var d = (res2.data || []);
-            d.sort(function(a, b) { return (parseInt(b.rating)||0) - (parseInt(a.rating)||0); });
-            renderDashboard(d);
-            document.getElementById('upload-state').style.display = 'none';
-            showDashboardScreen();
-          });
-      }, 800);
-    })
-    .catch(function(err) {
-      console.error('handleFile error:', err);
-      showErr(err.message);
-    });
+    .catch(function(err){console.error('upload:',err);showErr(err.message);});
 }
 
-// ── RENDER ──
-function calcCombined(data) {
-  var valid = data.filter(function(c) { return c.rating && parseInt(c.rating) > 0; });
-  if (!valid.length) return { exact: 0, official: 0, steps: [] };
-  var remaining = 100, steps = [];
-  valid.forEach(function(c) {
-    var r = parseInt(c.rating);
-    var taken = remaining * r / 100;
-    steps.push({ name: c.name, rating: r, taken: taken.toFixed(1), rb: remaining.toFixed(1) });
-    remaining -= taken;
-  });
-  var exact = parseFloat((100 - remaining).toFixed(2));
-  var official = exact < 1 ? 0 : exact >= 95 ? 100 : Math.round(exact / 10) * 10;
-  return { exact: exact, official: official, steps: steps };
+// RENDER
+function calcCombined(data){
+  var valid=data.filter(function(c){return c.rating&&parseInt(c.rating)>0;});
+  if(!valid.length)return{exact:0,official:0,steps:[]};
+  var remaining=100,steps=[];
+  valid.forEach(function(c){var r=parseInt(c.rating);var taken=remaining*r/100;steps.push({name:c.name,rating:r,taken:taken.toFixed(1),rb:remaining.toFixed(1)});remaining-=taken;});
+  var exact=parseFloat((100-remaining).toFixed(2));
+  var official=exact<1?0:exact>=95?100:Math.round(exact/10)*10;
+  return{exact:exact,official:official,steps:steps};
 }
 
-function renderDashboard(data) {
-  try {
-    var c = calcCombined(data);
-    var exact = c.exact, official = c.official, steps = c.steps;
-    var connected = data.filter(function(x) { return safeStr(x.decision).indexOf('service connected') !== -1 && safeStr(x.decision).indexOf('not') === -1; }).length;
-    var dispConn  = connected > 0 ? connected : data.filter(function(x) { return x.rating && parseInt(x.rating) > 0; }).length;
-
-    document.getElementById('last-updated').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' · updated ' + new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-
-    document.getElementById('stat-row').innerHTML =
-      '<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">' + official + '%</div><div class="stat-sub">Exact ' + exact.toFixed(1) + '% → rounded to ' + official + '%</div></div>' +
-      '<div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">' + dispConn + '</div><div class="stat-sub">of ' + data.length + ' total conditions</div></div>' +
-      '<div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$' + (COMP[official]||0).toLocaleString('en-US',{minimumFractionDigits:0}) + '</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
-
-    document.getElementById('cond-list').innerHTML = data.map(function(x) {
-      return '<div class="cond-row"><div class="cond-name">' + (x.name||'Unknown') + '</div>' +
-        (x.diagnostic_code ? '<div class="cond-meta">DC ' + x.diagnostic_code + '</div>' : '') +
-        '<div class="dpill ' + dpClass(x.decision) + '">' + dpLabel(x.decision) + '</div>' +
-        (x.rating && parseInt(x.rating) > 0 ? '<div class="cond-rating">' + x.rating + '%</div>' : '<div class="cond-rating tbd">TBD</div>') + '</div>';
-    }).join('');
-
-    document.getElementById('math-steps').innerHTML = steps.map(function(s) {
-      return '<div class="math-row"><span class="math-label">' + s.name + '</span><span class="math-formula">' + s.rb + '% x ' + s.rating + '%</span><span class="math-value">−' + s.taken + '%</span></div>';
-    }).join('') + '<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to ' + official + '%</span><span class="math-value">' + exact.toFixed(1) + '%</span></div>';
-
-    document.getElementById('tier-fill').style.width = Math.min(official,100) + '%';
-    document.getElementById('tier-label').textContent = 'Current rating: ' + official + '%';
-    if (official < 100) {
-      var nxt = official + 10;
-      var ex  = Math.round((COMP[nxt]||0) - (COMP[official]||0));
-      document.getElementById('next-tier').innerHTML = 'You're <strong>' + (nxt-exact).toFixed(1) + '% away from ' + nxt + '%</strong> &mdash; worth <strong>$' + ex + '/month</strong> more.';
-    } else {
-      document.getElementById('next-tier').textContent = 'You are at the maximum rating.';
-    }
-
-    document.getElementById('comp-table').innerHTML = [10,20,30,40,50,60,70,80,90,100].map(function(t) {
-      return '<div class="comp-row' + (t===official?' active':'') + '"><span>' + t + '%' + (t===official?' ← you are here':'') + '</span><span style="font-family:var(--ff-mono);font-size:13px">$' + (COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '/mo</span></div>';
-    }).join('');
-
-    var deferred = data.filter(function(x) { return safeStr(x.decision).indexOf('deferred') !== -1; });
-    var denied   = data.filter(function(x) { return safeStr(x.decision).indexOf('not service') !== -1; });
-    var si = [];
-    if (deferred.length) si.push({ icon:'&#9203;', title:'Follow up on ' + deferred.length + ' deferred condition' + (deferred.length>1?'s':''), desc:deferred.map(function(x){return x.name;}).join(', ') + ' still pending. Contact your VSO or check VA.gov.', tag:'action required', amber:true });
-    if (denied.length)   si.push({ icon:'&#9889;', title:'Appeal ' + denied.length + ' denied condition' + (denied.length>1?'s':''), desc:'You have 1 year from the decision to file a supplemental claim with new evidence.', tag:'potential increase', amber:false });
-    si.push({ icon:'&#128269;', title:'Run the gap identifier', desc:'Find additional unclaimed conditions based on your MOS and service era.', tag:'find more', amber:false });
-    if (official < 100) {
-      var nx2 = official + 10;
-      var ex2 = Math.round((COMP[nx2]||0)-(COMP[official]||0));
-      si.push({ icon:'&#128200;', title:'Getting to ' + nx2 + '% adds $' + ex2 + '/month', desc:'If your conditions have worsened, request a new C&P exam to capture current severity.', tag:'rating increase', amber:false });
-    }
-    si.push({ icon:'&#129309;', title:'Connect with a VSO', desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.', tag:'free resource', amber:false });
-    document.getElementById('step-list').innerHTML = si.map(function(s) {
-      return '<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';
-    }).join('');
-  } catch(err) {
-    console.error('renderDashboard error:', err);
-  }
+function renderDashboard(data){
+  try{
+    var c=calcCombined(data);var exact=c.exact,official=c.official,steps=c.steps;
+    var conn=data.filter(function(x){return safeStr(x.decision).indexOf('service connected')!==-1&&safeStr(x.decision).indexOf('not')===-1;}).length;
+    var dc=conn>0?conn:data.filter(function(x){return x.rating&&parseInt(x.rating)>0;}).length;
+    document.getElementById('last-updated').textContent=data.length+' condition'+(data.length!==1?'s':'')+' · updated '+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+official+'%</div><div class="stat-sub">Exact '+exact.toFixed(1)+'% → rounded to '+official+'%</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[official]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
+    document.getElementById('cond-list').innerHTML=data.map(function(x){return'<div class="cond-row"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<div class="dpill '+dpClass(x.decision)+'">'+dpLabel(x.decision)+'</div>'+(x.rating&&parseInt(x.rating)>0?'<div class="cond-rating">'+x.rating+'%</div>':'<div class="cond-rating tbd">TBD</div>')+'</div>';}).join('');
+    document.getElementById('math-steps').innerHTML=steps.map(function(s){return'<div class="math-row"><span class="math-label">'+s.name+'</span><span class="math-formula">'+s.rb+'% x '+s.rating+'%</span><span class="math-value">−'+s.taken+'%</span></div>';}).join('')+'<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to '+official+'%</span><span class="math-value">'+exact.toFixed(1)+'%</span></div>';
+    document.getElementById('tier-fill').style.width=Math.min(official,100)+'%';
+    document.getElementById('tier-label').textContent='Current rating: '+official+'%';
+    if(official<100){var nxt=official+10;var ex=Math.round((COMP[nxt]||0)-(COMP[official]||0));document.getElementById('next-tier').innerHTML='You're <strong>'+(nxt-exact).toFixed(1)+'% away from '+nxt+'%</strong> &mdash; worth <strong>$'+ex+'/month</strong> more.';}
+    else{document.getElementById('next-tier').textContent='You are at the maximum rating.';}
+    document.getElementById('comp-table').innerHTML=[10,20,30,40,50,60,70,80,90,100].map(function(t){return'<div class="comp-row'+(t===official?' active':'')+'"><span>'+t+'%'+(t===official?' ← you are here':'')+'</span><span style="font-family:var(--ff-mono);font-size:13px">$'+(COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+'/mo</span></div>';}).join('');
+    var def=data.filter(function(x){return safeStr(x.decision).indexOf('deferred')!==-1;});
+    var den=data.filter(function(x){return safeStr(x.decision).indexOf('not service')!==-1;});
+    var si=[];
+    if(def.length)si.push({icon:'&#9203;',title:'Follow up on '+def.length+' deferred condition'+(def.length>1?'s':''),desc:def.map(function(x){return x.name;}).join(', ')+' still pending. Contact your VSO or check VA.gov.',tag:'action required',amber:true});
+    if(den.length)si.push({icon:'&#9889;',title:'Appeal '+den.length+' denied condition'+(den.length>1?'s':''),desc:'You have 1 year from the decision to file a supplemental claim with new evidence.',tag:'potential increase',amber:false});
+    si.push({icon:'&#128269;',title:'Run the gap identifier',desc:'Find additional unclaimed conditions based on your MOS and service era.',tag:'find more',amber:false});
+    if(official<100){var nx2=official+10;var ex2=Math.round((COMP[nx2]||0)-(COMP[official]||0));si.push({icon:'&#128200;',title:'Getting to '+nx2+'% adds $'+ex2+'/month',desc:'If your conditions have worsened, request a new C&P exam to capture current severity.',tag:'rating increase',amber:false});}
+    si.push({icon:'&#129309;',title:'Connect with a VSO',desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.',tag:'free resource',amber:false});
+    document.getElementById('step-list').innerHTML=si.map(function(s){return'<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';}).join('');
+  }catch(err){console.error('render:',err);}
 }
 
-async function handleSignout() { await sb.auth.signOut(); window.location.href = 'login.html'; }
-
-init();
+async function handleSignout(){await sb.auth.signOut();window.location.href='login.html';}
 </script>
 </body>
 </html>
