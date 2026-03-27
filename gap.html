@@ -200,7 +200,14 @@
 <script>
 const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    storage: window.sessionStorage,
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 let currentUser = null;
 let userConditions = [];
 
