@@ -1,7 +1,6 @@
 export const config = { runtime: 'edge' };
 
 export default async function handler(req) {
-  // Only allow POST
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
   }
@@ -16,7 +15,7 @@ export default async function handler(req) {
       });
     }
 
-    // Step 1: Fetch the PDF from Supabase Storage
+    // Fetch the PDF
     const pdfResponse = await fetch(file_url);
     if (!pdfResponse.ok) {
       return new Response(JSON.stringify({ error: 'Failed to fetch PDF', status: pdfResponse.status }), {
@@ -25,11 +24,18 @@ export default async function handler(req) {
       });
     }
 
-    // Step 2: Convert to base64
+    // Convert to base64 safely - chunked to avoid call stack overflow on large PDFs
     const pdfBuffer = await pdfResponse.arrayBuffer();
-    const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBuffer)));
+    const uint8Array = new Uint8Array(pdfBuffer);
+    let binary = '';
+    const chunkSize = 8192;
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.subarray(i, i + chunkSize);
+      binary += String.fromCharCode.apply(null, chunk);
+    }
+    const pdfBase64 = btoa(binary);
 
-    // Step 3: Send to Claude API with PDF as document
+    // Call Claude API
     const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -38,7 +44,7 @@ export default async function handler(req) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-opus-4-6',
         max_tokens: 2048,
         messages: [
           {
@@ -55,11 +61,8 @@ export default async function handler(req) {
               {
                 type: 'text',
                 text: `You are extracting VA disability claim data from this document.
-
 Extract every condition you find — service connected, not service connected, and deferred.
-
 Return ONLY a valid JSON array with no other text, no markdown, no explanation.
-
 Format:
 [
   {
@@ -70,9 +73,8 @@ Format:
     "effective_date": "2023-09-03"
   }
 ]
-
 Rules:
-- rating must be a number (integer), not a string
+- rating must be a number (integer), not a string. Use null if no rating assigned.
 - decision must be one of: "service connected", "not service connected", "deferred"
 - effective_date format: YYYY-MM-DD, or null if not found
 - diagnostic_code is a string (e.g. "9411"), or null if not found
@@ -95,15 +97,13 @@ Rules:
     const claudeData = await claudeResponse.json();
     const rawText = claudeData.content?.[0]?.text || '[]';
 
-    // Step 4: Parse Claude's JSON response
     let conditions;
     try {
-      // Strip any accidental markdown fences
       const cleaned = rawText.replace(/```json|```/g, '').trim();
       conditions = JSON.parse(cleaned);
     } catch (parseErr) {
       return new Response(JSON.stringify({
-        error: 'Failed to parse Claude response as JSON',
+        error: 'Failed to parse Claude response',
         raw: rawText
       }), {
         status: 500,
@@ -111,7 +111,6 @@ Rules:
       });
     }
 
-    // Step 5: Return the extracted conditions
     return new Response(JSON.stringify({
       success: true,
       user_id: user_id || null,
