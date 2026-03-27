@@ -109,6 +109,8 @@
     .user-pill{display:none}
     .summary-banner{gap:10px}
     .sb-divider{display:none}
+    .info-grid{grid-template-columns:1fr!important}
+    .page-title{font-size:32px}
     .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
     .nav-links.open{display:flex}
     .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
@@ -125,6 +127,7 @@
       <a href="calculator.html">Rating calculator</a>
       <a href="gap.html" class="active">Gap identifier</a>
       <a href="vault.html">Vault</a>
+      <a href="state-benefits.html">State benefits</a>
       <a href="profile.html">Profile</a>
     </div>
     <div class="nav-right">
@@ -139,7 +142,7 @@
   <div class="page-eyebrow">Step 2 of 3</div>
   <div class="page-title">Gap identifier</div>
   <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed &mdash; and explain exactly why you likely qualify.</p>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
+  <div class="info-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
     <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px 16px">
       <div style="font-family:var(--ff-mono);font-size:10px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Secondary conditions</div>
       <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions caused or worsened by ones you already have. Example: PTSD causing sleep apnea. No new in-service event needed &mdash; just a nexus letter.</div>
