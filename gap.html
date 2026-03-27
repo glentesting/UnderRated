@@ -476,17 +476,20 @@ function init() {
   if (saved.mos)    document.getElementById('mos').value = saved.mos;
   if (saved.era)    document.getElementById('era').value = saved.era;
 
-  // Set loading state immediately so it never just says "Loading..."
-  document.getElementById('cond-list').innerHTML = '<div class="cond-empty">Checking for saved conditions...</div>';
-
+  // Free tool - works without login
+  // If logged in, we load their saved conditions for better gap analysis
   sb.auth.getSession().then(function(res) {
     var session = res && res.data && res.data.session ? res.data.session : null;
-    if (!session) { window.location.href = 'login.html'; return; }
-    currentUser = session.user;
-    document.getElementById('user-email').textContent = currentUser.email;
-    loadConditions();
+    if (session) {
+      currentUser = session.user;
+      document.getElementById('user-email').textContent = currentUser.email;
+      loadConditions();
+    } else {
+      // Not logged in - still works, just no saved conditions
+      document.getElementById('cond-list').innerHTML = '<div class="cond-empty" style="line-height:1.6">Want to match against your saved conditions?<br><a href="login.html" style="color:var(--green);font-size:13px">Log in or sign up free &rarr;</a></div>';
+    }
   }).catch(function() {
-    window.location.href = 'login.html';
+    document.getElementById('cond-list').innerHTML = '<div class="cond-empty">Enter conditions manually in the calculator to improve results.</div>';
   });
 }
 
