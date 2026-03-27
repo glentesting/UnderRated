@@ -385,9 +385,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
 <script>
 var sb = window.supabase.createClient(
   'https://bglhfmwjfnmybcrjlscm.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI',
-  { auth: { storage: window.sessionStorage, persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
-);
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI');
 
 // Check auth state and swap nav accordingly
 sb.auth.getSession().then(function(res) {
