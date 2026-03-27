@@ -33,7 +33,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
 .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
-.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
 .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
 .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
 .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
@@ -57,7 +57,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .progress-step.done{color:var(--green);border-color:var(--green-border)}
 .step-dot{width:14px;height:14px;border-radius:50%;background:var(--border-2);flex-shrink:0}
 .step-spin{width:14px;height:14px;border:2px solid rgba(14,138,99,0.2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
-.step-check{width:14px;height:14px;flex-shrink:0;color:var(--green);font-size:14px;line-height:1}
+.step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
 .upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
 .alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
 .alt-action a{color:var(--green)}
@@ -117,7 +117,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
 .step-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:4px;margin-top:6px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);letter-spacing:.05em;text-transform:uppercase}
 .step-tag.amber{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:780px){
   .stat-row{grid-template-columns:1fr}
   .layout{grid-template-columns:1fr}
@@ -227,180 +226,129 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── CONSTANTS ──
-const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-const VERCEL_URL = 'https://getunderrated.vercel.app/api/extract-pdf';
-const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+var SURL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var VURL = 'https://getunderrated.vercel.app/api/extract-pdf';
+var COMP = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+var sb = window.supabase.createClient(SURL, SKEY);
+var currentUser = null;
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-let currentUser = null;
-let appStarted = false;
+function toggleNav() { document.getElementById('nav-links').classList.toggle('open'); }
 
-// ── HARD TIMEOUT ──
-// If NOTHING has happened after 6 seconds, stop spinning and show upload screen.
-// This catches every possible failure mode: CDN slow, auth not firing, query hanging.
-setTimeout(function() {
-  if (!appStarted) {
-    console.warn('Vault: 6s timeout — forcing upload screen');
-    showLoading(false);
-    showUploadScreen();
+// ── GUARANTEED SPINNER KILL ──
+// No flags, no conditions. After 5 seconds the spinner is GONE, period.
+// If dashboard is already showing, nothing changes. If not, show upload screen.
+window.setTimeout(function() {
+  var loading = document.getElementById('loading');
+  var dash    = document.getElementById('dashboard');
+  var upload  = document.getElementById('upload-state');
+  loading.style.display = 'none';
+  if (dash.style.display !== 'block') {
+    upload.style.display = 'block';
+    setupDropZone();
   }
-}, 6000);
+}, 5000);
 
-// ── HELPERS ──
-function toggleNav() {
-  document.getElementById('nav-links').classList.toggle('open');
-}
-
-function showLoading(yes) {
-  document.getElementById('loading').style.display = yes ? 'flex' : 'none';
-}
+// ── UI HELPERS ──
+function hideLoading() { document.getElementById('loading').style.display = 'none'; }
 
 function showUploadScreen() {
+  hideLoading();
   document.getElementById('upload-state').style.display = 'block';
   document.getElementById('dashboard').style.display = 'none';
   setupDropZone();
 }
 
-function showDashboard() {
+function showDashboardScreen() {
+  hideLoading();
   document.getElementById('upload-state').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
 }
 
-// Safe null-proof decision check — never throws TypeError
-function di(dec, term) {
-  return (dec !== null && dec !== undefined ? String(dec).toLowerCase() : '').indexOf(term) !== -1;
-}
-
+function safeStr(v) { return v !== null && v !== undefined ? String(v).toLowerCase() : ''; }
 function dpClass(d) {
-  if (!d) return 'def';
-  if (di(d, 'not service')) return 'den';
-  if (di(d, 'deferred'))    return 'def';
-  if (di(d, 'service'))     return 'sc';
+  var s = safeStr(d);
+  if (!s) return 'def';
+  if (s.indexOf('not service') !== -1) return 'den';
+  if (s.indexOf('deferred')    !== -1) return 'def';
+  if (s.indexOf('service')     !== -1) return 'sc';
   return 'def';
 }
-
 function dpLabel(d) {
-  if (!d) return 'Pending';
-  if (di(d, 'not service')) return 'Denied';
-  if (di(d, 'deferred'))    return 'Deferred';
-  if (di(d, 'service'))     return 'Connected';
-  return d;
+  var s = safeStr(d);
+  if (!s) return 'Pending';
+  if (s.indexOf('not service') !== -1) return 'Denied';
+  if (s.indexOf('deferred')    !== -1) return 'Deferred';
+  if (s.indexOf('service')     !== -1) return 'Connected';
+  return String(d);
 }
 
 // ── AUTH ──
-async function init() {
-  try {
-    // First: check if there's already a session (avoids waiting for onAuthStateChange)
-    const { data: sessionData } = await sb.auth.getSession();
-
-    if (sessionData && sessionData.session) {
-      // Already have a session — go straight to loading data
-      currentUser = sessionData.session.user;
+function init() {
+  sb.auth.getSession().then(function(result) {
+    var session = result.data && result.data.session ? result.data.session : null;
+    if (session) {
+      currentUser = session.user;
       document.getElementById('user-email').textContent = currentUser.email;
-      appStarted = true;
-      await loadData();
+      loadData();
     } else {
-      // No session yet — listen for auth change (handles redirect-back-from-login)
-      sb.auth.onAuthStateChange(async (event, session) => {
-        if (!session) {
-          // Not logged in — go to login
-          window.location.href = 'login.html';
-          return;
-        }
-        if (appStarted) return; // prevent double-fire
-        appStarted = true;
-        currentUser = session.user;
-        document.getElementById('user-email').textContent = currentUser.email;
-        await loadData();
-      });
+      window.location.href = 'login.html';
     }
-  } catch (err) {
-    console.error('Vault init error:', err);
-    appStarted = true;
-    showLoading(false);
+  }).catch(function(err) {
+    console.error('getSession error:', err);
     showUploadScreen();
-  }
+  });
 }
 
 // ── DATA ──
-async function loadData() {
-  try {
-    const { data, error } = await sb
-      .from('conditions')
-      .select('*')
-      .eq('user_id', currentUser.id)
-      .order('rating', { ascending: false });
-
-    showLoading(false);
-
-    if (error) {
-      console.error('loadData query error:', error);
+function loadData() {
+  sb.from('conditions')
+    .select('id, name, rating, diagnostic_code, decision, effective_date, sort_order')
+    .eq('user_id', currentUser.id)
+    .then(function(result) {
+      hideLoading();
+      var data = result.data;
+      var err  = result.error;
+      if (err) { console.error('query error:', err); showUploadScreen(); return; }
+      if (!data || data.length === 0) { showUploadScreen(); return; }
+      // Sort by rating descending in JS to avoid DB type issues
+      data.sort(function(a, b) { return (parseInt(b.rating) || 0) - (parseInt(a.rating) || 0); });
+      renderDashboard(data);
+      showDashboardScreen();
+    }).catch(function(err) {
+      console.error('loadData error:', err);
+      hideLoading();
       showUploadScreen();
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      showUploadScreen();
-      return;
-    }
-
-    renderDashboard(data);
-    showDashboard();
-
-  } catch (err) {
-    console.error('loadData error:', err);
-    showLoading(false);
-    showUploadScreen();
-  }
+    });
 }
 
 // ── UPLOAD ──
 function setupDropZone() {
-  const zone = document.getElementById('drop-zone');
-  const input = document.getElementById('file-input');
-
-  // Remove old listeners by cloning
-  const newZone = zone.cloneNode(true);
-  zone.parentNode.replaceChild(newZone, zone);
-  const newInput = document.getElementById('file-input');
-
-  newZone.addEventListener('dragover', function(e) { e.preventDefault(); newZone.classList.add('dragover'); });
-  newZone.addEventListener('dragleave', function() { newZone.classList.remove('dragover'); });
-  newZone.addEventListener('drop', function(e) {
+  var zone  = document.getElementById('drop-zone');
+  var input = document.getElementById('file-input');
+  if (!zone || zone._setup) return;
+  zone._setup = true;
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) {
     e.preventDefault();
-    newZone.classList.remove('dragover');
+    zone.classList.remove('dragover');
     var f = e.dataTransfer.files[0];
     if (f && f.type === 'application/pdf') handleFile(f);
-    else showUploadError('Please upload a PDF file.');
+    else showErr('Please upload a PDF file.');
   });
-  newInput.addEventListener('change', function() {
-    if (newInput.files && newInput.files[0]) handleFile(newInput.files[0]);
+  input.addEventListener('change', function() {
+    if (input.files && input.files[0]) handleFile(input.files[0]);
   });
 }
 
 function showUpload() {
   document.getElementById('upload-progress').style.display = 'none';
   document.getElementById('upload-error').style.display = 'none';
-  showLoading(false);
   showUploadScreen();
 }
 
-function setStep(id, status) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.className = 'progress-step' + (status === 'active' ? ' active' : status === 'done' ? ' done' : '');
-  var icon = el.querySelector('.step-dot,.step-spin,.step-check');
-  if (status === 'active' && icon) {
-    icon.outerHTML = '<div class="step-spin"></div>';
-  } else if (status === 'done') {
-    var s = el.querySelector('.step-spin,.step-dot');
-    if (s) s.outerHTML = '<span class="step-check">&#10003;</span>';
-  }
-}
-
-function showUploadError(msg) {
+function showErr(msg) {
   var el = document.getElementById('upload-error');
   el.textContent = msg;
   el.style.display = 'block';
@@ -408,92 +356,86 @@ function showUploadError(msg) {
   if (dz) { dz.style.pointerEvents = ''; dz.style.opacity = ''; }
 }
 
-async function handleFile(file) {
-  if (!currentUser) {
-    showUploadError('You must be logged in to upload files.');
-    return;
-  }
-  if (!file || file.type !== 'application/pdf') {
-    showUploadError('Please upload a PDF file.');
-    return;
-  }
+function setStep(id, status) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'progress-step' + (status === 'active' ? ' active' : status === 'done' ? ' done' : '');
+  var icon = el.querySelector('.step-dot,.step-spin,.step-check');
+  if (status === 'active' && icon) icon.outerHTML = '<div class="step-spin"></div>';
+  else if (status === 'done') { var s = el.querySelector('.step-spin,.step-dot'); if (s) s.outerHTML = '<span class="step-check">&#10003;</span>'; }
+}
 
+function handleFile(file) {
+  if (!currentUser) { showErr('Please log in first.'); return; }
+  if (!file || file.type !== 'application/pdf') { showErr('Please upload a PDF file.'); return; }
   document.getElementById('upload-error').style.display = 'none';
   document.getElementById('upload-progress').style.display = 'block';
   var dz = document.getElementById('drop-zone');
   if (dz) { dz.style.pointerEvents = 'none'; dz.style.opacity = '0.5'; }
 
-  try {
-    setStep('step-upload', 'active');
-    var fileName = currentUser.id + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    var uploadResult = await sb.storage.from('rating-decisions').upload(fileName, file, { upsert: true });
-    if (uploadResult.error) throw new Error('Upload failed: ' + uploadResult.error.message);
-    setStep('step-upload', 'done');
+  var fname = currentUser.id + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  setStep('step-upload', 'active');
 
-    var urlResult = sb.storage.from('rating-decisions').getPublicUrl(fileName);
-    var fileUrl = urlResult.data.publicUrl;
-
-    setStep('step-extract', 'active');
-    var extractRes = await fetch(VERCEL_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ file_url: fileUrl, user_id: currentUser.id })
+  sb.storage.from('rating-decisions').upload(fname, file, { upsert: true })
+    .then(function(r) {
+      if (r.error) throw new Error('Upload failed: ' + r.error.message);
+      setStep('step-upload', 'done');
+      var fileUrl = sb.storage.from('rating-decisions').getPublicUrl(fname).data.publicUrl;
+      setStep('step-extract', 'active');
+      return fetch(VURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file_url: fileUrl, user_id: currentUser.id })
+      });
+    })
+    .then(function(res) {
+      if (!res.ok) return res.json().then(function(e) { throw new Error(e.error || 'Extraction failed.'); });
+      return res.json();
+    })
+    .then(function(extracted) {
+      if (!extracted.success || !extracted.conditions || !extracted.conditions.length) {
+        throw new Error('No conditions found. Make sure this is a VA rating decision letter.');
+      }
+      setStep('step-extract', 'done');
+      setStep('step-save', 'active');
+      return sb.from('conditions').delete().eq('user_id', currentUser.id)
+        .then(function() {
+          var rows = extracted.conditions.map(function(c, i) {
+            return { user_id: currentUser.id, name: c.condition_name || c.name || 'Unknown', rating: c.rating != null ? String(c.rating) : null, diagnostic_code: c.diagnostic_code || null, decision: c.decision || null, effective_date: c.effective_date || null, sort_order: i };
+          });
+          return sb.from('conditions').insert(rows);
+        });
+    })
+    .then(function(r) {
+      if (r.error) throw new Error('Save failed: ' + r.error.message);
+      setStep('step-save', 'done');
+      window.setTimeout(function() {
+        sb.from('conditions').select('*').eq('user_id', currentUser.id)
+          .then(function(res2) {
+            var d = (res2.data || []);
+            d.sort(function(a, b) { return (parseInt(b.rating)||0) - (parseInt(a.rating)||0); });
+            renderDashboard(d);
+            document.getElementById('upload-state').style.display = 'none';
+            showDashboardScreen();
+          });
+      }, 800);
+    })
+    .catch(function(err) {
+      console.error('handleFile error:', err);
+      showErr(err.message);
     });
-
-    if (!extractRes.ok) {
-      var errJson = {};
-      try { errJson = await extractRes.json(); } catch(e) {}
-      throw new Error(errJson.error || 'Extraction failed. Make sure this is a VA rating decision PDF.');
-    }
-
-    var extracted = await extractRes.json();
-    if (!extracted.success || !extracted.conditions || extracted.conditions.length === 0) {
-      throw new Error('No conditions found in this document. Make sure it is a VA rating decision letter.');
-    }
-    setStep('step-extract', 'done');
-
-    setStep('step-save', 'active');
-    await sb.from('conditions').delete().eq('user_id', currentUser.id);
-    var rows = extracted.conditions.map(function(c, i) {
-      return {
-        user_id: currentUser.id,
-        name: c.condition_name || c.name || 'Unknown condition',
-        rating: c.rating != null ? String(c.rating) : null,
-        diagnostic_code: c.diagnostic_code || null,
-        decision: c.decision || null,
-        effective_date: c.effective_date || null,
-        sort_order: i
-      };
-    });
-    var insertResult = await sb.from('conditions').insert(rows);
-    if (insertResult.error) throw new Error('Save failed: ' + insertResult.error.message);
-    setStep('step-save', 'done');
-
-    setTimeout(async function() {
-      var freshData = await sb.from('conditions').select('*').eq('user_id', currentUser.id).order('rating', { ascending: false });
-      renderDashboard(freshData.data || []);
-      document.getElementById('upload-state').style.display = 'none';
-      showDashboard();
-    }, 800);
-
-  } catch (err) {
-    console.error('handleFile error:', err);
-    showUploadError(err.message);
-  }
 }
 
 // ── RENDER ──
 function calcCombined(data) {
   var valid = data.filter(function(c) { return c.rating && parseInt(c.rating) > 0; });
-  valid.sort(function(a, b) { return parseInt(b.rating) - parseInt(a.rating); });
   if (!valid.length) return { exact: 0, official: 0, steps: [] };
-  var remaining = 100;
-  var steps = valid.map(function(c) {
+  var remaining = 100, steps = [];
+  valid.forEach(function(c) {
     var r = parseInt(c.rating);
-    var taken = remaining * (r / 100);
-    var row = { name: c.name, rating: r, taken: taken.toFixed(1), remaining_before: remaining.toFixed(1) };
+    var taken = remaining * r / 100;
+    steps.push({ name: c.name, rating: r, taken: taken.toFixed(1), rb: remaining.toFixed(1) });
     remaining -= taken;
-    return row;
   });
   var exact = parseFloat((100 - remaining).toFixed(2));
   var official = exact < 1 ? 0 : exact >= 95 ? 100 : Math.round(exact / 10) * 10;
@@ -502,74 +444,64 @@ function calcCombined(data) {
 
 function renderDashboard(data) {
   try {
-    var combined = calcCombined(data);
-    var exact = combined.exact;
-    var official = combined.official;
-    var steps = combined.steps;
+    var c = calcCombined(data);
+    var exact = c.exact, official = c.official, steps = c.steps;
+    var connected = data.filter(function(x) { return safeStr(x.decision).indexOf('service connected') !== -1 && safeStr(x.decision).indexOf('not') === -1; }).length;
+    var dispConn  = connected > 0 ? connected : data.filter(function(x) { return x.rating && parseInt(x.rating) > 0; }).length;
 
-    var connected = data.filter(function(c) { return di(c.decision, 'service connected') && !di(c.decision, 'not'); }).length;
-    var displayConnected = connected > 0 ? connected : data.filter(function(c) { return c.rating && parseInt(c.rating) > 0; }).length;
-
-    document.getElementById('last-updated').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' · updated ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('last-updated').textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' · updated ' + new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
 
     document.getElementById('stat-row').innerHTML =
       '<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">' + official + '%</div><div class="stat-sub">Exact ' + exact.toFixed(1) + '% → rounded to ' + official + '%</div></div>' +
-      '<div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">' + displayConnected + '</div><div class="stat-sub">of ' + data.length + ' total conditions</div></div>' +
-      '<div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$' + (COMP_RATES[official] || 0).toLocaleString('en-US', { minimumFractionDigits: 0 }) + '</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
+      '<div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">' + dispConn + '</div><div class="stat-sub">of ' + data.length + ' total conditions</div></div>' +
+      '<div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$' + (COMP[official]||0).toLocaleString('en-US',{minimumFractionDigits:0}) + '</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
 
-    document.getElementById('cond-list').innerHTML = data.map(function(c) {
-      return '<div class="cond-row">' +
-        '<div class="cond-name">' + (c.name || 'Unknown') + '</div>' +
-        (c.diagnostic_code ? '<div class="cond-meta">DC ' + c.diagnostic_code + '</div>' : '') +
-        '<div class="dpill ' + dpClass(c.decision) + '">' + dpLabel(c.decision) + '</div>' +
-        (c.rating && parseInt(c.rating) > 0 ? '<div class="cond-rating">' + c.rating + '%</div>' : '<div class="cond-rating tbd">TBD</div>') +
-        '</div>';
+    document.getElementById('cond-list').innerHTML = data.map(function(x) {
+      return '<div class="cond-row"><div class="cond-name">' + (x.name||'Unknown') + '</div>' +
+        (x.diagnostic_code ? '<div class="cond-meta">DC ' + x.diagnostic_code + '</div>' : '') +
+        '<div class="dpill ' + dpClass(x.decision) + '">' + dpLabel(x.decision) + '</div>' +
+        (x.rating && parseInt(x.rating) > 0 ? '<div class="cond-rating">' + x.rating + '%</div>' : '<div class="cond-rating tbd">TBD</div>') + '</div>';
     }).join('');
 
     document.getElementById('math-steps').innerHTML = steps.map(function(s) {
-      return '<div class="math-row"><span class="math-label">' + s.name + '</span><span class="math-formula">' + s.remaining_before + '% x ' + s.rating + '%</span><span class="math-value">−' + s.taken + '%</span></div>';
+      return '<div class="math-row"><span class="math-label">' + s.name + '</span><span class="math-formula">' + s.rb + '% x ' + s.rating + '%</span><span class="math-value">−' + s.taken + '%</span></div>';
     }).join('') + '<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to ' + official + '%</span><span class="math-value">' + exact.toFixed(1) + '%</span></div>';
 
-    document.getElementById('tier-fill').style.width = Math.min(official, 100) + '%';
+    document.getElementById('tier-fill').style.width = Math.min(official,100) + '%';
     document.getElementById('tier-label').textContent = 'Current rating: ' + official + '%';
-
     if (official < 100) {
-      var next = official + 10;
-      var extra = Math.round((COMP_RATES[next] || 0) - (COMP_RATES[official] || 0));
-      document.getElementById('next-tier').innerHTML = 'You're <strong>' + (next - exact).toFixed(1) + '% away from ' + next + '%</strong> &mdash; worth <strong>$' + extra + '/month</strong> more.';
+      var nxt = official + 10;
+      var ex  = Math.round((COMP[nxt]||0) - (COMP[official]||0));
+      document.getElementById('next-tier').innerHTML = 'You're <strong>' + (nxt-exact).toFixed(1) + '% away from ' + nxt + '%</strong> &mdash; worth <strong>$' + ex + '/month</strong> more.';
     } else {
       document.getElementById('next-tier').textContent = 'You are at the maximum rating.';
     }
 
     document.getElementById('comp-table').innerHTML = [10,20,30,40,50,60,70,80,90,100].map(function(t) {
-      return '<div class="comp-row' + (t === official ? ' active' : '') + '"><span>' + t + '%' + (t === official ? ' ← you are here' : '') + '</span><span style="font-family:var(--ff-mono);font-size:13px">$' + (COMP_RATES[t] || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '/mo</span></div>';
+      return '<div class="comp-row' + (t===official?' active':'') + '"><span>' + t + '%' + (t===official?' ← you are here':'') + '</span><span style="font-family:var(--ff-mono);font-size:13px">$' + (COMP[t]||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + '/mo</span></div>';
     }).join('');
 
-    var deferred = data.filter(function(c) { return di(c.decision, 'deferred'); });
-    var denied   = data.filter(function(c) { return di(c.decision, 'not service'); });
-    var stepItems = [];
-    if (deferred.length) stepItems.push({ icon: '&#9203;', title: 'Follow up on ' + deferred.length + ' deferred condition' + (deferred.length > 1 ? 's' : ''), desc: deferred.map(function(c){return c.name;}).join(', ') + ' still pending. Contact your VSO or check VA.gov.', tag: 'action required', amber: true });
-    if (denied.length)   stepItems.push({ icon: '&#9889;', title: 'Appeal ' + denied.length + ' denied condition' + (denied.length > 1 ? 's' : ''), desc: 'You have 1 year from the decision to file a supplemental claim with new evidence.', tag: 'potential increase', amber: false });
-    stepItems.push({ icon: '&#128269;', title: 'Run the gap identifier', desc: 'Find additional unclaimed conditions based on your MOS and service era.', tag: 'find more', amber: false });
+    var deferred = data.filter(function(x) { return safeStr(x.decision).indexOf('deferred') !== -1; });
+    var denied   = data.filter(function(x) { return safeStr(x.decision).indexOf('not service') !== -1; });
+    var si = [];
+    if (deferred.length) si.push({ icon:'&#9203;', title:'Follow up on ' + deferred.length + ' deferred condition' + (deferred.length>1?'s':''), desc:deferred.map(function(x){return x.name;}).join(', ') + ' still pending. Contact your VSO or check VA.gov.', tag:'action required', amber:true });
+    if (denied.length)   si.push({ icon:'&#9889;', title:'Appeal ' + denied.length + ' denied condition' + (denied.length>1?'s':''), desc:'You have 1 year from the decision to file a supplemental claim with new evidence.', tag:'potential increase', amber:false });
+    si.push({ icon:'&#128269;', title:'Run the gap identifier', desc:'Find additional unclaimed conditions based on your MOS and service era.', tag:'find more', amber:false });
     if (official < 100) {
-      var nx = official + 10;
-      var ex = Math.round((COMP_RATES[nx] || 0) - (COMP_RATES[official] || 0));
-      stepItems.push({ icon: '&#128200;', title: 'Getting to ' + nx + '% adds $' + ex + '/month', desc: 'If your conditions have worsened, request a new C&P exam to capture current severity.', tag: 'rating increase', amber: false });
+      var nx2 = official + 10;
+      var ex2 = Math.round((COMP[nx2]||0)-(COMP[official]||0));
+      si.push({ icon:'&#128200;', title:'Getting to ' + nx2 + '% adds $' + ex2 + '/month', desc:'If your conditions have worsened, request a new C&P exam to capture current severity.', tag:'rating increase', amber:false });
     }
-    stepItems.push({ icon: '&#129309;', title: 'Connect with a VSO', desc: 'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.', tag: 'free resource', amber: false });
-    document.getElementById('step-list').innerHTML = stepItems.map(function(s) {
-      return '<div class="step-item"><div class="step-icon">' + s.icon + '</div><div class="step-content"><div class="step-title">' + s.title + '</div><div class="step-desc">' + s.desc + '</div><span class="step-tag' + (s.amber ? ' amber' : '') + '">' + s.tag + '</span></div></div>';
+    si.push({ icon:'&#129309;', title:'Connect with a VSO', desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.', tag:'free resource', amber:false });
+    document.getElementById('step-list').innerHTML = si.map(function(s) {
+      return '<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';
     }).join('');
-
-  } catch (err) {
+  } catch(err) {
     console.error('renderDashboard error:', err);
   }
 }
 
-async function handleSignout() {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
-}
+async function handleSignout() { await sb.auth.signOut(); window.location.href = 'login.html'; }
 
 init();
 </script>
