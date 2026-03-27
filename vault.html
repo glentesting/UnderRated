@@ -309,7 +309,11 @@ function handleFile(file){
       setStep('step-upload','done');
       var fileUrl=sb.storage.from('rating-decisions').getPublicUrl(fname).data.publicUrl;
       setStep('step-extract','active');
-      return fetch(VURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({file_url:fileUrl,user_id:currentUser.id})});
+      // Get current session token to authenticate the API call
+      return sb.auth.getSession().then(function(sr) {
+        var token = sr.data && sr.data.session ? sr.data.session.access_token : '';
+        return fetch(VURL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({file_url:fileUrl,user_id:currentUser.id})});
+      });
     })
     .then(function(res){
       if(!res.ok)return res.json().then(function(e){throw new Error(e.error||'Extraction failed.');});
