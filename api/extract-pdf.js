@@ -15,7 +15,6 @@ export default async function handler(req) {
       });
     }
 
-    // Fetch the PDF
     const pdfResponse = await fetch(file_url);
     if (!pdfResponse.ok) {
       return new Response(JSON.stringify({ error: 'Failed to fetch PDF', status: pdfResponse.status }), {
@@ -24,7 +23,7 @@ export default async function handler(req) {
       });
     }
 
-    // Convert to base64 safely - chunked to avoid call stack overflow on large PDFs
+    // Convert to base64 in chunks to avoid call stack overflow on large PDFs
     const pdfBuffer = await pdfResponse.arrayBuffer();
     const uint8Array = new Uint8Array(pdfBuffer);
     let binary = '';
@@ -35,7 +34,6 @@ export default async function handler(req) {
     }
     const pdfBase64 = btoa(binary);
 
-    // Call Claude API
     const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -60,25 +58,36 @@ export default async function handler(req) {
               },
               {
                 type: 'text',
-                text: `You are extracting VA disability claim data from this document.
-Extract every condition you find — service connected, not service connected, and deferred.
-Return ONLY a valid JSON array with no other text, no markdown, no explanation.
+                text: `You are extracting VA disability claim data from this rating decision document.
+
+Return ONLY a valid JSON object with no other text, no markdown, no explanation.
+
 Format:
-[
-  {
-    "condition_name": "PTSD",
-    "diagnostic_code": "9411",
-    "rating": 70,
-    "decision": "service connected",
-    "effective_date": "2023-09-03"
-  }
-]
-Rules:
+{
+  "combined_rating": 90,
+  "conditions": [
+    {
+      "condition_name": "PTSD",
+      "diagnostic_code": "9411",
+      "rating": 70,
+      "decision": "service connected",
+      "effective_date": "2023-09-03"
+    }
+  ]
+}
+
+Rules for combined_rating:
+- Extract the official combined disability rating percentage stated in the document (e.g. "COMBINED DISABILITY RATING: 90%")
+- This must be the number as printed in the document — do NOT calculate or estimate it
+- Use null if no combined rating is stated
+
+Rules for conditions:
+- Extract every condition listed — service connected, not service connected, and deferred
 - rating must be a number (integer), not a string. Use null if no rating assigned.
-- decision must be one of: "service connected", "not service connected", "deferred"
+- decision must be exactly one of: "service connected", "not service connected", "deferred"
 - effective_date format: YYYY-MM-DD, or null if not found
 - diagnostic_code is a string (e.g. "9411"), or null if not found
-- Include ALL conditions in the document, even denied ones`
+- Include ALL conditions, even denied ones`
               }
             ]
           }
@@ -95,12 +104,12 @@ Rules:
     }
 
     const claudeData = await claudeResponse.json();
-    const rawText = claudeData.content?.[0]?.text || '[]';
+    const rawText = claudeData.content?.[0]?.text || '{}';
 
-    let conditions;
+    let parsed;
     try {
       const cleaned = rawText.replace(/```json|```/g, '').trim();
-      conditions = JSON.parse(cleaned);
+      parsed = JSON.parse(cleaned);
     } catch (parseErr) {
       return new Response(JSON.stringify({
         error: 'Failed to parse Claude response',
@@ -111,9 +120,13 @@ Rules:
       });
     }
 
+    const conditions = parsed.conditions || [];
+    const combined_rating = parsed.combined_rating || null;
+
     return new Response(JSON.stringify({
       success: true,
       user_id: user_id || null,
+      combined_rating: combined_rating,
       conditions: conditions,
       count: conditions.length
     }), {
