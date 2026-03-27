@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-right{display:flex;align-items:center;gap:14px}
+.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+.page{max-width:600px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-bottom:5px;font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase}
+.form-input,.form-select{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
+.form-input:focus,.form-select:focus{border-color:var(--green);background:var(--surface)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.save-bar{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:18px;border-top:1.5px solid var(--border)}
+.save-status{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
+.save-status.saved{color:var(--green)}
+.save-status.saving{color:var(--amber)}
+.save-btn{background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:9px 20px;border-radius:9px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+.save-btn:hover{background:var(--green-l)}
+.save-btn:disabled{opacity:.5;cursor:not-allowed}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){
+  .form-row{grid-template-columns:1fr}
+  .hamburger{display:flex}
+  .user-email{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links a:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html">Vault</a>
+      <a href="profile.html" class="active">Profile</a>
+    </div>
+    <div class="nav-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-title">Profile</div>
+  <p class="page-sub">Your service details help UNDERRATED give you better gap analysis and claim recommendations.</p>
+
+  <div class="card">
+    <div class="card-title">Service information</div>
+    <div class="card-sub">All fields are optional. Save whenever you're ready.</div>
+
+    <div class="form-group">
+      <label class="form-label" for="first_name">First name</label>
+      <input class="form-input" type="text" id="first_name" placeholder="Your first name">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="branch">Branch of service</label>
+      <select class="form-select" id="branch">
+        <option value="">Select branch...</option>
+        <option value="army">Army</option>
+        <option value="navy">Navy</option>
+        <option value="air_force">Air Force</option>
+        <option value="marines">Marines</option>
+        <option value="coast_guard">Coast Guard</option>
+        <option value="space_force">Space Force</option>
+        <option value="national_guard">National Guard</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="mos">MOS / Rate / AFSC</label>
+      <input class="form-input" type="text" id="mos" placeholder="e.g. 11B, HM, 2A3X3">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="era">Service era</label>
+      <select class="form-select" id="era">
+        <option value="">Select era...</option>
+        <option value="post_911">Post-9/11 (2001-present)</option>
+        <option value="gulf_war">Gulf War (1990-2001)</option>
+        <option value="vietnam">Vietnam Era (1964-1975)</option>
+        <option value="korea_dmz">Korea / DMZ (1967-1971)</option>
+        <option value="cold_war">Cold War / Peacetime</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="years_of_service">Years of service</label>
+        <input class="form-input" type="number" id="years_of_service" min="0" max="50" placeholder="e.g. 6">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="dependents">Number of dependents</label>
+        <input class="form-input" type="number" id="dependents" min="0" max="20" placeholder="e.g. 2">
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <span class="save-status" id="save-status">Not saved yet</span>
+      <button class="save-btn" id="save-btn" onclick="saveProfile()">Save profile</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+var currentUser=null;
+var FIELDS=['first_name','branch','mos','era','years_of_service','dependents'];
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+
+function handleSignout(){
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
+  sb.auth.signOut().then(function(){window.location.href='login.html';});
+}
+
+function getFormData(){
+  var data={user_id:currentUser.id};
+  FIELDS.forEach(function(f){
+    var el=document.getElementById(f);
+    var val=el.value.trim();
+    if(f==='years_of_service'||f==='dependents'){
+      data[f]=val===''?null:parseInt(val);
+    }else{
+      data[f]=val||null;
+    }
+  });
+  return data;
+}
+
+function populateForm(row){
+  FIELDS.forEach(function(f){
+    var el=document.getElementById(f);
+    if(row[f]!=null) el.value=row[f];
+  });
+}
+
+function loadProfile(){
+  return sb.from('profiles').select('*').eq('user_id',currentUser.id).maybeSingle()
+    .then(function(res){
+      if(res.data) {
+        populateForm(res.data);
+        document.getElementById('save-status').textContent='Saved';
+        document.getElementById('save-status').className='save-status saved';
+      }
+    });
+}
+
+async function saveProfile(){
+  var btn=document.getElementById('save-btn');
+  var status=document.getElementById('save-status');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div>';
+  status.textContent='Saving\u2026';
+  status.className='save-status saving';
+
+  var data=getFormData();
+  var {error}=await sb.from('profiles').upsert(data,{onConflict:'user_id'});
+
+  if(error){
+    status.textContent='Error saving';
+    status.className='save-status';
+    btn.disabled=false;
+    btn.textContent='Save profile';
+    return;
+  }
+
+  status.textContent='Saved \u2713';
+  status.className='save-status saved';
+  btn.disabled=false;
+  btn.textContent='Save profile';
+}
+
+// Mark unsaved on any input change
+FIELDS.forEach(function(f){
+  document.getElementById(f).addEventListener('input',function(){
+    document.getElementById('save-status').textContent='Unsaved changes';
+    document.getElementById('save-status').className='save-status';
+  });
+  document.getElementById(f).addEventListener('change',function(){
+    document.getElementById('save-status').textContent='Unsaved changes';
+    document.getElementById('save-status').className='save-status';
+  });
+});
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+  loadProfile();
+}).catch(function(){
+  window.location.href='login.html';
+});
+</script>
+</body>
+</html>
