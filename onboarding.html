@@ -1,1 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--red:#C43030;--red-bg:rgba(196,48,48,0.08);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-skip{font-size:13px;color:var(--ink-3);cursor:pointer;background:none;border:none;font-family:var(--ff-body);padding:6px 0}
+.nav-skip:hover{color:var(--ink)}
+.page{flex:1;display:flex;flex-direction:column;align-items:center;padding:48px 24px 60px}
+.progress-wrap{width:100%;max-width:480px;margin-bottom:40px}
+.progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-step{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500}
+.progress-count{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4)}
+.progress-bar{height:3px;background:var(--bg-2);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:40px 36px;width:100%;max-width:480px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06)}
+.card-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+.card-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.card-sub{font-size:14px;color:var(--ink-3);margin-bottom:28px;line-height:1.55}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px}
+.form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-input::placeholder{color:var(--ink-4)}
+.select-wrap{position:relative}
+.select-wrap select{appearance:none;display:block;width:100%;padding:11px 36px 11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;cursor:pointer}
+.select-wrap select:focus{border-color:var(--green);background:var(--surface)}
+.select-wrap::after{content:'▾';position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--ink-3);pointer-events:none;font-size:14px}
+.radio-group{display:flex;flex-direction:column;gap:10px}
+.radio-option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid var(--border-2);border-radius:12px;cursor:pointer;transition:all .15s;background:var(--bg)}
+.radio-option:hover{border-color:var(--green-border);background:var(--green-bg)}
+.radio-option.selected{border-color:var(--green);background:var(--green-bg)}
+.radio-dot{width:18px;height:18px;border:2px solid var(--border-2);border-radius:50%;flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.radio-option.selected .radio-dot{border-color:var(--green);border-width:5px}
+.radio-label-text{font-size:15px;color:var(--ink);line-height:1.3}
+.radio-sub{font-size:12px;color:var(--ink-3);margin-top:2px}
+.rating-input-wrap{margin-top:16px;display:none}
+.rating-input-wrap.visible{display:block}
+.rating-row{display:flex;align-items:center;gap:12px}
+.rating-row .form-input{width:110px;text-align:center;font-family:var(--ff-mono);font-size:20px;font-weight:500}
+.rating-suffix{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink-3)}
+.upload-zone{border:2px dashed var(--border-2);border-radius:14px;padding:36px 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);position:relative;overflow:hidden}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--green);background:var(--green-bg)}
+.upload-zone.has-file{border-color:var(--green);border-style:solid;background:var(--green-bg)}
+.upload-icon{font-size:32px;margin-bottom:10px}
+.upload-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.upload-sub{font-size:13px;color:var(--ink-3)}
+#file-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-progress{margin-top:14px;display:none}
+.upload-progress-bar{height:4px;background:var(--bg-2);border-radius:4px;overflow:hidden}
+.upload-progress-fill{height:100%;background:var(--green);width:0;transition:width .3s ease;border-radius:4px}
+.upload-status{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);margin-top:6px;text-align:center}
+.upload-error{font-size:13px;color:var(--red);background:var(--red-bg);border-radius:8px;padding:10px 12px;margin-top:12px;display:none}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s;margin-top:8px}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-secondary{display:flex;align-items:center;justify-content:center;width:100%;padding:12px;background:transparent;color:var(--ink-3);font-family:var(--ff-body);font-size:14px;font-weight:400;border:1.5px solid var(--border-2);border-radius:10px;cursor:pointer;transition:all .15s;margin-top:10px}
+.btn-secondary:hover{color:var(--ink);border-color:var(--ink-3)}
+.summary-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
+.summary-key{font-size:13px;color:var(--ink-3)}
+.summary-val{font-size:14px;font-weight:500;color:var(--ink);font-family:var(--ff-mono)}
+.summary-val.green{color:var(--green)}
+.cta-note{font-size:12px;color:var(--ink-4);text-align:center;margin-top:10px;font-family:var(--ff-mono)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.step{display:none}
+.step.active{display:block;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:540px){.card{padding:28px 20px}.card-title{font-size:30px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <button class="nav-skip" onclick="skipOnboarding()">Skip setup →</button>
+  </div>
+</nav>
 
+<div class="page">
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span class="progress-step" id="step-label">Step 1 of 4</span>
+      <span class="progress-count" id="step-name">Your service</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:25%"></div>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="card step active" id="step-1">
+    <div class="card-eyebrow">Step 1 of 4</div>
+    <div class="card-title">Your service</div>
+    <p class="card-sub">This helps us tailor results — especially for presumptive conditions tied to specific eras and exposures.</p>
+    <div class="form-group">
+      <label class="form-label">Branch of service</label>
+      <div class="select-wrap">
+        <select id="branch">
+          <option value="">Select branch...</option>
+          <option>Army</option>
+          <option>Navy</option>
+          <option>Marine Corps</option>
+          <option>Air Force</option>
+          <option>Space Force</option>
+          <option>Coast Guard</option>
+          <option>National Guard</option>
+          <option>Reserves</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">MOS / Rate / AFSC <span style="color:var(--ink-4);font-weight:400">(your job code)</span></label>
+      <input class="form-input" type="text" id="mos" placeholder="e.g. 11B, 0311, 3P0X1" autocomplete="off">
+    </div>
+    <button class="btn-primary" onclick="goStep2()">Continue</button>
+    <button class="btn-secondary" onclick="showStep(2)">Skip this step</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="card step" id="step-2">
+    <div class="card-eyebrow">Step 2 of 4</div>
+    <div class="card-title">Your VA rating</div>
+    <p class="card-sub">Where are you right now? This gives us a baseline to compare against what you likely qualify for.</p>
+    <div class="radio-group">
+      <div class="radio-option" id="opt-none" onclick="selectRatingOpt('none')">
+        <div class="radio-dot"></div>
+        <div><div class="radio-label-text">Not rated yet</div><div class="radio-sub">I haven't filed or I'm still waiting</div></div>
+      </div>
+      <div class="radio-option" id="opt-rated" onclick="selectRatingOpt('rated')">
+        <div class="radio-dot"></div>
+        <div><div class="radio-label-text">I have a rating</div><div class="radio-sub">I know my current combined percentage</div></div>
+      </div>
+    </div>
+    <div class="rating-input-wrap" id="rating-input-wrap">
+      <div class="form-group" style="margin-bottom:0;margin-top:18px">
+        <label class="form-label">Current combined rating</label>
+        <div class="rating-row">
+          <input class="form-input" type="number" id="current-rating" placeholder="0" min="0" max="100" step="10">
+          <span class="rating-suffix">%</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="goStep3()" style="margin-top:24px">Continue</button>
+    <button class="btn-secondary" onclick="showStep(3)">Skip — I'll add this later</button>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="card step" id="step-3">
+    <div class="card-eyebrow">Step 3 of 4</div>
+    <div class="card-title">Your rating decision</div>
+    <p class="card-sub">Upload your VA rating decision letter and we'll automatically pull your conditions and ratings. Only you can see it.</p>
+    <div class="upload-zone" id="upload-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <input type="file" id="file-input" accept=".pdf" onchange="handleFileSelect(event)">
+      <div class="upload-icon" id="upload-icon">📄</div>
+      <div class="upload-title" id="upload-title">Drop your PDF here</div>
+      <div class="upload-sub" id="upload-sub">or click to browse — PDF only</div>
+    </div>
+    <div class="upload-progress" id="upload-progress">
+      <div class="upload-progress-bar"><div class="upload-progress-fill" id="upload-progress-fill"></div></div>
+      <div class="upload-status" id="upload-status">Uploading...</div>
+    </div>
+    <div class="upload-error" id="upload-error"></div>
+    <button class="btn-primary" id="upload-btn" onclick="handleUpload()" disabled>Upload &amp; analyze</button>
+    <button class="btn-secondary" onclick="goStep4()">Skip — I'll upload later from Vault</button>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="card step" id="step-4">
+    <div class="card-eyebrow">You're all set</div>
+    <div class="card-title">Let's find your gaps</div>
+    <p class="card-sub">Here's what we've got. Run the gap analysis to see where the VA may have shortchanged you.</p>
+    <div class="summary-list" id="summary-list"></div>
+    <button class="btn-primary" onclick="window.location.href='gap.html'">Run gap analysis →</button>
+    <button class="btn-secondary" onclick="window.location.href='dashboard.html'">Go to dashboard</button>
+    <div class="cta-note">You can always run this later from your dashboard.</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+var currentUser=null;
+var selectedFile=null;
+var od={branch:'',mos:'',ratingStatus:'',rating:null,pdfUploaded:false,conditionsFound:0};
+var STEP_NAMES=['Your service','Your VA rating','Rating decision','All set'];
+
+function showStep(n){
+  document.querySelectorAll('.step').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('step-'+n).classList.add('active');
+  var pct=[25,50,75,100];
+  document.getElementById('progress-fill').style.width=pct[n-1]+'%';
+  document.getElementById('step-label').textContent='Step '+n+' of 4';
+  document.getElementById('step-name').textContent=STEP_NAMES[n-1];
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep2(){
+  od.branch=document.getElementById('branch').value;
+  od.mos=document.getElementById('mos').value.trim();
+  saveProfile();
+  showStep(2);
+}
+
+function selectRatingOpt(val){
+  document.querySelectorAll('.radio-option').forEach(function(el){el.classList.remove('selected');});
+  document.getElementById('opt-'+val).classList.add('selected');
+  od.ratingStatus=val;
+  document.getElementById('rating-input-wrap').classList.toggle('visible',val==='rated');
+}
+
+function goStep3(){
+  if(od.ratingStatus==='rated'){
+    var r=parseInt(document.getElementById('current-rating').value)||0;
+    od.rating=r;
+    if(currentUser)localStorage.setItem('ur_combined_rating_'+currentUser.id,r);
+    saveProfile();
+  }
+  showStep(3);
+}
+
+function handleDragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('dragover');}
+function handleDragLeave(){document.getElementById('upload-zone').classList.remove('dragover');}
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  if(e.dataTransfer.files.length>0)setFile(e.dataTransfer.files[0]);
+}
+function handleFileSelect(e){if(e.target.files.length>0)setFile(e.target.files[0]);}
+
+function setFile(file){
+  if(!file.name.toLowerCase().endsWith('.pdf')){
+    showUploadErr('Please upload a PDF file.');return;
+  }
+  selectedFile=file;
+  document.getElementById('upload-zone').classList.add('has-file');
+  document.getElementById('upload-icon').textContent='✅';
+  document.getElementById('upload-title').textContent=file.name;
+  document.getElementById('upload-sub').textContent=formatBytes(file.size)+' — ready to upload';
+  document.getElementById('upload-btn').disabled=false;
+  document.getElementById('upload-error').style.display='none';
+}
+
+function formatBytes(b){
+  if(b<1048576)return (b/1024).toFixed(1)+' KB';
+  return (b/1048576).toFixed(1)+' MB';
+}
+
+function showUploadErr(msg){
+  var el=document.getElementById('upload-error');
+  el.textContent=msg;el.style.display='block';
+}
+
+async function handleUpload(){
+  if(!selectedFile||!currentUser)return;
+  var btn=document.getElementById('upload-btn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div> Uploading...';
+  var prog=document.getElementById('upload-progress');
+  var fill=document.getElementById('upload-progress-fill');
+  var stat=document.getElementById('upload-status');
+  prog.style.display='block';
+  fill.style.width='25%';
+  stat.textContent='Uploading to your vault...';
+
+  var fileName=currentUser.id+'/'+Date.now()+'-'+selectedFile.name;
+  try{
+    var {error:upErr}=await sb.storage.from('rating-decisions').upload(fileName,selectedFile,{contentType:'application/pdf',upsert:false});
+    if(upErr)throw upErr;
+    fill.style.width='60%';
+    stat.textContent='Extracting conditions...';
+    var pubUrl=SUPABASE_URL+'/storage/v1/object/public/rating-decisions/'+encodeURIComponent(fileName);
+    var res=await fetch('https://getunderrated.vercel.app/api/extract-pdf',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pdfUrl:pubUrl,userId:currentUser.id})
+    });
+    var data=await res.json();
+    fill.style.width='100%';
+    od.pdfUploaded=true;
+    if(data.conditions&&data.conditions.length>0){
+      od.conditionsFound=data.conditions.length;
+      stat.textContent='Found '+data.conditions.length+' conditions — saving...';
+      var rows=data.conditions.map(function(c){return{user_id:currentUser.id,name:c.name,rating:String(c.rating),decision:c.decision||'Service Connected'};});
+      await sb.from('conditions').insert(rows);
+    } else {
+      stat.textContent='Uploaded successfully.';
+    }
+    setTimeout(function(){goStep4();},700);
+  } catch(err){
+    btn.disabled=false;
+    btn.innerHTML='Upload &amp; analyze';
+    prog.style.display='none';
+    showUploadErr('Upload failed: '+(err.message||'Please try again.'));
+  }
+}
+
+function goStep4(){
+  showStep(4);
+  var rows=[];
+  if(od.branch)rows.push({k:'Branch',v:od.branch+(od.mos?' ('+od.mos+')':'')});
+  if(od.ratingStatus==='rated'&&od.rating!==null)rows.push({k:'Current rating',v:od.rating+'%',green:true});
+  else if(od.ratingStatus==='none')rows.push({k:'Current rating',v:'Not rated yet'});
+  if(od.pdfUploaded)rows.push({k:'Rating decision',v:od.conditionsFound?(od.conditionsFound+' conditions found'):'Uploaded ✓',green:true});
+  else rows.push({k:'Rating decision',v:'Not uploaded yet'});
+  var html=rows.length?rows.map(function(r){
+    return '<div class="summary-row"><span class="summary-key">'+r.k+'</span><span class="summary-val'+(r.green?' green':'')+'">'+r.v+'</span></div>';
+  }).join(''):'<div style="font-size:14px;color:var(--ink-3);text-align:center;padding:12px 0">No info saved yet — fill this in anytime from your profile.</div>';
+  document.getElementById('summary-list').innerHTML=html;
+  if(currentUser)localStorage.setItem('ur_onboarded_'+currentUser.id,'1');
+}
+
+function saveProfile(){
+  if(!currentUser)return;
+  var u={user_id:currentUser.id,updated_at:new Date().toISOString()};
+  if(od.branch)u.branch=od.branch;
+  if(od.mos)u.mos=od.mos;
+  if(od.rating!==null)u.current_rating=od.rating;
+  sb.from('profiles').upsert(u,{onConflict:'user_id'}).catch(function(){});
+}
+
+function skipOnboarding(){
+  if(currentUser)localStorage.setItem('ur_onboarded_'+currentUser.id,'1');
+  window.location.href='dashboard.html';
+}
+
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  if(localStorage.getItem('ur_onboarded_'+currentUser.id)){
+    window.location.href='dashboard.html';
+  }
+});
+</script>
+</body>
+</html>
