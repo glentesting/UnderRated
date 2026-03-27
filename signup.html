@@ -3,50 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign up — UNDERRATED</title>
+<title>Sign up &mdash; UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#F5F2EC;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
-    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
-    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--red:#C43030;--red-bg:rgba(196,48,48,0.08);
-    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
-  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
-  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
-  .nav-logo span{color:var(--green)}
-  .nav-link{font-size:14px;color:var(--ink-3)}
-  .nav-link a{color:var(--green)}
-  .nav-link a:hover{text-decoration:underline}
-  .page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px}
-  .card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06);animation:fadeUp .4s ease both}
-  .card-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
-  .card-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
-  .card-sub{font-size:14px;color:var(--ink-3);margin-bottom:28px;line-height:1.5}
-  .form-group{margin-bottom:16px}
-  .form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px}
-  .form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
-  .form-input:focus{border-color:var(--green);background:var(--surface)}
-  .form-input::placeholder{color:var(--ink-3)}
-  .form-hint{font-size:12px;color:var(--ink-3);margin-top:5px;font-family:var(--ff-mono)}
-  .btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;margin-top:8px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s}
-  .btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
-  .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
-  .error-box{background:var(--red-bg);border:1px solid rgba(196,48,48,0.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);line-height:1.5;margin-bottom:16px;display:none}
-  .success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px;font-size:14px;color:var(--green);line-height:1.55;display:none;text-align:center}
-  .success-box strong{font-weight:500;display:block;margin-bottom:4px}
-  .signin-prompt{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-3)}
-  .signin-prompt a{color:var(--green);font-weight:500}
-  .signin-prompt a:hover{text-decoration:underline}
-  .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+:root{--bg:#F5F2EC;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--red:#C43030;--red-bg:rgba(196,48,48,0.08);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-link{font-size:14px;color:var(--ink-3)}
+.nav-link a{color:var(--green)}
+.nav-link a:hover{text-decoration:underline}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06);animation:fadeUp .4s ease both}
+.card-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+.card-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.card-sub{font-size:14px;color:var(--ink-3);margin-bottom:28px;line-height:1.5}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px}
+.form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-input::placeholder{color:var(--ink-3)}
+.form-hint{font-size:12px;color:var(--ink-3);margin-top:5px;font-family:var(--ff-mono)}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;margin-top:8px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s}
+.btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.error-box{background:var(--red-bg);border:1px solid rgba(196,48,48,0.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);line-height:1.5;margin-bottom:16px;display:none}
+.success-box{background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px;font-size:14px;color:var(--green);line-height:1.55;display:none;text-align:center}
+.success-box strong{font-weight:500;display:block;margin-bottom:4px}
+.signin-prompt{text-align:center;margin-top:20px;font-size:13px;color:var(--ink-3)}
+.signin-prompt a{color:var(--green);font-weight:500}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -62,10 +56,7 @@
     <div class="card-title">Get started</div>
     <p class="card-sub">Free forever. No credit card. Takes 30 seconds.</p>
     <div class="error-box" id="error-box"></div>
-    <div class="success-box" id="success-box">
-      <strong>You're in.</strong>
-      Taking you to your dashboard now…
-    </div>
+    <div class="success-box" id="success-box"><strong>You're in.</strong>Taking you to your dashboard now...</div>
     <div id="form-wrap">
       <div class="form-group">
         <label class="form-label" for="email">Email address</label>
@@ -85,45 +76,44 @@
     <div class="signin-prompt">Already have an account? <a href="login.html">Log in</a></div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/supabase.min.js"></script>
 <script>
-  const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-  const emailEl   = document.getElementById('email');
-  const passEl    = document.getElementById('password');
-  const pass2El   = document.getElementById('password2');
-  const btn       = document.getElementById('signup-btn');
-  const errorBox  = document.getElementById('error-box');
-  const successBox= document.getElementById('success-box');
-  const formWrap  = document.getElementById('form-wrap');
+const emailEl=document.getElementById('email');
+const passEl=document.getElementById('password');
+const pass2El=document.getElementById('password2');
+const btn=document.getElementById('signup-btn');
+const errorBox=document.getElementById('error-box');
+const successBox=document.getElementById('success-box');
+const formWrap=document.getElementById('form-wrap');
 
-  function showError(msg){errorBox.textContent=msg;errorBox.style.display='block';successBox.style.display='none'}
-  function clearError(){errorBox.style.display='none'}
-  function setLoading(on){btn.disabled=on;btn.innerHTML=on?'<div class="spinner"></div> Creating account…':'Create free account'}
+function showError(msg){errorBox.textContent=msg;errorBox.style.display='block';successBox.style.display='none';}
+function clearError(){errorBox.style.display='none';}
+function setLoading(on){btn.disabled=on;btn.innerHTML=on?'<div class="spinner"></div> Creating account...':'Create free account';}
 
-  async function handleSignup(){
-    clearError();
-    const email=emailEl.value.trim();
-    const pass=passEl.value;
-    const pass2=pass2El.value;
-    if(!email) return showError('Email is required.');
-    if(!email.includes('@')) return showError('Enter a valid email address.');
-    if(pass.length<8) return showError('Password must be at least 8 characters.');
-    if(pass!==pass2) return showError("Passwords don't match.");
-    setLoading(true);
-    const {data,error}=await sb.auth.signUp({email,password:pass});
-    setLoading(false);
-    if(error){showError(error.message);return}
-    formWrap.style.display='none';
-    successBox.style.display='block';
-    setTimeout(()=>window.location.href='dashboard.html',1200);
-  }
+async function handleSignup(){
+  clearError();
+  const email=emailEl.value.trim();
+  const pass=passEl.value;
+  const pass2=pass2El.value;
+  if(!email)return showError('Email is required.');
+  if(!email.includes('@'))return showError('Enter a valid email address.');
+  if(pass.length<8)return showError('Password must be at least 8 characters.');
+  if(pass!==pass2)return showError("Passwords don't match.");
+  setLoading(true);
+  const {data,error}=await sb.auth.signUp({email,password:pass});
+  setLoading(false);
+  if(error){showError(error.message);return;}
+  formWrap.style.display='none';
+  successBox.style.display='block';
+  setTimeout(()=>window.location.href='dashboard.html',1200);
+}
 
-  [emailEl,passEl,pass2El].forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter')handleSignup()})});
-
-  sb.auth.getSession().then(({data})=>{if(data.session)window.location.href='dashboard.html'});
+[emailEl,passEl,pass2El].forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter')handleSignup();});});
+sb.auth.getSession().then(({data})=>{if(data.session)window.location.href='dashboard.html';});
 </script>
 </body>
 </html>
