@@ -326,13 +326,17 @@ function handleFile(file){
         localStorage.setItem('ur_combined_rating_'+currentUser.id, extracted.combined_rating);
       }
       setStep('step-extract','done');setStep('step-save','active');
-      return sb.from('conditions').delete().eq('user_id',currentUser.id).then(function(){
+      // Fetch existing IDs first, insert new rows, then delete old — so a failed insert doesn't wipe data
+      return sb.from('conditions').select('id').eq('user_id',currentUser.id).then(function(existRes){
+        var oldIds=(existRes.data||[]).map(function(r){return r.id;});
         var rows=extracted.conditions.map(function(c,i){return{user_id:currentUser.id,name:c.condition_name||c.name||'Unknown',rating:c.rating!=null?String(c.rating):null,diagnostic_code:c.diagnostic_code||null,decision:c.decision||null,effective_date:c.effective_date||null,sort_order:i};});
-        return sb.from('conditions').insert(rows);
+        return sb.from('conditions').insert(rows).then(function(insRes){
+          if(insRes.error)throw new Error('Save failed: '+insRes.error.message);
+          if(oldIds.length>0)return sb.from('conditions').delete().in('id',oldIds);
+        });
       });
     })
-    .then(function(r){
-      if(r.error)throw new Error('Save failed: '+r.error.message);
+    .then(function(){
       setStep('step-save','done');
       setTimeout(function(){
         sb.from('conditions').select('*').eq('user_id',currentUser.id).then(function(r2){

@@ -340,7 +340,9 @@ async function saveConditions() {
   status.textContent = 'Saving…';
   status.className = 'save-status saving';
 
-  await sb.from('conditions').delete().eq('user_id', currentUser.id);
+  // Fetch existing IDs before inserting new rows, so a failed insert doesn't wipe data
+  const { data: existing } = await sb.from('conditions').select('id').eq('user_id', currentUser.id);
+  const oldIds = (existing || []).map(r => r.id);
 
   const rows = conditions
     .filter(c => c.conditionName)
@@ -354,6 +356,11 @@ async function saveConditions() {
       btn.textContent = 'Save my rating';
       return;
     }
+  }
+
+  // Only delete old rows after successful insert
+  if (oldIds.length > 0) {
+    await sb.from('conditions').delete().in('id', oldIds);
   }
 
   status.textContent = 'Saved ✓';
