@@ -3,525 +3,618 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNDERRATED &mdash; VA Benefits Intelligence for Veterans</title>
+<title>Gap Identifier — UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bright:#23BF8D;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--red:#C43030;--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-.container{max-width:1080px;margin:0 auto;padding:0 28px}
-.tag{display:inline-flex;align-items:center;font-family:var(--ff-mono);font-size:11px;letter-spacing:.07em;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:4px;padding:4px 10px;text-transform:uppercase;font-weight:500}
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:16px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s,transform .12s;white-space:nowrap}
-.btn-primary:hover{background:var(--green-l);transform:translateY(-1px)}
-.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:transparent;color:var(--ink-2);font-family:var(--ff-body);font-size:15px;padding:13px 22px;border-radius:10px;border:1.5px solid var(--border-2);cursor:pointer;transition:color .15s,border-color .15s,background .15s}
-.btn-ghost:hover{color:var(--ink);border-color:var(--ink-3);background:var(--bg-2)}
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1080px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
-.nav-logo span{color:var(--green)}
-/* Marketing nav (logged out) */
-.nav-marketing{display:flex;align-items:center;gap:32px}
-.nav-marketing a{font-size:15px;color:var(--ink-3);transition:color .15s}
-.nav-marketing a:hover{color:var(--ink)}
-.nav-cta{display:flex;align-items:center;gap:10px}
-/* App nav (logged in) */
-.nav-app{display:none;align-items:center;gap:18px}
-.nav-app a{font-size:13px;color:var(--ink-3);transition:color .15s}
-.nav-app a:hover{color:var(--ink)}
-.nav-app-right{display:none;align-items:center;gap:10px}
-.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
-.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
-.dash-btn{font-size:13px;font-weight:500;background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;transition:background .15s;font-family:var(--ff-body)}
-.dash-btn:hover{background:var(--green-l)}
-/* HERO */
-.hero{padding:88px 28px 72px;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
-.hero-eyebrow{margin-bottom:18px}
-.hero-headline{font-family:var(--ff-display);font-size:70px;font-weight:800;line-height:.93;letter-spacing:-1px;color:var(--ink);margin-bottom:22px}
-.hero-headline em{color:var(--green);font-style:normal}
-.hero-body{font-size:18px;color:var(--ink-2);line-height:1.65;margin-bottom:32px;max-width:440px}
-.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.hero-note{font-size:13px;color:var(--ink-3);margin-top:14px;font-family:var(--ff-mono)}
-.math-card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:28px 26px;box-shadow:0 2px 0 rgba(0,0,0,0.06),0 8px 32px rgba(0,0,0,0.06)}
-.math-label{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;font-weight:500}
-.math-equation{font-family:var(--ff-display);font-size:44px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px}
-.math-equation .wrong{color:var(--red);text-decoration:line-through;opacity:.75}
-.math-equation .right{color:var(--green)}
-.math-sub{font-size:13px;color:var(--ink-2);margin-bottom:20px;line-height:1.55;border-left:3px solid var(--green-border);padding-left:12px;margin-top:10px}
-.math-conditions{display:flex;flex-direction:column;gap:7px}
-.mc-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px}
-.mc-row.gap-row{border:1px dashed rgba(196,127,10,0.4);background:var(--amber-bg)}
-.mc-name{font-size:13px;color:var(--ink)}
-.mc-right{display:flex;align-items:center;gap:10px}
-.mc-pct{font-family:var(--ff-mono);font-size:13px;font-weight:500;color:var(--ink-2);min-width:32px;text-align:right}
-.mc-pct.amber{color:var(--amber)}
-.mc-bar-wrap{width:64px;height:5px;background:var(--bg-2);border-radius:3px;overflow:hidden}
-.mc-bar{height:100%;background:var(--green);border-radius:3px}
-.mc-bar.amber{background:var(--amber);opacity:.6}
-.math-result-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1.5px solid var(--border)}
-.mr-label{font-size:13px;color:var(--ink-2);margin-bottom:2px}
-.mr-official{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
-.mr-val{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--green)}
-/* TRUST */
-.trust-strip{background:var(--ink);padding:28px}
-.trust-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
-.trust-stat{text-align:center}
-.ts-num{font-family:var(--ff-display);font-size:34px;font-weight:800;color:#fff;line-height:1}
-.ts-num span{color:var(--green-bright)}
-.ts-label{font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;font-family:var(--ff-mono)}
-.trust-divider{width:1px;height:40px;background:rgba(255,255,255,0.12)}
-/* VALIDATE */
-.validate{padding:88px 28px 72px;text-align:center}
-.validate-super{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.validate-h{font-family:var(--ff-display);font-size:54px;font-weight:800;line-height:.95;letter-spacing:-.5px;color:var(--ink);margin-bottom:18px}
-.validate-h em{color:var(--green);font-style:normal}
-.validate-body{font-size:17px;color:var(--ink-2);line-height:1.65;max-width:560px;margin:0 auto 44px}
-.validate-body strong{color:var(--ink);font-weight:500}
-.validate-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:left;max-width:1080px;margin:0 auto}
-.vc{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:24px}
-.vc-num{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--green);line-height:1;margin-bottom:6px}
-.vc-label{font-size:14px;color:var(--ink-2);line-height:1.55}
-/* HOW IT WORKS */
-.section{padding:88px 28px}
-.section-header{margin-bottom:40px}
-.section-eyebrow{margin-bottom:14px}
-.section-title{font-family:var(--ff-display);font-size:50px;font-weight:800;line-height:.95;letter-spacing:-.5px;color:var(--ink);margin-bottom:14px}
-.section-sub{font-size:17px;color:var(--ink-2);line-height:1.6;max-width:540px}
-.section-sub em{color:var(--ink);font-style:normal;font-weight:500}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--border);border-radius:18px;overflow:hidden;border:1.5px solid var(--border-2)}
-.step{background:var(--surface);padding:34px 28px}
-.step-num{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.1em;margin-bottom:18px;font-weight:500}
-.step-icon{width:44px;height:44px;border-radius:11px;background:var(--green-bg);border:1.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.step-icon svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.step h3{font-size:20px;font-weight:500;color:var(--ink);margin-bottom:10px}
-.step p{font-size:14px;color:var(--ink-2);line-height:1.65}
-/* FEATURES */
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.feat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:26px;transition:border-color .2s}
-.feat-card:hover{border-color:var(--border-2)}
-.feat-card.highlight{border-color:var(--green-border)}
-.feat-badge{display:inline-block;font-family:var(--ff-mono);font-size:10px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);border-radius:4px;padding:3px 9px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px;font-weight:500}
-.feat-badge.paid{background:var(--bg-2);color:var(--ink-3);border-color:var(--border)}
-.feat-title{font-size:17px;font-weight:500;color:var(--ink);margin-bottom:9px}
-.feat-desc{font-size:14px;color:var(--ink-2);line-height:1.65}
-/* WHO */
-.who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.who-card{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:24px;transition:border-color .15s}
-.who-card:hover{border-color:var(--green-border)}
-.who-check{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:var(--green-bg);border:1.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin-top:1px}
-.who-check svg{width:15px;height:15px;stroke:var(--green);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.who-text h4{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:5px}
-.who-text p{font-size:14px;color:var(--ink-2);line-height:1.6}
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto}
-.price-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:30px}
-.price-card.featured{border-color:var(--green);border-width:2px}
-.price-tier{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
-.price-amount{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
-.price-amount span{font-size:18px;font-weight:400;color:var(--ink-3)}
-.price-desc{font-size:14px;color:var(--ink-2);margin:12px 0 22px;line-height:1.6}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
-.price-features li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--ink-2);line-height:1.5}
-.check-icon{width:18px;height:18px;flex-shrink:0;margin-top:1px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center}
-.check-icon svg{width:10px;height:10px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-/* FINAL CTA */
-.final-cta{background:var(--ink);padding:96px 28px;text-align:center}
-.final-cta h2{font-family:var(--ff-display);font-size:62px;font-weight:800;line-height:.93;letter-spacing:-1px;color:#fff;margin-bottom:18px}
-.final-cta h2 em{color:var(--green-bright);font-style:normal}
-.final-cta .sub{font-size:18px;color:rgba(255,255,255,0.55);margin-bottom:36px;line-height:1.6}
-.btn-final{display:inline-flex;align-items:center;justify-content:center;background:var(--green-bright);color:#fff;font-family:var(--ff-body);font-size:17px;font-weight:500;padding:16px 36px;border-radius:10px;border:none;cursor:pointer;transition:background .15s,transform .12s}
-.btn-final:hover{background:#29D49F;transform:translateY(-1px)}
-.final-note{font-size:13px;color:rgba(255,255,255,0.25);margin-top:16px;font-family:var(--ff-mono)}
-/* FOOTER */
-footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36px 28px}
-.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-logo{font-family:var(--ff-display);font-size:20px;font-weight:800;letter-spacing:.4px;color:var(--ink-3)}
-.footer-logo span{color:var(--green)}
-.footer-note{font-size:13px;color:var(--ink-3);max-width:400px;line-height:1.6}
-.footer-links{display:flex;gap:22px}
-.footer-links a{font-size:13px;color:var(--ink-3);transition:color .15s}
-.footer-links a:hover{color:var(--ink-2)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero-eyebrow{animation:fadeUp .45s ease both}
-.hero-headline{animation:fadeUp .45s .08s ease both}
-.hero-body{animation:fadeUp .45s .16s ease both}
-.hero-actions{animation:fadeUp .45s .22s ease both}
-.hero-note{animation:fadeUp .45s .28s ease both}
-.math-card{animation:fadeUp .55s .15s ease both}
-@media(max-width:860px){
-  .hero{grid-template-columns:1fr;gap:40px;padding:56px 24px 48px}
-  .hero-headline{font-size:54px}
-  .steps{grid-template-columns:1fr}
-  .features-grid{grid-template-columns:1fr 1fr}
-  .who-grid{grid-template-columns:1fr}
-  .pricing-grid{grid-template-columns:1fr}
-  .validate-cards{grid-template-columns:1fr}
-  .trust-inner{gap:24px}
-  .trust-divider{display:none}
-  .nav-marketing{display:none}
-  .validate-h{font-size:40px}
-  .section-title{font-size:38px}
-  .final-cta h2{font-size:44px}
-}
-@media(max-width:560px){.features-grid{grid-template-columns:1fr}.hero-headline{font-size:44px}}
-
-  /* TEASER PREVIEW */
-  .teaser-section{padding:72px 28px;background:var(--surface);border-top:1.5px solid var(--border)}
-  .teaser-inner{max-width:1080px;margin:0 auto}
-  .teaser-header{text-align:center;margin-bottom:36px}
-  .teaser-header h2{font-family:var(--ff-display);font-size:42px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:10px}
-  .teaser-header p{font-size:16px;color:var(--ink-3);max-width:480px;margin:0 auto}
-  .teaser-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;position:relative}
-  .teaser-card{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:22px;position:relative;overflow:hidden;min-height:200px}
-  .teaser-card.locked{filter:blur(3px);pointer-events:none;user-select:none;opacity:0.7}
-  .teaser-card-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
-  .teaser-card-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px}
-  .teaser-line{height:10px;background:var(--bg-2);border-radius:4px;margin-bottom:8px}
-  .teaser-line.short{width:60%}
-  .teaser-line.med{width:80%}
-  .teaser-line.green{background:var(--green-bg)}
-  .teaser-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);z-index:10;text-align:center;padding:20px}
-  .lock-icon{font-size:28px;margin-bottom:10px}
-  .teaser-overlay h3{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:6px}
-  .teaser-overlay p{font-size:13px;color:var(--ink-3);margin-bottom:16px;max-width:200px;line-height:1.5}
-  .teaser-cta{background:var(--green);color:#fff;font-family:var(--ff-body);font-size:13px;font-weight:500;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;transition:background .15s;text-decoration:none;display:inline-block}
-  .teaser-cta:hover{background:var(--green-l)}
-  @media(max-width:780px){.teaser-grid{grid-template-columns:1fr}}
+  :root {
+    --bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);
+    --green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);
+    --ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;
+    --amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);
+    --blue:#1A6FA8;--blue-bg:rgba(26,111,168,0.08);--blue-border:rgba(26,111,168,0.25);
+    --red:#C43030;--red-bg:rgba(196,48,48,0.07);
+    --ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+  .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+  .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+  .nav-logo span{color:var(--green)}
+  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
+  .nav-links a.active{font-weight:500}
+  .nav-right{display:flex;align-items:center;gap:12px}
+  .user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+  .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s}
+  .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+  .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+  .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+  .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+  .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+  .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+  .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px;align-items:start}
+  .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+  .card:last-child{margin-bottom:0}
+  .card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+  .card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+  .form-group{margin-bottom:14px}
+  .form-label{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-bottom:5px;font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase}
+  .form-select,.form-input{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+  .form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
+  .form-select:focus,.form-input:focus{border-color:var(--green);background:var(--surface)}
+  .form-input::placeholder{color:var(--ink-4)}
+  .form-hint{font-size:11px;color:var(--ink-4);margin-top:4px;font-family:var(--ff-mono)}
+  .run-btn{width:100%;padding:13px;margin-top:6px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s,transform .12s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .run-btn:hover{background:var(--green-l);transform:translateY(-1px)}
+  .run-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .cond-list{display:flex;flex-direction:column;gap:6px}
+  .cond-chip{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+  .cond-name{font-size:13px;color:var(--ink)}
+  .cond-rating{font-family:var(--ff-mono);font-size:12px;color:var(--green);font-weight:500}
+  .cond-empty{font-size:13px;color:var(--ink-3);padding:4px 0}
+  .calc-link{font-size:13px;color:var(--green);margin-top:10px;display:inline-block}
+  .calc-link:hover{text-decoration:underline}
+  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 28px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px}
+  .empty-icon{width:52px;height:52px;border-radius:14px;background:var(--green-bg);border:1.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .empty-icon svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .empty-title{font-family:var(--ff-display);font-size:24px;font-weight:800;color:var(--ink);margin-bottom:8px}
+  .empty-sub{font-size:14px;color:var(--ink-3);max-width:280px;line-height:1.6}
+  .summary-banner{background:var(--ink);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .sb-stat{text-align:center;min-width:60px}
+  .sb-num{font-family:var(--ff-display);font-size:34px;font-weight:800;line-height:1}
+  .sb-num.green{color:#23BF8D}
+  .sb-num.white{color:#fff}
+  .sb-label{font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--ff-mono);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  .sb-divider{width:1px;height:36px;background:rgba(255,255,255,0.1)}
+  .section-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:4px}
+  .section-badge{font-family:var(--ff-mono);font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:4px;border:1px solid;white-space:nowrap}
+  .section-badge.secondary{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+  .section-badge.exposure{background:rgba(59,130,246,0.08);color:#2563EB;border-color:rgba(59,130,246,0.25)}
+  .section-badge.presumptive{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+  .section-count{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
+  .gap-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:10px;transition:border-color .2s}
+  .gap-card:hover{border-color:var(--border-2)}
+  .gap-card:last-child{margin-bottom:0}
+  .gap-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .gap-name{font-size:15px;font-weight:500;color:var(--ink);line-height:1.3;flex:1}
+  .gap-meta{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+  .gap-rating{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);background:var(--bg-2);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+  .confidence-badge{font-size:10px;font-weight:500;font-family:var(--ff-mono);letter-spacing:.06em;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+  .confidence-badge.high{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+  .confidence-badge.medium{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .gap-reason{font-size:13px;color:var(--ink-2);line-height:1.65;margin-bottom:10px}
+  .gap-evidence{font-size:12px;color:var(--ink-3);line-height:1.55;padding:8px 11px;background:var(--bg);border-radius:7px;border:1px solid var(--border)}
+  .gap-evidence strong{color:var(--ink-2);font-weight:500;font-family:var(--ff-mono);font-size:11px;display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:.05em}
+  .gap-impact{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap}
+  .gap-impact-label{font-size:12px;color:var(--ink-3)}
+  .gap-impact-val{font-size:13px;font-weight:500;color:var(--green);font-family:var(--ff-mono)}
+  .gap-impact-val.neutral{color:var(--ink-3)}
+  .smc-note{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:7px;padding:8px 11px;font-size:12px;color:var(--amber);margin-top:10px;line-height:1.55}
+  .no-gaps{font-size:14px;color:var(--ink-3);padding:24px;text-align:center;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;line-height:1.6}
+  .section-gap{margin-top:20px}
+  .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .animate-in{animation:slideIn .3s ease both}
+  @media(max-width:780px){
+    .layout{grid-template-columns:1fr}
+    .hamburger{display:flex}
+    .user-pill{display:none}
+    .summary-banner{gap:10px}
+    .sb-divider{display:none}
+    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+    .nav-links.open{display:flex}
+    .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+    .nav-links a:last-child{border-bottom:none}
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">UNDER<span>RATED</span></a>
-
-    <!-- Logged-OUT nav (default) -->
-    <div class="nav-marketing" id="nav-marketing">
-      <a href="#how-it-works">How it works</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-    </div>
-    <div class="nav-cta" id="nav-cta">
-      <a href="dashboard.html" class="btn-ghost" style="font-size:13px;padding:8px 14px">My dashboard</a>
-      <a href="login.html" class="btn-ghost">Log in</a>
-      <a href="signup.html" class="btn-primary">Sign up free</a>
-    </div>
-
-    <!-- Logged-IN nav (hidden until auth check) -->
-    <div class="nav-app" id="nav-app">
-      <a href="#how-it-works">How it works</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <span style="width:1px;height:16px;background:var(--border-2);display:inline-block;margin:0 4px"></span>
-      <a href="calculator.html">Calculator</a>
-      <a href="gap.html">Gap identifier</a>
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html" class="active">Gap identifier</a>
       <a href="vault.html">Vault</a>
     </div>
-    <div class="nav-app-right" id="nav-app-right">
-      <button class="dash-btn" onclick="window.location.href='dashboard.html'">My dashboard</button>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
       <button class="signout-btn" onclick="handleSignout()">Sign out</button>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<section>
-  <div class="hero">
+<div class="page">
+  <div class="page-eyebrow">Step 2 of 3</div>
+  <div class="page-title">Gap identifier</div>
+  <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed &mdash; and explain exactly why you likely qualify.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
+    <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Secondary conditions</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions caused or worsened by ones you already have. Example: PTSD causing sleep apnea. No new in-service event needed &mdash; just a nexus letter.</div>
+    </div>
+    <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:#2563EB;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">MOS exposure</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions common to your specific military job. Infantry veterans get tinnitus and back injuries. Artillery gets hearing loss. Your MOS tells the story.</div>
+    </div>
+    <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--amber);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Presumptive conditions</div>
+      <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Conditions the VA automatically grants based on where/when you served. Vietnam? Agent Orange. Post-9/11? Burn pits. No proof of connection required.</div>
+    </div>
+  </div>
+
+  <div class="layout">
     <div>
-      <div class="hero-eyebrow"><span class="tag">Free VA benefits tool</span></div>
-      <h1 class="hero-headline">The VA thinks<br>you're worth<br><em>less than<br>you are.</em></h1>
-      <p class="hero-body">UNDERRATED finds the conditions you haven't claimed, explains what the VA math actually means, and builds your case &mdash; no runaround, no guesswork.</p>
-      <div class="hero-actions">
-        <a href="signup.html" class="btn-primary" id="hero-cta">Sign up free</a>
-        <a href="#how-it-works" class="btn-ghost">See how it works</a>
-      </div>
-      <p class="hero-note">No credit card. No attorney fees. Built for vets.</p>
-    </div>
-    <div class="math-card">
-      <div class="math-label">Why your rating isn't what you think</div>
-      <div class="math-equation">50% + 30% &ne; <span class="wrong">80%</span></div>
-      <div class="math-equation" style="font-size:32px;margin-bottom:6px;">It equals <span class="right">65%</span></div>
-      <p class="math-sub">The VA uses "whole person" math. Each condition takes a slice of what's left &mdash; not of the original 100%.</p>
-      <div class="math-conditions">
-        <div class="mc-row"><span class="mc-name">Lumbar strain</span><div class="mc-right"><span class="mc-pct">50%</span><div class="mc-bar-wrap"><div class="mc-bar" style="width:50%"></div></div></div></div>
-        <div class="mc-row"><span class="mc-name">Right knee</span><div class="mc-right"><span class="mc-pct">30%</span><div class="mc-bar-wrap"><div class="mc-bar" style="width:30%"></div></div></div></div>
-        <div class="mc-row gap-row"><span class="mc-name" style="color:var(--amber);font-size:13px;">Sleep apnea &mdash; not claimed yet</span><div class="mc-right"><span class="mc-pct amber">+30%?</span><div class="mc-bar-wrap"><div class="mc-bar amber" style="width:30%"></div></div></div></div>
-      </div>
-      <div class="math-result-row">
-        <div><div class="mr-label">Current official rating</div><div class="mr-official">65.0% &rarr; rounds to 70%</div></div>
-        <div class="mr-val">70%</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST STRIP -->
-<div class="trust-strip">
-  <div class="trust-inner">
-    <div class="trust-stat"><div class="ts-num">30<span>%</span></div><div class="ts-label">avg attorney cut of back pay</div></div>
-    <div class="trust-divider"></div>
-    <div class="trust-stat"><div class="ts-num">$<span>0</span></div><div class="ts-label">to use core tools</div></div>
-    <div class="trust-divider"></div>
-    <div class="trust-stat"><div class="ts-num">4<span>+</span></div><div class="ts-label">avg unclaimed conditions found</div></div>
-    <div class="trust-divider"></div>
-    <div class="trust-stat"><div class="ts-num">21<span>M</span></div><div class="ts-label">veterans in the US</div></div>
-  </div>
-</div>
-
-<!-- VALIDATE -->
-<div class="validate">
-  <div class="validate-super">The problem</div>
-  <h2 class="validate-h">Most vets are <em>underrated.</em><br>Most don't know it.</h2>
-  <p class="validate-body">The VA system isn't built to help you find what you're owed. It's built to process claims. <strong>There's a difference</strong> &mdash; and it costs veterans billions every year.</p>
-  <div class="validate-cards">
-    <div class="vc"><div class="vc-num">1 in 3</div><div class="vc-label">veterans with service-connected disabilities are rated lower than their conditions warrant</div></div>
-    <div class="vc"><div class="vc-num">$4,000+</div><div class="vc-label">average annual difference between a 70% and 80% rating in monthly compensation</div></div>
-    <div class="vc"><div class="vc-num">33%</div><div class="vc-label">what accredited attorneys take from your back pay &mdash; for work software can now do</div></div>
-  </div>
-</div>
-
-<!-- HOW IT WORKS -->
-<section class="section" id="how-it-works" style="background:var(--bg-2);padding-top:88px">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-eyebrow"><span class="tag">How it works</span></div>
-      <div class="section-title">The VA's math is designed<br>to confuse you.</div>
-      <p class="section-sub">UNDERRATED makes it readable. Here's how we go from <em>"I think I'm underrated"</em> to <em>"I just filed."</em></p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01 &mdash;</div>
-        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div>
-        <h3>See your real rating</h3>
-        <p>Enter your conditions and ratings. We run the VA's whole-person math and explain every step &mdash; including exactly how far you are from the next compensation tier.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02 &mdash;</div>
-        <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg></div>
-        <h3>Find what you're missing</h3>
-        <p>Your MOS, service era, and current conditions tell us a lot. The gap identifier surfaces unclaimed conditions and explains exactly why you likely qualify for each one.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03 &mdash;</div>
-        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></div>
-        <h3>Build your claim package</h3>
-        <p>Step-by-step workflow. Evidence checklist. Nexus letter drafts. Every VA form explained in plain English. Ready to file.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="section" id="features">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-eyebrow"><span class="tag">Features</span></div>
-      <div class="section-title">Everything in one place</div>
-      <p class="section-sub" style="max-width:480px">The tools attorneys use &mdash; without the 20&ndash;33% contingency fee.</p>
-    </div>
-    <div class="features-grid">
-      <div class="feat-card highlight"><div class="feat-badge">Free</div><div class="feat-title">Rating calculator</div><p class="feat-desc">Input your conditions and ratings. Get the combined math explained step by step &mdash; and see exactly how far you are from the next compensation tier.</p></div>
-      <div class="feat-card highlight"><div class="feat-badge">Free</div><div class="feat-title">Gap identifier</div><p class="feat-desc">AI-powered analysis based on your MOS, service era, and current conditions. Surfaces unclaimed conditions with the specific reason you likely qualify.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Paid</div><div class="feat-title">Claim builder</div><p class="feat-desc">Guided step-by-step workflow that outputs a ready-to-file claim package &mdash; evidence requirements, form instructions, and personal statement templates.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Paid</div><div class="feat-title">Nexus letter generator</div><p class="feat-desc">AI-assisted drafts connecting secondary conditions to primary ones. The nexus letter makes or breaks a secondary claim &mdash; most vets never file one.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Paid</div><div class="feat-title">Appeal assistant</div><p class="feat-desc">Got denied? UNDERRATED reads the denial code, explains it in plain English, picks the right appeal lane, and helps you build the response.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Paid</div><div class="feat-title">Document vault + state benefits</div><p class="feat-desc">Store your DD-214, C&amp;P exam results, and records securely. Plus your federal rating stacked with every state-specific benefit you qualify for.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- WHO IT'S FOR -->
-<section class="section" style="background:var(--bg-2);padding-top:88px">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-eyebrow"><span class="tag">Who it's for</span></div>
-      <div class="section-title">Sound familiar?</div>
-    </div>
-    <div class="who-grid">
-      <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You think you're underrated</h4><p>Your conditions are worse than your rating suggests, but the VA's math is a black box. UNDERRATED opens it up.</p></div></div>
-      <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You just got out and don't know where to start</h4><p>The VA system is a lot. UNDERRATED walks you through it from zero &mdash; no prior knowledge needed.</p></div></div>
-      <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You've got conditions you've never claimed</h4><p>Most vets leave money on the table &mdash; not because they're ineligible, but because they didn't know to ask. The gap identifier fixes that.</p></div></div>
-      <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You got denied and don't know why</h4><p>Denial letters are written in bureaucratic nonsense. The appeal assistant translates it and tells you exactly what to do next.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section class="section" id="pricing">
-  <div class="container">
-    <div class="section-header" style="text-align:center">
-      <div class="section-eyebrow"><span class="tag">Pricing</span></div>
-      <div class="section-title">Straightforward. No BS.</div>
-      <p class="section-sub" style="margin:14px auto 0;max-width:480px;text-align:center">Core tools are free. Paid unlocks everything else &mdash; still a fraction of what an attorney charges.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="price-tier">Free &mdash; always</div>
-        <div class="price-amount">$0</div>
-        <p class="price-desc">The tools that help you understand your situation. No credit card, no time limit.</p>
-        <ul class="price-features">
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Rating calculator with combined math explainer</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Gap identifier &mdash; find unclaimed conditions</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Basic document vault (DD-214 storage)</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Plain-English VA glossary</li>
-        </ul>
-        <a href="signup.html" class="btn-ghost" style="width:100%">Get started free</a>
-      </div>
-      <div class="price-card featured">
-        <div class="price-tier">Full access</div>
-        <div class="price-amount">$19 <span>/ month</span></div>
-        <p class="price-desc">Everything you need to file, appeal, and stack benefits &mdash; from first claim to final decision.</p>
-        <ul class="price-features">
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Everything in Free</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Claim builder &mdash; ready-to-file packages</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Nexus letter generator</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Evidence checklist (condition-specific)</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Appeal assistant</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>State benefits layer</li>
-          <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Full document vault + C&amp;P storage</li>
-        </ul>
-        <a href="signup.html" class="btn-primary" style="width:100%">Sign up free &mdash; upgrade anytime</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- TEASER PREVIEW -->
-<div class="teaser-section">
-  <div class="teaser-inner">
-    <div class="teaser-header">
-      <h2>See what's inside</h2>
-      <p>The rating calculator and gap identifier are free. Here's a preview of what you unlock with full access.</p>
-    </div>
-    <div class="teaser-grid">
-
-      <!-- Free tool preview - Rating Calculator -->
-      <div class="teaser-card">
-        <div class="teaser-card-label">Free tool</div>
-        <div class="teaser-card-title">Rating calculator</div>
-        <div class="teaser-line med green"></div>
-        <div class="teaser-line short"></div>
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <div style="flex:1;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--green)">70%</div>
-            <div style="font-size:10px;color:var(--ink-3);font-family:var(--ff-mono)">YOUR RATING</div>
-          </div>
-          <div style="flex:1;background:var(--bg-2);border-radius:8px;padding:10px;text-align:center">
-            <div style="font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink)">80%</div>
-            <div style="font-size:10px;color:var(--ink-3);font-family:var(--ff-mono)">POTENTIAL</div>
-          </div>
+      <div class="card">
+        <div class="card-title">Your service profile</div>
+        <div class="card-sub">This is how we match conditions to your specific job and exposure history.</div>
+        <div class="form-group">
+          <label class="form-label" for="branch">Branch of service</label>
+          <select class="form-select" id="branch">
+            <option value="">Select branch...</option>
+            <option value="army">Army</option>
+            <option value="marines">Marine Corps</option>
+            <option value="navy">Navy</option>
+            <option value="air_force">Air Force</option>
+            <option value="coast_guard">Coast Guard</option>
+            <option value="space_force">Space Force</option>
+            <option value="national_guard">National Guard / Reserve</option>
+          </select>
         </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--green);font-family:var(--ff-mono)">&#10003; Free — no account required to try</div>
-        <a href="calculator.html" style="display:inline-block;margin-top:12px;font-size:13px;font-weight:500;color:var(--green)">Try the calculator &rarr;</a>
+        <div class="form-group">
+          <label class="form-label" for="mos">MOS / Rate / AFSC</label>
+          <input class="form-input" type="text" id="mos" placeholder="e.g. 11B, 0311, HM, 1C4X1..." autocomplete="off">
+          <div class="form-hint">Type your job code — or describe it (e.g. "infantry", "medic", "pilot")</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="era">Service era</label>
+          <select class="form-select" id="era">
+            <option value="">Select era...</option>
+            <option value="post_911">Post-9/11 (2001-present)</option>
+            <option value="gulf_war">Gulf War (1990-2001)</option>
+            <option value="vietnam">Vietnam Era (1964-1975)</option>
+            <option value="korea_dmz">Korea / DMZ (1967-1971)</option>
+            <option value="cold_war">Cold War / Peacetime</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="run-btn" id="run-btn" onclick="runAnalysis()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg>
+          Run gap analysis
+        </button>
       </div>
-
-      <!-- Locked - Claim Builder -->
-      <div style="position:relative">
-        <div class="teaser-card locked">
-          <div class="teaser-card-label">Paid feature</div>
-          <div class="teaser-card-title">Claim builder</div>
-          <div class="teaser-line med"></div>
-          <div class="teaser-line short"></div>
-          <div class="teaser-line med green"></div>
-          <div class="teaser-line short green"></div>
-          <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
-            <div style="background:var(--green-bg);border-radius:6px;padding:8px;height:32px"></div>
-            <div style="background:var(--bg-2);border-radius:6px;padding:8px;height:32px"></div>
-            <div style="background:var(--bg-2);border-radius:6px;padding:8px;height:32px"></div>
-          </div>
-        </div>
-        <div class="teaser-overlay">
-          <div class="lock-icon">&#128274;</div>
-          <h3>Claim builder</h3>
-          <p>Ready-to-file packages with evidence checklists and form instructions</p>
-          <a href="signup.html" class="teaser-cta">Unlock for $19/mo</a>
-        </div>
+      <div class="card">
+        <div class="card-title">Your current conditions</div>
+        <div class="card-sub">Loaded from your calculator. We'll use these to find secondary conditions.</div>
+        <div class="cond-list" id="cond-list"><div class="cond-empty">Loading...</div></div>
+        <a href="calculator.html" class="calc-link">&#8592; Add or edit conditions in the calculator</a>
       </div>
-
-      <!-- Locked - Nexus Letter Generator -->
-      <div style="position:relative">
-        <div class="teaser-card locked">
-          <div class="teaser-card-label">Paid feature</div>
-          <div class="teaser-card-title">Nexus letter generator</div>
-          <div class="teaser-line med"></div>
-          <div class="teaser-line med"></div>
-          <div class="teaser-line short"></div>
-          <div style="margin-top:12px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:12px">
-            <div class="teaser-line med green"></div>
-            <div class="teaser-line med green"></div>
-            <div class="teaser-line short green"></div>
-          </div>
-        </div>
-        <div class="teaser-overlay">
-          <div class="lock-icon">&#128274;</div>
-          <h3>Nexus letter generator</h3>
-          <p>AI-drafted letters connecting secondary conditions to your primary ones</p>
-          <a href="signup.html" class="teaser-cta">Unlock for $19/mo</a>
-        </div>
+    </div>
+    <div id="results-panel">
+      <div class="empty-state">
+        <div class="empty-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg></div>
+        <div class="empty-title">Ready to find your gaps</div>
+        <p class="empty-sub">Fill in your service profile and hit "Run gap analysis" — takes about 2 seconds.</p>
       </div>
-
     </div>
   </div>
 </div>
-
-<!-- FINAL CTA -->
-<div class="final-cta">
-  <div class="container" style="text-align:center">
-    <h2>The VA underpaid you.<br>Don't let a lawyer take<br><em>another cut</em> on top of it.</h2>
-    <p class="sub">You earned these benefits. UNDERRATED helps you get them &mdash; free to start, no attorneys, no percentage of your back pay.</p>
-    <a href="signup.html" class="btn-final" id="final-cta">Sign up free &mdash; it takes 2 minutes</a>
-    <p class="final-note">No credit card required. No attorney fees. Ever.</p>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <a href="index.html" class="footer-logo">UNDER<span>RATED</span></a>
-    <p class="footer-note">UNDERRATED is not a law firm and does not provide legal advice. We help veterans understand and prepare VA claims &mdash; always consult a VSO or accredited attorney for complex situations.</p>
-    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
-  </div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var sb = window.supabase.createClient(
-  'https://bglhfmwjfnmybcrjlscm.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI');
+const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let currentUser = null;
+let userConditions = [];
 
-// Check auth state and swap nav accordingly
-sb.auth.getSession().then(function(res) {
-  var session = res && res.data && res.data.session ? res.data.session : null;
-  if (session) {
-    // Logged IN — show app nav, hide marketing nav
-    document.getElementById('nav-marketing').style.display = 'none';
-    document.getElementById('nav-cta').style.display = 'none';
-    document.getElementById('nav-app').style.display = 'flex';
-    document.getElementById('nav-app-right').style.display = 'flex';
-    // Update hero CTA to go to dashboard
-    var heroCta = document.getElementById('hero-cta');
-    heroCta.textContent = 'Go to my dashboard';
-    heroCta.href = 'dashboard.html';
-    // Update final CTA too
-    var finalCta = document.getElementById('final-cta');
-    finalCta.textContent = 'Go to my dashboard';
-    finalCta.href = 'dashboard.html';
-  }
-  // If not logged in, keep defaults (marketing nav + sign up buttons)
-}).catch(function() {
-  // Session check failed — keep defaults, no problem
-});
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
 
-function handleSignout() {
-  sb.auth.signOut().then(function() {
-    window.location.href = 'index.html';
+const CONDITION_META = {
+  'Tinnitus (ringing in ears)':{ default:10, range:'10%' },
+  'Hearing loss':{ default:10, range:'0-100%' },
+  'PTSD':{ default:30, range:'0-100%' },
+  'Depression / major depressive disorder':{ default:30, range:'0-100%' },
+  'Anxiety / generalized anxiety disorder':{ default:30, range:'0-100%' },
+  'Sleep apnea (obstructive)':{ default:50, range:'0-100%' },
+  'Knee — limitation of flexion':{ default:10, range:'0-30%' },
+  'Knee — limitation of extension':{ default:10, range:'0-30%' },
+  'Knee — instability / impairment':{ default:10, range:'10-30%' },
+  'Low back / lumbar strain':{ default:10, range:'0-100%' },
+  'Neck / cervical strain':{ default:10, range:'0-100%' },
+  'Sciatica / radiculopathy (leg nerve pain)':{ default:20, range:'10-80%' },
+  'Migraines':{ default:10, range:'0-50%' },
+  'TBI — traumatic brain injury':{ default:10, range:'0-100%' },
+  'Shoulder — limitation of arm motion':{ default:10, range:'10-40%' },
+  'Hypertension (high blood pressure)':{ default:10, range:'0-60%' },
+  'Diabetes mellitus type 2':{ default:20, range:'10-100%' },
+  'Peripheral neuropathy (nerve damage in hands/feet)':{ default:10, range:'10-80%' },
+  'Ischemic heart disease / coronary artery disease':{ default:30, range:'10-100%' },
+  'GERD / acid reflux':{ default:10, range:'10-60%' },
+  'Rhinitis / sinusitis (chronic nasal problems)':{ default:10, range:'0-50%' },
+  'Flat feet (pes planus)':{ default:10, range:'0-50%' },
+  'Plantar fasciitis':{ default:10, range:'0-30%' },
+  'Hip — limitation of motion':{ default:10, range:'10-40%' },
+  'Erectile dysfunction':{ default:0, range:'0% + SMC-K' },
+  'Asthma':{ default:10, range:'10-100%' },
+  'Chronic fatigue syndrome':{ default:20, range:'10-100%' },
+  'Fibromyalgia':{ default:20, range:'10-40%' },
+  'Scars — painful or disfiguring':{ default:10, range:'0-80%' },
+};
+
+const COMP_RATES = {0:0,10:175.51,20:346.95,30:537.42,40:774.16,50:1102.04,60:1395.93,70:1759.48,80:2044.89,90:2297.96,100:3737.85};
+
+const SECONDARY_MAP = {
+  'PTSD':[
+    {condition:'Sleep apnea (obstructive)',confidence:'high',reason:'PTSD hyperarousal directly disrupts sleep architecture and is one of the most established causes of obstructive sleep apnea in veterans.',evidence:'Sleep study (polysomnography) + nexus letter from your mental health provider linking PTSD to the sleep disruption'},
+    {condition:'Hypertension (high blood pressure)',confidence:'high',reason:'Chronic PTSD triggers constant sympathetic nervous system activation — elevated cortisol, fight-or-flight response — which raises blood pressure over time.',evidence:'Blood pressure readings over time + nexus letter from treating provider'},
+    {condition:'GERD / acid reflux',confidence:'high',reason:'PTSD medications (SSRIs, SNRIs) directly cause GI side effects, and chronic stress increases gastric acid production.',evidence:'GI diagnosis + documentation of current PTSD medications + nexus letter'},
+    {condition:'Erectile dysfunction',confidence:'high',reason:'PTSD and its medications are well-established causes of sexual dysfunction. Rates at 0% on its own — but qualifies for Special Monthly Compensation (SMC-K), adding ~$132/month on top of your regular compensation.',evidence:'Any physician diagnosis + nexus letter connecting to PTSD or its medications',smc:true},
+    {condition:'Migraines',confidence:'medium',reason:'PTSD and chronic stress are documented migraine triggers.',evidence:'Headache diary documenting frequency and severity + neurology evaluation + nexus letter'},
+    {condition:'Depression / major depressive disorder',confidence:'medium',reason:'PTSD and depression frequently co-occur as separate diagnoses. If clinically distinct, they can receive separate ratings.',evidence:'Private psychiatric evaluation clearly separating both diagnoses'},
+  ],
+  'TBI — traumatic brain injury':[
+    {condition:'Migraines',confidence:'high',reason:'Post-traumatic headaches are the most common TBI residual and among the easiest to document.',evidence:'Headache diary + neurology evaluation + nexus letter'},
+    {condition:'Sleep apnea (obstructive)',confidence:'high',reason:'TBI causes neurological changes to sleep regulation centers in the brain, directly contributing to sleep-disordered breathing.',evidence:'Sleep study + neurological nexus letter connecting TBI to sleep disruption'},
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Blast overpressure from TBI damages auditory nerve fibers and inner ear structures, causing tinnitus.',evidence:'Audiological evaluation + nexus letter connecting blast/TBI to tinnitus'},
+    {condition:'Hearing loss',confidence:'high',reason:'Same blast mechanism as tinnitus — auditory damage from the TBI event.',evidence:'Audiology exam without hearing aids + nexus letter'},
+    {condition:'PTSD',confidence:'high',reason:'TBI and PTSD co-occur at very high rates in combat veterans who experienced blast events.',evidence:'Mental health evaluation + buddy statements if no official incident record'},
+    {condition:'Depression / major depressive disorder',confidence:'medium',reason:'TBI affects the same brain regions that regulate mood.',evidence:'Psychiatric evaluation + nexus letter from neurologist or psychiatrist'},
+  ],
+  'Low back / lumbar strain':[
+    {condition:'Sciatica / radiculopathy (leg nerve pain)',confidence:'high',reason:'Lumbar disc degeneration from your back condition compresses the sciatic nerve, causing radiating leg pain, numbness, or weakness. No new in-service event needed — only a nexus letter.',evidence:'MRI showing disc compression or nerve involvement + EMG/nerve conduction study + nexus letter'},
+    {condition:'Hip — limitation of motion',confidence:'medium',reason:'Chronic back pain alters gait mechanics, transferring abnormal load to the hip joint and accelerating degeneration over time.',evidence:'Orthopedic evaluation documenting hip symptoms + nexus letter from your treating physician'},
+  ],
+  'Neck / cervical strain':[
+    {condition:'Sciatica / radiculopathy (leg nerve pain)',confidence:'high',reason:'Cervical disc compression causes radiating nerve pain into the arms — rated as upper extremity radiculopathy.',evidence:'MRI showing cervical disc pathology + EMG study + nexus letter'},
+  ],
+  'Diabetes mellitus type 2':[
+    {condition:'Peripheral neuropathy (nerve damage in hands/feet)',confidence:'high',reason:'Diabetic peripheral neuropathy affects up to 50% of people with long-standing diabetes. Each affected extremity rates separately.',evidence:'Nerve conduction study + nexus letter from endocrinologist or neurologist'},
+    {condition:'Hypertension (high blood pressure)',confidence:'high',reason:'Diabetes damages blood vessel walls and elevates blood pressure through several direct mechanisms.',evidence:'Blood pressure records + nexus letter from treating physician'},
+    {condition:'Erectile dysfunction',confidence:'high',reason:'Diabetes damages both blood vessels and nerves controlling sexual function. Qualifies for SMC-K ($132+/month extra).',evidence:'Any physician diagnosis + nexus letter connecting to diabetes vascular/nerve damage',smc:true},
+  ],
+  'Sleep apnea (obstructive)':[
+    {condition:'Hypertension (high blood pressure)',confidence:'high',reason:'Sleep apnea causes repeated oxygen drops at night, triggering stress hormones that chronically elevate blood pressure.',evidence:'Blood pressure records + nexus letter citing the sleep apnea to hypertension mechanism'},
+  ],
+  'Hypertension (high blood pressure)':[
+    {condition:'Erectile dysfunction',confidence:'medium',reason:'Hypertension damages arteries throughout the body. Many blood pressure medications directly cause ED. Qualifies for SMC-K.',evidence:'Diagnosis + blood pressure medication documentation + nexus letter',smc:true},
+  ],
+  'Hearing loss':[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Hearing loss and tinnitus share the same noise-damage mechanism. Always file both — separate diagnostic codes, separate ratings.',evidence:'Audiological evaluation + service records confirming noise exposure'},
+  ],
+  'Tinnitus (ringing in ears)':[
+    {condition:'Hearing loss',confidence:'high',reason:'Tinnitus and hearing loss come from the same exposure damage. If you have tinnitus but have never had a formal audiology exam, there may be separately ratable hearing loss.',evidence:'Audiology exam without hearing aids'},
+  ],
+  'Flat feet (pes planus)':[
+    {condition:'Plantar fasciitis',confidence:'high',reason:'Flat foot arch collapse dramatically increases stress on the plantar fascia.',evidence:'Podiatric exam + nexus letter'},
+    {condition:'Knee — limitation of flexion',confidence:'medium',reason:'Altered foot mechanics from flat feet create abnormal knee loading forces.',evidence:'Orthopedic exam + nexus letter connecting gait alteration to knee damage'},
+    {condition:'Low back / lumbar strain',confidence:'medium',reason:'Flat feet alter the entire kinetic chain — gait mechanics propagate upward through the knees into the lumbar spine.',evidence:'Orthopedic or podiatric nexus letter connecting flat feet to back symptoms'},
+  ],
+  'Knee — limitation of flexion':[
+    {condition:'Hip — limitation of motion',confidence:'medium',reason:'Chronic knee pain causes compensatory hip mechanics.',evidence:'Orthopedic evaluation + nexus letter'},
+  ],
+  'Knee — instability / impairment':[
+    {condition:'Hip — limitation of motion',confidence:'medium',reason:'Knee instability alters gait and loads the hip joint asymmetrically.',evidence:'Orthopedic evaluation + nexus letter'},
+  ],
+  'Rhinitis / sinusitis (chronic nasal problems)':[
+    {condition:'Sleep apnea (obstructive)',confidence:'high',reason:'Chronic nasal obstruction from rhinitis forces mouth breathing during sleep — a major contributing factor to obstructive sleep apnea.',evidence:'Sleep study + ENT or pulmonology nexus letter'},
+    {condition:'Asthma',confidence:'medium',reason:'Chronic upper airway inflammation frequently extends to the lower airways.',evidence:'Pulmonology evaluation + spirometry + nexus letter'},
+  ],
+  'Depression / major depressive disorder':[
+    {condition:'Sleep apnea (obstructive)',confidence:'medium',reason:'Depression disrupts sleep architecture and is a documented risk factor for sleep apnea.',evidence:'Sleep study + nexus letter from psychiatrist or sleep physician'},
+    {condition:'GERD / acid reflux',confidence:'medium',reason:'Antidepressants commonly cause GI side effects including GERD.',evidence:'GI diagnosis + documentation of antidepressants + nexus letter'},
+  ],
+  'Anxiety / generalized anxiety disorder':[
+    {condition:'Sleep apnea (obstructive)',confidence:'medium',reason:'Anxiety causes hyperarousal that disrupts sleep architecture.',evidence:'Sleep study + nexus letter from mental health provider'},
+    {condition:'Hypertension (high blood pressure)',confidence:'medium',reason:'Chronic anxiety elevates blood pressure through the sympathetic nervous system.',evidence:'Blood pressure records + nexus letter'},
+    {condition:'GERD / acid reflux',confidence:'medium',reason:'Anxiety directly increases gastric acid production.',evidence:'GI diagnosis + nexus letter'},
+  ],
+  'Ischemic heart disease / coronary artery disease':[
+    {condition:'Erectile dysfunction',confidence:'medium',reason:'Coronary artery disease reflects systemic vascular damage — the same arterial narrowing affects blood flow to sexual function. Qualifies for SMC-K.',evidence:'Cardiac diagnosis + nexus letter from cardiologist',smc:true},
+  ],
+};
+
+function getMOSCategory(mos) {
+  const m = mos.toLowerCase().replace(/[\s\-]/g,'');
+  const lookup = {'11a':'infantry','11b':'infantry','11c':'infantry','18a':'special_ops','18b':'special_ops','18c':'special_ops','18d':'special_ops','18e':'special_ops','18f':'special_ops','18z':'special_ops','19a':'armor','19d':'armor','19k':'armor','13a':'artillery','13b':'artillery','13f':'artillery','13j':'artillery','13m':'artillery','13r':'artillery','13s':'artillery','15a':'aviation','15b':'aviation','15c':'aviation','15d':'aviation','15e':'aviation','15f':'aviation','15p':'aviation','15r':'aviation','15s':'aviation','15t':'aviation','15u':'aviation','15w':'aviation','15y':'aviation','153a':'aviation','153d':'aviation','68a':'medical','68c':'medical','68d':'medical','68e':'medical','68f':'medical','68g':'medical','68h':'medical','68j':'medical','68k':'medical','68m':'medical','68p':'medical','68q':'medical','68r':'medical','68s':'medical','68t':'medical','68w':'medical','68x':'medical','12a':'engineer','12b':'engineer','12c':'engineer','12d':'engineer','12g':'engineer','12h':'engineer','12k':'engineer','12m':'engineer','12n':'engineer','12p':'engineer','12r':'engineer','12t':'engineer','12w':'engineer','12y':'engineer','25a':'signal','25b':'signal','25c':'signal','25d':'signal','25e':'signal','25f':'signal','25l':'signal','25m':'signal','25n':'signal','25p':'signal','25q':'signal','25r':'signal','25s':'signal','25t':'signal','25u':'signal','25v':'signal','25w':'signal','31a':'military_police','31b':'military_police','31d':'military_police','31e':'military_police','31k':'military_police','35a':'intel','35b':'intel','35d':'intel','35e':'intel','35f':'intel','35g':'intel','35h':'intel','35l':'intel','35m':'intel','35n':'intel','35p':'intel','35q':'intel','35r':'intel','35s':'intel','35t':'intel','35u':'intel','88a':'logistics','88h':'logistics','88k':'logistics','88l':'logistics','88m':'logistics','88n':'logistics','88p':'logistics','88t':'logistics','88u':'logistics','0302':'infantry','0311':'infantry','0313':'infantry','0317':'infantry','0321':'special_ops','0323':'special_ops','0331':'infantry','0341':'infantry','0351':'infantry','0352':'infantry','0369':'infantry','0811':'artillery','0842':'artillery','0844':'artillery','0861':'artillery','7200':'aviation','7210':'aviation','7212':'aviation','7220':'aviation','7234':'aviation','eod':'special_ops','so':'special_ops','swcc':'special_ops','hm':'medical','dc':'medical','it':'signal','ct':'intel','is':'intel','1a0x1':'aviation','1a1x1':'aviation','1a2x1':'aviation','1a3x1':'aviation','1a7x1':'aviation','1b4x1':'special_ops','1c4x1':'special_ops','1t2x1':'special_ops','3d0x1':'signal','3d0x2':'signal','1n0x1':'intel','1n1x1':'intel','4n0x1':'medical','4n1x1':'medical','3p0x1':'military_police'};
+  if (lookup[m]) return lookup[m];
+  if (/^11/.test(m)) return 'infantry';
+  if (/^18/.test(m)) return 'special_ops';
+  if (/^19/.test(m)) return 'armor';
+  if (/^13/.test(m)) return 'artillery';
+  if (/^15/.test(m)) return 'aviation';
+  if (/^68/.test(m)) return 'medical';
+  if (/^12/.test(m)) return 'engineer';
+  if (/^25/.test(m)) return 'signal';
+  if (/^31/.test(m)) return 'military_police';
+  if (/^35/.test(m)) return 'intel';
+  if (/^88/.test(m)) return 'logistics';
+  if (/^03/.test(m)) return 'infantry';
+  if (/^08/.test(m)) return 'artillery';
+  const kw = {infantry:['infantry','grunt','rifleman'],special_ops:['specialforces','ranger','seal','delta','recon','marsoc','raider','pj','pararescue','sof','greenberet'],artillery:['artillery','cannon','howitzer'],armor:['armor','tanker','tank','cavalry','cav','scout'],aviation:['pilot','aviation','aviator','helicopter','flight'],medical:['medic','corpsman','nurse','medical','physician','68w'],signal:['signal','communications','comms','radio','network','cyber'],military_police:['militarypolice','securityforces','lawenforcement'],intel:['intelligence','intel','analyst','sigint','humint'],engineer:['engineer','sapper','combatengineer'],logistics:['supply','logistic','transport','driver','quartermaster']};
+  for (const [cat,words] of Object.entries(kw)) { if (words.some(w => m.includes(w))) return cat; }
+  return 'general';
+}
+
+const MOS_CONDITIONS = {
+  infantry:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Infantry MOSs are exposed to weapons fire, IED blasts, mortar rounds, and heavy vehicle noise — all well above safe decibel thresholds.',evidence:'Buddy statements confirming noise exposure; in-service medical records'},
+    {condition:'Hearing loss',confidence:'high',reason:'Same noise exposure as tinnitus. Both conditions should always be filed together.',evidence:'Audiology exam (without hearing aids)'},
+    {condition:'PTSD',confidence:'high',reason:'Combat veterans do not need to prove a specific stressor — VA presumes it occurred if you served in a combat zone.',evidence:'Service records confirming combat duty; buddy statements; private mental health evaluation'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Sustained heavy ruck loads (typically 60-120 lbs) cause cumulative spinal compression and disc degeneration.',evidence:'In-service sick call records; MRI or X-ray; orthopedic evaluation'},
+    {condition:'Knee — limitation of flexion',confidence:'high',reason:"High-mileage movement under load causes chronic knee degeneration. The VA's painful motion rule means even partial limitation with pain qualifies for at least 10%.",evidence:'Orthopedic exam; range of motion measurements; in-service sick call records'},
+    {condition:'Flat feet (pes planus)',confidence:'medium',reason:'Years of high-impact movement in military boots with heavy loads causes arch collapse.',evidence:'Podiatric exam; in-service records showing foot complaints'},
+    {condition:'TBI — traumatic brain injury',confidence:'medium',reason:'Any IED blast exposure, vehicle rollover, or blunt head trauma qualifies. No direct head strike required for blast TBI.',evidence:'Neurological evaluation; in-service records of blast exposure; buddy statements'},
+  ],
+  special_ops:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'SOF operations involve sustained high-level noise exposure across diverse weapon systems, breaching charges, and CQB environments.',evidence:'Audiological evaluation + service records'},
+    {condition:'Hearing loss',confidence:'high',reason:'Same noise exposure as tinnitus — always file both together.',evidence:'Audiology exam without hearing aids'},
+    {condition:'PTSD',confidence:'high',reason:'High operational tempo, repeated deployments, and direct combat in SOF environments.',evidence:'Mental health evaluation; buddy statements; deployment records'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Heavy equipment, parachute landings, fast-rope insertions, and extreme PT cause significant cumulative spinal damage.',evidence:'Medical records; orthopedic evaluation; MRI'},
+    {condition:'Shoulder — limitation of arm motion',confidence:'high',reason:'HALO/HAHO jumps, fast-rope insertions, and heavy carrying loads cause shoulder joint damage at elevated rates in SOF.',evidence:'MRI; orthopedic evaluation; nexus letter'},
+    {condition:'Knee — limitation of flexion',confidence:'high',reason:'High-volume jump operations and extreme physical training cause chronic knee pathology.',evidence:'Orthopedic exam; range of motion measurements'},
+    {condition:'TBI — traumatic brain injury',confidence:'high',reason:'SOF personnel sustain significantly higher rates of blast exposure with cumulative neurological effects.',evidence:'Neurological evaluation; in-service records; buddy statements'},
+  ],
+  artillery:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Artillery fire produces some of the highest impulse noise levels in the military. A single round can permanently damage hearing.',evidence:'Buddy statements; service records confirming artillery MOS'},
+    {condition:'Hearing loss',confidence:'high',reason:'Artillery noise exposure is among the highest of any MOS. Audiological damage is near-universal in this population.',evidence:'Audiology exam without hearing aids'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Artillery rounds and shell casings require repeated heavy lifting under time pressure.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Shoulder — limitation of arm motion',confidence:'medium',reason:'Repetitive heavy lifting of rounds and charges causes rotator cuff and shoulder joint damage.',evidence:'Orthopedic evaluation; MRI; nexus letter'},
+  ],
+  armor:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Tank and armored vehicle operations produce sustained high decibel noise, amplified in an enclosed metal environment.',evidence:'Buddy statements; service records confirming armor MOS'},
+    {condition:'Hearing loss',confidence:'high',reason:'Enclosed vehicle noise and main gun exposure are consistent causes of audiological damage in armor crews.',evidence:'Audiology exam without hearing aids'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Tank crew positions require sustained awkward postures and vibration-induced spinal loading.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Knee — limitation of flexion',confidence:'medium',reason:'Tank hatches and driver positions require repeated knee flexion in confined spaces.',evidence:'Orthopedic exam; range of motion measurements'},
+    {condition:'TBI — traumatic brain injury',confidence:'medium',reason:'Blast exposure from IEDs affects armor crews through vehicle hull transmission. Vehicle rollovers are also a documented source of head trauma.',evidence:'Neurological evaluation; incident records; buddy statements'},
+  ],
+  aviation:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Rotary wing operations produce sustained extremely high noise levels. Hearing protection compliance was historically poor.',evidence:'Audiological evaluation; service records confirming aviation MOS'},
+    {condition:'Hearing loss',confidence:'high',reason:'Aviation noise exposure — particularly rotary wing — is among the most damaging in the military.',evidence:'Audiology exam without hearing aids'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Helicopter vibration causes cumulative lumbar disc compression well-documented in aviation medicine.',evidence:'Medical records; MRI; orthopedic evaluation'},
+    {condition:'Neck / cervical strain',confidence:'medium',reason:'Helmet weight (especially NVG-equipped) combined with sustained flight attitudes causes cervical spine degeneration in aviators.',evidence:'Medical records; orthopedic evaluation; MRI'},
+    {condition:'PTSD',confidence:'medium',reason:'Combat aviation, medevac missions, and crash events create substantial PTSD exposure.',evidence:'Mental health evaluation; operational records'},
+  ],
+  medical:[
+    {condition:'PTSD',confidence:'high',reason:'Combat medics and corpsmen experience extreme operational stress — treating severe wounds under fire, often with limited resources.',evidence:'Mental health evaluation; buddy statements; operational records'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Patient lifts, carrying medical equipment, and casualty extraction create significant lumbar loading injuries.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Tinnitus (ringing in ears)',confidence:'medium',reason:'Combat medics operate in the same high-noise environments as the units they support.',evidence:'Audiological evaluation; service records'},
+    {condition:'Hearing loss',confidence:'medium',reason:'Same noise exposure as combat units — file alongside tinnitus if applicable.',evidence:'Audiology exam without hearing aids'},
+  ],
+  military_police:[
+    {condition:'PTSD',confidence:'high',reason:'Military police face combat exposure, IED incidents, detainee operations, and high-stress law enforcement duties.',evidence:'Mental health evaluation; incident reports; buddy statements'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Wearing heavy duty gear (ballistic vest, duty belt) for long shifts causes significant cumulative lumbar loading.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Knee — limitation of flexion',confidence:'medium',reason:'Patrol duties in heavy gear cause cumulative knee joint wear.',evidence:'Orthopedic exam'},
+    {condition:'Tinnitus (ringing in ears)',confidence:'medium',reason:'Weapons qualification and operational use creates noise exposure.',evidence:'Audiological evaluation'},
+  ],
+  engineer:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'high',reason:'Combat engineers use demolition charges, power tools, and heavy equipment — all significant noise exposure sources.',evidence:'Audiological evaluation; service records'},
+    {condition:'Hearing loss',confidence:'high',reason:'Same demolition and equipment exposure as tinnitus — file both together.',evidence:'Audiology exam without hearing aids'},
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Heavy equipment operation, construction tasks, and carrying demolition materials cause significant lumbar loading.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'TBI — traumatic brain injury',confidence:'medium',reason:'Demolition operations and route clearance involve blast overpressure exposure.',evidence:'Neurological evaluation; service records'},
+  ],
+  signal:[
+    {condition:'Low back / lumbar strain',confidence:'medium',reason:'Carrying and setting up heavy communications equipment, antenna systems, and generators causes cumulative back strain.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Tinnitus (ringing in ears)',confidence:'medium',reason:'Generator operation and weapons qualification create noise exposure common across all MOSs.',evidence:'Audiological evaluation'},
+    {condition:'PTSD',confidence:'medium',reason:'Signal soldiers deployed in combat zones face the same operational stressors as other combat-area veterans.',evidence:'Mental health evaluation; deployment records'},
+  ],
+  intel:[
+    {condition:'PTSD',confidence:'medium',reason:'Intelligence analysts working with graphic combat imagery, casualty reporting, and high-value target packages face documented secondary trauma.',evidence:'Mental health evaluation; unit records'},
+    {condition:'Low back / lumbar strain',confidence:'medium',reason:'Sustained sedentary analytical work combined with field operations creates cumulative back issues.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Migraines',confidence:'medium',reason:'Sustained screen-intensive work in high-stress environments is a documented migraine trigger.',evidence:'Headache diary; neurology evaluation; nexus letter'},
+  ],
+  logistics:[
+    {condition:'Low back / lumbar strain',confidence:'high',reason:'Logistics MOSs involve sustained heavy lifting, materials handling, and vehicle operation.',evidence:'Medical records; orthopedic evaluation'},
+    {condition:'Hearing loss',confidence:'medium',reason:'Heavy vehicle operation and material handling equipment create consistent noise exposure.',evidence:'Audiology exam'},
+    {condition:'Tinnitus (ringing in ears)',confidence:'medium',reason:'Same heavy vehicle and equipment noise — file both together.',evidence:'Audiological evaluation'},
+    {condition:'Knee — limitation of flexion',confidence:'medium',reason:'Vehicle operation and material handling creates cumulative knee joint stress.',evidence:'Orthopedic exam'},
+  ],
+  general:[
+    {condition:'Tinnitus (ringing in ears)',confidence:'medium',reason:'Military service involves weapons qualification and equipment noise regardless of MOS. Tinnitus is the most commonly claimed condition across all military branches.',evidence:'Audiological evaluation; service records confirming weapons qualification'},
+    {condition:'Low back / lumbar strain',confidence:'medium',reason:'Physical training requirements, field operations, and equipment carrying are universal across all military service.',evidence:'Medical records; orthopedic evaluation'},
+  ],
+};
+
+const ERA_PRESUMPTIVES = {
+  vietnam:[
+    {condition:'Diabetes mellitus type 2',confidence:'high',note:'Agent Orange',reason:'Agent Orange presumptive — VA must grant service connection without any nexus letter if you served in Vietnam between January 9, 1962 and May 7, 1975.',evidence:'DD-214 confirming Vietnam service + current diagnosis. No nexus letter required.'},
+    {condition:'Ischemic heart disease / coronary artery disease',confidence:'high',note:'Agent Orange',reason:'Agent Orange presumptive for Vietnam veterans. No proof of herbicide exposure needed.',evidence:'DD-214 confirming Vietnam service + current cardiac diagnosis. No nexus letter required.'},
+    {condition:'Hypertension (high blood pressure)',confidence:'high',note:'Agent Orange',reason:'Added to the Agent Orange presumptive list — Vietnam veterans no longer need a nexus letter for high blood pressure.',evidence:'DD-214 + current blood pressure diagnosis. No nexus letter required.'},
+  ],
+  gulf_war:[
+    {condition:'Chronic fatigue syndrome',confidence:'high',note:'Gulf War Illness',reason:'Gulf War illness presumptive — VA must grant service connection for veterans who served in the Southwest Asia theater after August 2, 1990.',evidence:'DD-214 confirming Gulf War deployment + current diagnosis. No nexus letter required.'},
+    {condition:'Fibromyalgia',confidence:'high',note:'Gulf War Illness',reason:'Gulf War illness presumptive with the same theater and date qualifications as chronic fatigue syndrome.',evidence:'DD-214 + current rheumatology diagnosis confirming fibromyalgia. No nexus letter required.'},
+  ],
+  post_911:[
+    {condition:'Rhinitis / sinusitis (chronic nasal problems)',confidence:'high',note:'PACT Act / Burn Pit',reason:'PACT Act presumptive for burn pit exposure — applies to veterans who served in Southwest Asia, Afghanistan, Djibouti, or other covered locations after September 11, 2001.',evidence:'DD-214 confirming covered deployment + current diagnosis. No nexus letter required.'},
+    {condition:'Asthma',confidence:'high',note:'PACT Act / Burn Pit',reason:'PACT Act burn pit presumptive — same eligibility as rhinitis. Respiratory conditions from burn pit exposure are broadly covered.',evidence:'DD-214 + spirometry / pulmonology diagnosis. No nexus letter required.'},
+  ],
+  korea_dmz:[
+    {condition:'Diabetes mellitus type 2',confidence:'high',note:'Agent Orange (DMZ)',reason:'Veterans who served along the Korean DMZ between September 1, 1967 and August 31, 1971 qualify for the same Agent Orange presumptives as Vietnam veterans.',evidence:'DD-214 confirming DMZ service during qualifying period + current diagnosis. No nexus letter required.'},
+  ],
+  cold_war:[],
+  other:[],
+};
+
+function calcCombined(conds) {
+  const valid = conds.filter(c => c.rating > 0);
+  if (!valid.length) return {exact:0,official:0};
+  const sorted = [...valid].sort((a,b) => b.rating - a.rating);
+  let remaining = 100;
+  for (const c of sorted) remaining = remaining * (1 - c.rating / 100);
+  const exact = parseFloat((100 - remaining).toFixed(2));
+  const official = exact < 1 ? 0 : exact >= 95 ? 100 : Math.round(exact / 10) * 10;
+  return {exact, official};
+}
+
+function calcImpact(newCondition) {
+  const meta = CONDITION_META[newCondition];
+  if (!meta || meta.default === 0) return null;
+  const {official:curr} = calcCombined(userConditions);
+  const hypo = [...userConditions, {name:newCondition, rating:meta.default}];
+  const {official:newOff} = calcCombined(hypo);
+  const ratingBump = newOff - curr;
+  const dollarsMore = (COMP_RATES[newOff]||0) - (COMP_RATES[curr]||0);
+  return {curr, newOff, ratingBump, dollarsMore, assumedRating:meta.default, range:meta.range};
+}
+
+function init() {
+  const saved = JSON.parse(localStorage.getItem('ur_profile') || '{}');
+  if (saved.branch) document.getElementById('branch').value = saved.branch;
+  if (saved.mos)    document.getElementById('mos').value = saved.mos;
+  if (saved.era)    document.getElementById('era').value = saved.era;
+
+  // Free tool - works without login
+  // If logged in, we load their saved conditions for better gap analysis
+  sb.auth.getSession().then(function(res) {
+    var session = res && res.data && res.data.session ? res.data.session : null;
+    if (session) {
+      currentUser = session.user;
+      document.getElementById('user-email').textContent = currentUser.email;
+      loadConditions();
+    } else {
+      // Not logged in - still works, just no saved conditions
+      document.getElementById('cond-list').innerHTML = '<div class="cond-empty" style="line-height:1.6">Want to match against your saved conditions?<br><a href="login.html" style="color:var(--green);font-size:13px">Log in or sign up free &rarr;</a></div>';
+    }
+  }).catch(function() {
+    document.getElementById('cond-list').innerHTML = '<div class="cond-empty">Enter conditions manually in the calculator to improve results.</div>';
   });
 }
+
+function loadConditions() {
+  sb.from('conditions').select('*').eq('user_id', currentUser.id)
+    .then(function(res) {
+      userConditions = (res.data || []).map(function(d) { return {name:d.name, rating:d.rating}; });
+      renderCurrentConditions();
+    })
+    .catch(function() {
+      userConditions = [];
+      renderCurrentConditions();
+    });
+}
+
+function handleSignout() {
+  sb.auth.signOut().then(function() { window.location.href = 'login.html'; });
+}
+
+function renderCurrentConditions() {
+  var list = document.getElementById('cond-list');
+  if (!userConditions.length) {
+    list.innerHTML = '<div class="cond-empty" style="line-height:1.6">No conditions saved yet.<br><a href="calculator.html" style="color:var(--green);font-size:13px">Enter your conditions in the calculator first &rarr;</a></div>';
+    return;
+  }
+  list.innerHTML = userConditions.map(function(c) {
+    return '<div class="cond-chip"><span class="cond-name">'+c.name+'</span><span class="cond-rating">'+c.rating+'%</span></div>';
+  }).join('');
+}
+
+function runAnalysis() {
+  const mos = document.getElementById('mos').value.trim();
+  const era = document.getElementById('era').value;
+  const branch = document.getElementById('branch').value;
+  if (!mos) { alert('Enter your MOS, rate, or AFSC first.'); return; }
+  if (!era) { alert('Select your service era first.'); return; }
+  localStorage.setItem('ur_profile', JSON.stringify({branch, mos, era}));
+  const btn = document.getElementById('run-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Analyzing...';
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/><path d="M11 8v6M8 11h6"/></svg> Re-run analysis';
+    renderResults(buildAnalysis(mos, era));
+  }, 900);
+}
+
+function buildAnalysis(mos, era) {
+  const claimed = new Set(userConditions.map(c => c.name));
+  const seen = new Set(claimed);
+  const secondary = [], mosGaps = [], presumptive = [];
+  for (const cond of userConditions) {
+    for (const s of (SECONDARY_MAP[cond.name] || [])) {
+      if (!seen.has(s.condition)) { seen.add(s.condition); secondary.push({...s, sourceCondition:cond.name}); }
+    }
+  }
+  const cat = getMOSCategory(mos);
+  for (const m of (MOS_CONDITIONS[cat] || MOS_CONDITIONS.general)) {
+    if (!seen.has(m.condition)) { seen.add(m.condition); mosGaps.push({...m, mosCategory:cat}); }
+  }
+  for (const e of (ERA_PRESUMPTIVES[era] || [])) {
+    if (!seen.has(e.condition)) { seen.add(e.condition); presumptive.push(e); }
+  }
+  return {secondary, mosGaps, presumptive, mosCategory:cat};
+}
+
+function estimateMaxImpact(secondary, mosGaps, presumptive) {
+  const all = [...secondary, ...mosGaps, ...presumptive];
+  let sim = [...userConditions];
+  for (const g of all) {
+    const meta = CONDITION_META[g.condition];
+    if (meta && meta.default > 0) sim.push({name:g.condition, rating:meta.default});
+  }
+  const {official} = calcCombined(sim);
+  const {official:curr} = calcCombined(userConditions);
+  return {official, extra:(COMP_RATES[official]||0)-(COMP_RATES[curr]||0)};
+}
+
+function renderResults({secondary, mosGaps, presumptive, mosCategory}) {
+  const panel = document.getElementById('results-panel');
+  const total = secondary.length + mosGaps.length + presumptive.length;
+  const {official:curr} = calcCombined(userConditions);
+  let html = '';
+  if (total > 0) {
+    const max = estimateMaxImpact(secondary, mosGaps, presumptive);
+    html += `<div class="summary-banner animate-in"><div class="sb-stat"><div class="sb-num green">${total}</div><div class="sb-label">Gaps found</div></div><div class="sb-divider"></div><div class="sb-stat"><div class="sb-num white">${curr}%</div><div class="sb-label">Current rating</div></div><div class="sb-divider"></div><div class="sb-stat"><div class="sb-num green">${max.official}%</div><div class="sb-label">Potential rating</div></div><div class="sb-divider"></div><div class="sb-stat"><div class="sb-num white">$${Math.round(max.extra).toLocaleString()}</div><div class="sb-label">Potential extra /mo</div></div></div>`;
+  }
+  if (secondary.length > 0) {
+    html += `<div class="section-head animate-in" style="animation-delay:.04s"><div class="section-badge secondary">Secondary conditions</div><span class="section-count">${secondary.length} found</span></div>`;
+    secondary.forEach((g,i) => { html += buildCard(g,'secondary',i*0.04+0.04); });
+  }
+  if (mosGaps.length > 0) {
+    const catLabel = mosCategory.replace(/_/g,' ').replace(/\b\w/g, l => l.toUpperCase());
+    html += `<div class="section-head animate-in section-gap" style="animation-delay:.08s"><div class="section-badge exposure">MOS exposure</div><span class="section-count">${mosGaps.length} found — ${catLabel}</span></div>`;
+    mosGaps.forEach((g,i) => { html += buildCard(g,'exposure',i*0.04+0.08); });
+  }
+  if (presumptive.length > 0) {
+    html += `<div class="section-head animate-in section-gap" style="animation-delay:.12s"><div class="section-badge presumptive">Presumptive conditions</div><span class="section-count">${presumptive.length} found — no nexus letter required</span></div>`;
+    presumptive.forEach((g,i) => { html += buildCard(g,'presumptive',i*0.04+0.12); });
+  }
+  if (total === 0) {
+    html += '<div class="no-gaps animate-in">No additional gaps identified based on your current profile. Try adding more conditions in the calculator — the more conditions you have, the more secondary connections we can surface.</div>';
+  }
+  panel.innerHTML = html;
+}
+
+function buildCard(gap, type, delay) {
+  const impact = calcImpact(gap.condition);
+  const meta = CONDITION_META[gap.condition];
+  let bottomHtml = '';
+  if (gap.smc) {
+    bottomHtml = '<div class="smc-note">&#9888; SMC-K eligible — adds ~$132/month on top of your regular compensation. One of the most under-claimed VA benefits.</div>';
+  } else if (impact) {
+    if (impact.ratingBump > 0) {
+      bottomHtml = `<div class="gap-impact"><span class="gap-impact-label">At estimated ${impact.assumedRating}% (${meta.range}):</span><span class="gap-impact-val">${impact.curr}% &#8594; ${impact.newOff}% &middot; +$${Math.round(impact.dollarsMore).toLocaleString()}/mo</span></div>`;
+    } else {
+      bottomHtml = `<div class="gap-impact"><span class="gap-impact-label">At ${impact.assumedRating}%:</span><span class="gap-impact-val neutral">Adds to exact % without moving official tier — still worth filing</span></div>`;
+    }
+  }
+  const sourceNote = gap.sourceCondition ? ` <span style="font-size:11px;color:var(--ink-4);font-family:var(--ff-mono)">&#8592; from ${gap.sourceCondition}</span>` : '';
+  const presumptiveTag = gap.note ? ` <span style="font-size:11px;color:var(--amber);font-family:var(--ff-mono);font-weight:500;margin-left:4px">${gap.note}</span>` : '';
+  return `<div class="gap-card animate-in" style="animation-delay:${delay}s"><div class="gap-card-top"><div class="gap-name">${gap.condition}${presumptiveTag}${sourceNote}</div><div class="gap-meta">${meta?`<span class="gap-rating">${meta.range}</span>`:''}<span class="confidence-badge ${gap.confidence}">${gap.confidence}</span></div></div><div class="gap-reason">${gap.reason}</div><div class="gap-evidence"><strong>Evidence needed</strong>${gap.evidence}</div>${bottomHtml}</div>`;
+}
+
+init();
 </script>
 </body>
 </html>
