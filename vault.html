@@ -263,7 +263,13 @@ document.getElementById('file-input').addEventListener('change',function(){
 // AUTH - check session, silently swap to dashboard if data exists
 sb.auth.getSession().then(function(res){
   var session=res&&res.data&&res.data.session?res.data.session:null;
-  if(!session){window.location.href='login.html';return;}
+  if(!session){
+    // Not logged in - show upload screen with login prompt
+    document.getElementById('loading-note').style.display='none';
+    var altAction = document.querySelector('.alt-action');
+    if(altAction) altAction.innerHTML = 'Already have an account? <a href="login.html" style="color:var(--green)">Log in to access your vault</a>';
+    return;
+  }
   currentUser=session.user;
   document.getElementById('user-email').textContent=currentUser.email;
   // Show a subtle note while we check for existing data
@@ -285,7 +291,12 @@ sb.auth.getSession().then(function(res){
 
 // UPLOAD
 function handleFile(file){
-  if(!currentUser){showErr('Please log in first.');return;}
+  if(!currentUser){
+    if(confirm('Create a free account to upload and save your rating decision. Sign up now?')){
+      window.location.href='signup.html';
+    }
+    return;
+  }
   if(!file||file.type!=='application/pdf'){showErr('Please upload a PDF file.');return;}
   document.getElementById('upload-error').style.display='none';
   document.getElementById('upload-progress').style.display='block';
