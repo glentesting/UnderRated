@@ -11,6 +11,18 @@
 :root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:90;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+.paywall-back:hover{color:var(--ink)}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
 .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
@@ -154,6 +166,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
     </div>
   </div>
 </nav>
+<div class="paywall-overlay"><div class="paywall-card"><div class="paywall-lock">&#128274;</div><div class="paywall-title">This is a Pro feature</div><p class="paywall-sub">Upgrade to get access to the Vault &mdash; plus everything else we build.</p><button class="paywall-btn" onclick="alert('Stripe integration coming soon — email support@getunderrated.com to get early access.')">Upgrade to Pro</button><a href="dashboard.html" class="paywall-back">Go back to dashboard</a></div></div>
 
 <div class="page">
   <div class="page-eyebrow">Your records</div>
@@ -242,6 +255,8 @@ function toggleNav(){document.getElementById('nav-links').classList.toggle('open
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+
 function safeStr(v){return(v!==null&&v!==undefined)?String(v).toLowerCase():'';}
 function dpClass(d){var s=safeStr(d);if(!s)return'def';if(s.indexOf('not service')!==-1)return'den';if(s.indexOf('deferred')!==-1)return'def';if(s.indexOf('service')!==-1)return'sc';return'def';}
 function dpLabel(d){var s=safeStr(d);if(!s)return'Pending';if(s.indexOf('not service')!==-1)return'Denied';if(s.indexOf('deferred')!==-1)return'Deferred';if(s.indexOf('service')!==-1)return'Connected';return String(d);}
@@ -296,6 +311,11 @@ sb.auth.getSession().then(function(res){
   }
   currentUser=session.user;
   document.getElementById('user-email').textContent=currentUser.email;
+  // Check plan
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
   // Show a subtle note while we check for existing data
   document.getElementById('loading-note').style.display='block';
   // Query conditions
