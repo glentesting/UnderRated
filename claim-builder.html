@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim Builder &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:18px}
+.nav-links .mobile-signout{display:none}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-right{display:flex;align-items:center;gap:14px}
+.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+/* PAGE */
+.page{max-width:720px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+
+/* STEP INDICATOR */
+.step-indicator{display:flex;gap:6px;margin-bottom:24px}
+.step-dot{flex:1;height:4px;border-radius:2px;background:var(--border-2);transition:background .3s}
+.step-dot.active{background:var(--green)}
+.step-dot.done{background:var(--green);opacity:.5}
+
+/* CARDS */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.card:last-child{margin-bottom:0}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+
+/* STEP 1 — CONDITION CARDS */
+.cond-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s;user-select:none}
+.cond-card:last-child{margin-bottom:0}
+.cond-card.selected{border-color:var(--green-border);background:var(--green-bg)}
+.cond-check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;background:var(--surface)}
+.cond-card.selected .cond-check{background:var(--green);border-color:var(--green)}
+.cond-check svg{opacity:0;transition:opacity .15s}
+.cond-card.selected .cond-check svg{opacity:1}
+.cond-info{flex:1;min-width:0}
+.cond-name{font-size:14px;font-weight:500;color:var(--ink)}
+.cond-rating{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);margin-top:2px}
+.add-manual{display:flex;gap:8px;margin-top:12px}
+.add-input{flex:1;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
+.add-input:focus{border-color:var(--green);background:var(--surface)}
+.add-btn{background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s;white-space:nowrap}
+.add-btn:hover{background:var(--green-l)}
+
+/* STEP 2 — SERVICE CONNECTION */
+.sc-counter{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:12px}
+.sc-cond-name{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:18px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-bottom:5px;font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase}
+.form-select,.form-input{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
+.form-select:focus,.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-textarea{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;resize:vertical;min-height:80px}
+.form-textarea:focus{border-color:var(--green);background:var(--surface)}
+.toggle-row{display:flex;align-items:center;gap:10px}
+.toggle{width:42px;height:24px;border-radius:12px;background:var(--border-2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle-knob{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,0.15)}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+.toggle-label{font-size:14px;color:var(--ink-2)}
+
+/* STEP 3 — EVIDENCE */
+.evidence-group{margin-bottom:20px}
+.evidence-group:last-child{margin-bottom:0}
+.eg-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer;user-select:none}
+.check-box{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;background:var(--surface)}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green)}
+.check-box svg{opacity:0;transition:opacity .15s}
+.check-item.checked .check-box svg{opacity:1}
+.check-text{font-size:14px;color:var(--ink-2);line-height:1.4}
+.check-item.checked .check-text{color:var(--ink-3);text-decoration:line-through}
+
+/* STEP 4 — SUMMARY */
+.summary-section{margin-bottom:20px}
+.summary-section:last-child{margin-bottom:0}
+.ss-title{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:10px}
+.summary-cond{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.summary-cond:last-child{margin-bottom:0}
+.sc-name{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.sc-type{font-size:13px;color:var(--ink-3);margin-bottom:6px}
+.sc-evidence{display:flex;gap:6px;flex-wrap:wrap}
+.sc-pill{font-size:11px;padding:3px 8px;border-radius:12px;font-family:var(--ff-mono)}
+.sc-pill.done{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.sc-pill.missing{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.next-steps{background:var(--green-bg);border:1.5px solid var(--green-border);border-radius:12px;padding:16px 18px}
+.next-steps p{font-size:14px;color:var(--green);line-height:1.6;margin-bottom:8px}
+.next-steps p:last-child{margin-bottom:0}
+.next-steps strong{font-weight:500}
+.next-steps ol{padding-left:18px;font-size:14px;color:var(--green);line-height:1.8}
+.print-btn{background:var(--green);color:#fff;font-size:14px;font-weight:500;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s;width:100%;margin-top:16px}
+.print-btn:hover{background:var(--green-l)}
+
+/* NAV BUTTONS */
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1.5px solid var(--border)}
+.btn-back{font-size:14px;color:var(--ink-3);background:none;border:1.5px solid var(--border-2);border-radius:10px;padding:10px 20px;cursor:pointer;font-family:var(--ff-body);transition:all .15s}
+.btn-back:hover{color:var(--ink);border-color:var(--ink-3)}
+.btn-next{background:var(--green);color:#fff;font-size:14px;font-weight:500;padding:10px 24px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+.btn-next:hover{background:var(--green-l)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed}
+.btn-spacer{width:1px}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:24px;color:var(--ink-3);font-size:14px;line-height:1.6}
+.empty-state a{color:var(--green);font-weight:500}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PRINT */
+@media print{
+  nav,.step-indicator,.step-nav,.print-btn,.hamburger{display:none!important}
+  body{background:#fff}
+  .page{max-width:100%;padding:20px}
+  .card{border:1px solid #ddd;box-shadow:none;break-inside:avoid}
+  .summary-cond{break-inside:avoid}
+}
+
+@media(max-width:780px){
+  nav{padding:0 16px}
+  .hamburger{display:flex}
+  .user-email{display:none}
+  .signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .page{padding:24px 16px 60px}
+  .page-title{font-size:32px}
+  .card{padding:18px 14px}
+  .step-nav{flex-wrap:wrap;gap:10px}
+  .btn-back,.btn-next{flex:1;text-align:center}
+  .sc-cond-name{font-size:24px}
+  .add-manual{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="dashboard.html" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html">Vault</a>
+      <a href="state-benefits.html">State benefits</a>
+      <a href="claim-builder.html" class="active">Claim builder</a>
+      <a href="profile.html">Profile</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Claim builder</div>
+  <div class="page-title">Build your claim package</div>
+  <p class="page-sub">Walk through each step. Your progress saves automatically so you can come back anytime.</p>
+
+  <div class="step-indicator">
+    <div class="step-dot" id="sd-0"></div>
+    <div class="step-dot" id="sd-1"></div>
+    <div class="step-dot" id="sd-2"></div>
+    <div class="step-dot" id="sd-3"></div>
+  </div>
+
+  <!-- STEP 1: Select conditions -->
+  <div id="step-0" class="step-panel">
+    <div class="card">
+      <div class="card-title">Select conditions to claim</div>
+      <div class="card-sub">Check the conditions you want to include in this claim package.</div>
+      <div id="cond-list"></div>
+      <div class="add-manual">
+        <input class="add-input" type="text" id="manual-input" placeholder="Add a condition not listed above...">
+        <button class="add-btn" onclick="addManual()">+ Add</button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <div class="btn-spacer"></div>
+      <button class="btn-next" id="next-0" onclick="goStep(1)">Continue to service connection</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Service connection -->
+  <div id="step-1" class="step-panel" style="display:none">
+    <div class="card" id="sc-card"></div>
+    <div class="step-nav">
+      <button class="btn-back" id="back-1" onclick="scBack()">Back</button>
+      <button class="btn-next" id="next-1" onclick="scNext()">Next condition</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Evidence checklist -->
+  <div id="step-2" class="step-panel" style="display:none">
+    <div class="card">
+      <div class="card-title">Evidence checklist</div>
+      <div class="card-sub">Check off items as you gather them. Each condition has tailored requirements based on your service connection type.</div>
+      <div id="evidence-list"></div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(1);scIdx=selected.length-1;renderSC()">Back to service connection</button>
+      <button class="btn-next" onclick="goStep(3)">View claim summary</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Summary -->
+  <div id="step-3" class="step-panel" style="display:none">
+    <div class="card">
+      <div class="card-title">Claim package summary</div>
+      <div class="card-sub">Review everything before you submit.</div>
+      <div id="summary-content"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Next steps</div>
+      <div class="next-steps">
+        <p><strong>You have three ways to submit your claim:</strong></p>
+        <ol>
+          <li><strong>VA.gov</strong> &mdash; File online at va.gov/disability/file-disability-claim-form-21-526ez. Fastest processing.</li>
+          <li><strong>Mail</strong> &mdash; Send VA Form 21-526EZ with supporting documents to your regional VA office.</li>
+          <li><strong>Work with a VSO</strong> &mdash; A Veterans Service Organization (DAV, VFW, American Legion) can file on your behalf at no cost.</li>
+        </ol>
+        <p style="margin-top:12px"><strong>Tip:</strong> If you have a VSO, share this summary with them. It gives them everything they need to file efficiently.</p>
+      </div>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print claim summary</button>
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(2)">Back to evidence</button>
+      <div class="btn-spacer"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+var currentUser=null;
+var allConditions=[];  // from DB + manual
+var selected=[];       // indices into allConditions that user checked
+var scIdx=0;           // current service-connection form index
+var draft={};          // full draft state
+
+function storageKey(){return 'ur_claim_draft_'+currentUser.id;}
+function saveDraft(){draft.allConditions=allConditions;draft.selected=selected;draft.scIdx=scIdx;localStorage.setItem(storageKey(),JSON.stringify(draft));}
+function loadDraft(){try{var d=JSON.parse(localStorage.getItem(storageKey()));if(d){draft=d;allConditions=d.allConditions||[];selected=d.selected||[];scIdx=d.scIdx||0;}}catch(e){}}
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+function handleSignout(){
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
+  sb.auth.signOut().then(function(){window.location.href='login.html';});
+}
+
+// ── STEP NAVIGATION ──
+var currentStep=0;
+function goStep(n){
+  if(n===1&&selected.length===0)return;
+  document.getElementById('step-'+currentStep).style.display='none';
+  currentStep=n;
+  document.getElementById('step-'+currentStep).style.display='block';
+  for(var i=0;i<4;i++){
+    var dot=document.getElementById('sd-'+i);
+    dot.className='step-dot'+(i<currentStep?' done':'')+(i===currentStep?' active':'');
+  }
+  if(n===1){scIdx=0;renderSC();}
+  if(n===2){renderEvidence();}
+  if(n===3){renderSummary();}
+  saveDraft();
+  window.scrollTo(0,0);
+}
+
+// ── STEP 1: SELECT CONDITIONS ──
+function renderCondList(){
+  var el=document.getElementById('cond-list');
+  if(allConditions.length===0){
+    el.innerHTML='<div class="empty-state">No saved conditions found.<br><a href="calculator.html">Enter conditions in the calculator first</a>, or add them manually below.</div>';
+    return;
+  }
+  el.innerHTML='';
+  allConditions.forEach(function(c,i){
+    var isSel=selected.indexOf(i)!==-1;
+    var div=document.createElement('div');
+    div.className='cond-card'+(isSel?' selected':'');
+    div.innerHTML='<div class="cond-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5L9.5 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+      +'<div class="cond-info"><div class="cond-name">'+c.name+'</div>'
+      +(c.rating?'<div class="cond-rating">Current rating: '+c.rating+'%</div>':'')
+      +'</div>';
+    div.onclick=function(){toggleCond(i);};
+    el.appendChild(div);
+  });
+  document.getElementById('next-0').disabled=selected.length===0;
+}
+
+function toggleCond(i){
+  var idx=selected.indexOf(i);
+  if(idx===-1){
+    selected.push(i);
+    // init service connection data if not exists
+    if(!draft['sc_'+i])draft['sc_'+i]={type:'',secondary_to:'',diagnosis_date:'',treated_in_service:false,description:''};
+    if(!draft['ev_'+i])draft['ev_'+i]={};
+  }else{
+    selected.splice(idx,1);
+  }
+  renderCondList();
+  saveDraft();
+}
+
+function addManual(){
+  var input=document.getElementById('manual-input');
+  var name=input.value.trim();
+  if(!name)return;
+  allConditions.push({name:name,rating:null,manual:true});
+  input.value='';
+  renderCondList();
+  saveDraft();
+}
+document.getElementById('manual-input').addEventListener('keydown',function(e){if(e.key==='Enter')addManual();});
+
+// ── STEP 2: SERVICE CONNECTION ──
+function renderSC(){
+  var card=document.getElementById('sc-card');
+  var ci=selected[scIdx];
+  var c=allConditions[ci];
+  var sc=draft['sc_'+ci]||(draft['sc_'+ci]={type:'',secondary_to:'',diagnosis_date:'',treated_in_service:false,description:''});
+
+  var html='<div class="sc-counter">Condition '+(scIdx+1)+' of '+selected.length+'</div>';
+  html+='<div class="sc-cond-name">'+c.name+'</div>';
+
+  html+='<div class="form-group"><label class="form-label">How is this condition connected to your service?</label>';
+  html+='<select class="form-select" id="sc-type" onchange="scChange(\'type\',this.value)">';
+  html+='<option value="">Select connection type...</option>';
+  html+='<option value="direct"'+(sc.type==='direct'?' selected':'')+'>Direct service connection</option>';
+  html+='<option value="secondary"'+(sc.type==='secondary'?' selected':'')+'>Secondary to another condition</option>';
+  html+='<option value="presumptive"'+(sc.type==='presumptive'?' selected':'')+'>Presumptive</option>';
+  html+='<option value="aggravation"'+(sc.type==='aggravation'?' selected':'')+'>Aggravation</option>';
+  html+='</select></div>';
+
+  if(sc.type==='secondary'){
+    html+='<div class="form-group"><label class="form-label">Secondary to which condition?</label>';
+    html+='<input class="form-input" type="text" value="'+escHtml(sc.secondary_to)+'" onchange="scChange(\'secondary_to\',this.value)" placeholder="e.g. PTSD, low back strain"></div>';
+  }
+
+  html+='<div class="form-group"><label class="form-label">Date of diagnosis or first treatment</label>';
+  html+='<input class="form-input" type="text" value="'+escHtml(sc.diagnosis_date)+'" onchange="scChange(\'diagnosis_date\',this.value)" placeholder="e.g. March 2019, or 2018"></div>';
+
+  html+='<div class="form-group"><label class="form-label">Were you treated for this in service?</label>';
+  html+='<div class="toggle-row"><div class="toggle'+(sc.treated_in_service?' on':'')+'" onclick="scToggle()"><div class="toggle-knob"></div></div>';
+  html+='<span class="toggle-label">'+(sc.treated_in_service?'Yes':'No')+'</span></div></div>';
+
+  html+='<div class="form-group"><label class="form-label">Brief description of how it started or worsened</label>';
+  html+='<textarea class="form-textarea" onchange="scChange(\'description\',this.value)" placeholder="2\u20133 sentences. Example: Started having knee pain during daily ruck marches in 2017. Got worse after deployment and now I can\u2019t run or kneel without pain.">'+escHtml(sc.description)+'</textarea></div>';
+
+  card.innerHTML=html;
+
+  document.getElementById('back-1').textContent=scIdx===0?'Back to conditions':'Previous condition';
+  document.getElementById('next-1').textContent=scIdx===selected.length-1?'Continue to evidence':'Next condition';
+}
+
+function scChange(field,val){
+  var ci=selected[scIdx];
+  draft['sc_'+ci][field]=val;
+  if(field==='type')renderSC();
+  saveDraft();
+}
+function scToggle(){
+  var ci=selected[scIdx];
+  draft['sc_'+ci].treated_in_service=!draft['sc_'+ci].treated_in_service;
+  renderSC();
+  saveDraft();
+}
+function scNext(){
+  if(scIdx<selected.length-1){scIdx++;renderSC();}
+  else{goStep(2);}
+  saveDraft();
+}
+function scBack(){
+  if(scIdx>0){scIdx--;renderSC();}
+  else{goStep(0);}
+}
+
+// ── STEP 3: EVIDENCE ──
+var EVIDENCE_COMMON=[
+  'Service treatment records (STRs)',
+  'Post-service medical records',
+  'VA C&P exam records',
+  'Buddy/lay statements'
+];
+var EVIDENCE_BY_TYPE={
+  direct:['In-service incident documentation','Current diagnosis from treating physician'],
+  secondary:['Nexus letter linking this condition to your primary condition','Medical records showing progression after primary condition onset'],
+  presumptive:['DD-214 showing qualifying service dates and location','Deployment records confirming theater of service'],
+  aggravation:['Pre-service medical records showing baseline','Medical evidence showing worsening beyond natural progression']
+};
+var EVIDENCE_BY_CATEGORY={
+  mental:['Nexus letter from psychiatrist or psychologist','Mental health treatment records','Personal statement describing symptoms and impact on daily life'],
+  musculoskeletal:['Range of motion measurements','Imaging (X-ray, MRI) results','Physical therapy records'],
+  hearing:['Audiogram results','Noise exposure documentation (MOS, duty station)'],
+  respiratory:['Pulmonary function test (PFT) results','Sleep study results (if sleep apnea)'],
+  neurological:['Neurological exam results','EMG/nerve conduction study results']
+};
+
+function getCategory(name){
+  var n=name.toLowerCase();
+  if(n.match(/ptsd|depression|anxiety|mental|tbi/))return 'mental';
+  if(n.match(/knee|back|shoulder|neck|hip|flat feet|plantar|spine|lumbar|cervical|musculoskeletal/))return 'musculoskeletal';
+  if(n.match(/tinnitus|hearing/))return 'hearing';
+  if(n.match(/sleep apnea|asthma|rhinitis|sinusitis|respiratory/))return 'respiratory';
+  if(n.match(/sciatica|radiculopathy|neuropathy|migraine|neurological/))return 'neurological';
+  return null;
+}
+
+function renderEvidence(){
+  var el=document.getElementById('evidence-list');
+  el.innerHTML='';
+  selected.forEach(function(ci){
+    var c=allConditions[ci];
+    var sc=draft['sc_'+ci]||{};
+    var ev=draft['ev_'+ci]||(draft['ev_'+ci]={});
+
+    var items=[].concat(EVIDENCE_COMMON);
+    if(sc.type&&EVIDENCE_BY_TYPE[sc.type])items=items.concat(EVIDENCE_BY_TYPE[sc.type]);
+    var cat=getCategory(c.name);
+    if(cat&&EVIDENCE_BY_CATEGORY[cat])items=items.concat(EVIDENCE_BY_CATEGORY[cat]);
+
+    var group=document.createElement('div');
+    group.className='evidence-group';
+    group.innerHTML='<div class="eg-title">'+escHtml(c.name)+'</div>';
+
+    items.forEach(function(item){
+      var checked=ev[item]||false;
+      var row=document.createElement('div');
+      row.className='check-item'+(checked?' checked':'');
+      row.innerHTML='<div class="check-box"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5L8.5 3" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-text">'+escHtml(item)+'</div>';
+      row.onclick=function(){
+        ev[item]=!ev[item];
+        row.classList.toggle('checked');
+        saveDraft();
+      };
+      group.appendChild(row);
+    });
+    el.appendChild(group);
+  });
+}
+
+// ── STEP 4: SUMMARY ──
+function renderSummary(){
+  var el=document.getElementById('summary-content');
+  var html='<div class="summary-section"><div class="ss-title">Conditions being claimed</div>';
+
+  selected.forEach(function(ci){
+    var c=allConditions[ci];
+    var sc=draft['sc_'+ci]||{};
+    var ev=draft['ev_'+ci]||{};
+    var typeLabel={direct:'Direct service connection',secondary:'Secondary to '+escHtml(sc.secondary_to||'another condition'),presumptive:'Presumptive',aggravation:'Aggravation'}[sc.type]||'Not specified';
+
+    var items=[].concat(EVIDENCE_COMMON);
+    if(sc.type&&EVIDENCE_BY_TYPE[sc.type])items=items.concat(EVIDENCE_BY_TYPE[sc.type]);
+    var cat=getCategory(c.name);
+    if(cat&&EVIDENCE_BY_CATEGORY[cat])items=items.concat(EVIDENCE_BY_CATEGORY[cat]);
+
+    var done=items.filter(function(it){return ev[it];});
+    var missing=items.filter(function(it){return !ev[it];});
+
+    html+='<div class="summary-cond"><div class="sc-name">'+escHtml(c.name)+'</div>';
+    html+='<div class="sc-type">'+typeLabel;
+    if(sc.diagnosis_date)html+=' &middot; Diagnosed: '+escHtml(sc.diagnosis_date);
+    if(sc.treated_in_service)html+=' &middot; Treated in service';
+    html+='</div>';
+    if(sc.description)html+='<div style="font-size:13px;color:var(--ink-3);margin-bottom:8px;line-height:1.5;font-style:italic">&ldquo;'+escHtml(sc.description)+'&rdquo;</div>';
+    html+='<div class="sc-evidence">';
+    done.forEach(function(it){html+='<span class="sc-pill done">'+escHtml(it)+'</span>';});
+    missing.forEach(function(it){html+='<span class="sc-pill missing">'+escHtml(it)+'</span>';});
+    html+='</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── INIT ──
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+
+  loadDraft();
+
+  // Load conditions from Supabase if no draft conditions exist
+  if(allConditions.length===0){
+    sb.from('conditions').select('*').eq('user_id',currentUser.id).order('sort_order')
+      .then(function(r){
+        var data=r.data||[];
+        if(data.length>0){
+          allConditions=data.map(function(d){return{name:d.name,rating:d.rating?parseInt(d.rating):null};});
+          saveDraft();
+        }
+        renderCondList();
+        goStep(currentStep);
+      });
+  }else{
+    renderCondList();
+    goStep(currentStep);
+  }
+}).catch(function(){window.location.href='login.html';});
+</script>
+</body>
+</html>
