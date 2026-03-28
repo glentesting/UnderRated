@@ -226,8 +226,8 @@ function showStep(n){
 function goStep2(){
   od.branch=document.getElementById('branch').value;
   od.mos=document.getElementById('mos').value.trim();
-  saveProfile();
   showStep(2);
+  saveProfile();
 }
 
 function selectRatingOpt(val){
@@ -242,9 +242,9 @@ function goStep3(){
     var r=parseInt(document.getElementById('current-rating').value)||0;
     od.rating=r;
     if(currentUser)localStorage.setItem('ur_combined_rating_'+currentUser.id,r);
-    saveProfile();
   }
   showStep(3);
+  saveProfile();
 }
 
 function handleDragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('dragover');}
@@ -337,13 +337,16 @@ function goStep4(){
   if(currentUser)localStorage.setItem('ur_onboarded_'+currentUser.id,'1');
 }
 
+// Requires profiles table columns: branch (text), mos (text), current_rating (integer), state (text)
 function saveProfile(){
   if(!currentUser)return;
-  var u={user_id:currentUser.id,updated_at:new Date().toISOString()};
-  if(od.branch)u.branch=od.branch;
-  if(od.mos)u.mos=od.mos;
-  if(od.rating!==null)u.current_rating=od.rating;
-  sb.from('profiles').upsert(u,{onConflict:'user_id'}).catch(function(){});
+  try{
+    var u={user_id:currentUser.id,updated_at:new Date().toISOString()};
+    if(od.branch)u.branch=od.branch;
+    if(od.mos)u.mos=od.mos;
+    if(od.rating!==null)u.current_rating=od.rating;
+    sb.from('profiles').upsert(u,{onConflict:'user_id'}).catch(function(){});
+  }catch(e){}
 }
 
 function skipOnboarding(){
