@@ -200,6 +200,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
           <a href="vault.html">Vault</a>
           <a href="claim-builder.html" class="active">Claim builder</a>
           <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
           <a href="profile.html">Profile</a>
         </div>
       </div>
@@ -313,7 +314,7 @@ function toggleNav(){document.getElementById('nav-links').classList.toggle('open
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 
-function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
 
 function handleSignout(){
   Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});

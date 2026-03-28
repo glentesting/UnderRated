@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Letter Generator &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.08);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:90;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+.paywall-back:hover{color:var(--ink)}
+a{color:inherit;text-decoration:none}
+
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:4px;background:none;border:none;font-family:var(--ff-body);padding:0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}
+.nav-dropdown-trigger svg{transition:transform .2s}
+.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 12px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);min-width:180px;padding:6px 0;z-index:200}
+.nav-dropdown.open .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:9px 16px;font-size:14px;color:var(--ink-2);transition:background .1s}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}
+.nav-dropdown-menu a.active{color:var(--green);font-weight:500}
+.nav-links .mobile-signout{display:none}
+.nav-links .mobile-tools-header{display:none}
+.nav-right{display:flex;align-items:center;gap:14px}
+.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.page{max-width:720px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+
+.step-indicator{display:flex;gap:6px;margin-bottom:24px}
+.step-dot{flex:1;height:4px;border-radius:2px;background:var(--border-2);transition:background .3s}
+.step-dot.active{background:var(--green)}
+.step-dot.done{background:var(--green);opacity:.5}
+
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);margin-bottom:16px}
+
+.cond-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s;user-select:none}
+.cond-card.selected{border-color:var(--green-border);background:var(--green-bg)}
+.cond-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;background:var(--surface)}
+.cond-card.selected .cond-check{background:var(--green);border-color:var(--green)}
+.cond-check svg{opacity:0;transition:opacity .15s}
+.cond-card.selected .cond-check svg{opacity:1}
+.cond-name{font-size:14px;font-weight:500;color:var(--ink)}
+.cond-rating{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);margin-top:2px}
+.add-manual{display:flex;gap:8px;margin-top:12px}
+.add-input{flex:1;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s}
+.add-input:focus{border-color:var(--green);background:var(--surface)}
+.add-btn-sm{background:var(--green);color:#fff;font-size:13px;font-weight:500;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s;white-space:nowrap}
+.add-btn-sm:hover{background:var(--green-l)}
+
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-bottom:5px;font-family:var(--ff-mono);letter-spacing:.06em;text-transform:uppercase}
+.form-select,.form-input{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8780' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;cursor:pointer}
+.form-select:focus,.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-textarea{display:block;width:100%;padding:10px 13px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;resize:vertical;min-height:80px}
+.form-textarea:focus{border-color:var(--green);background:var(--surface)}
+.toggle-row{display:flex;align-items:center;gap:10px}
+.toggle{width:42px;height:24px;border-radius:12px;background:var(--border-2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle-knob{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,0.15)}
+.toggle.on .toggle-knob{transform:translateX(18px)}
+.toggle-label{font-size:14px;color:var(--ink-2)}
+
+.radio-group{display:flex;gap:10px;margin-top:4px}
+.radio-opt{flex:1;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;cursor:pointer;text-align:center;font-size:14px;color:var(--ink-2);transition:all .15s;user-select:none}
+.radio-opt.selected{border-color:var(--green-border);background:var(--green-bg);color:var(--green);font-weight:500}
+
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1.5px solid var(--border)}
+.btn-back{font-size:14px;color:var(--ink-3);background:none;border:1.5px solid var(--border-2);border-radius:10px;padding:10px 20px;cursor:pointer;font-family:var(--ff-body);transition:all .15s}
+.btn-back:hover{color:var(--ink);border-color:var(--ink-3)}
+.btn-next{background:var(--green);color:#fff;font-size:14px;font-weight:500;padding:10px 24px;border-radius:10px;border:none;cursor:pointer;font-family:var(--ff-body);transition:background .15s}
+.btn-next:hover{background:var(--green-l)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed}
+.btn-spacer{width:1px}
+
+/* LETTER OUTPUT */
+.letter-area{width:100%;min-height:400px;padding:20px;font-family:'Georgia',serif;font-size:14px;line-height:1.8;color:var(--ink);background:var(--surface);border:1.5px solid var(--border-2);border-radius:12px;resize:vertical;outline:none;white-space:pre-wrap}
+.letter-area:focus{border-color:var(--green)}
+.letter-actions{display:flex;gap:10px;margin-top:12px}
+.btn-copy,.btn-print{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:500;font-family:var(--ff-body);cursor:pointer;transition:all .15s;text-align:center}
+.btn-copy{background:var(--green);color:#fff;border:none}
+.btn-copy:hover{background:var(--green-l)}
+.btn-print{background:none;color:var(--ink-2);border:1.5px solid var(--border-2)}
+.btn-print:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.loading-state{text-align:center;padding:40px 20px}
+.spinner{width:28px;height:28px;border:3px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 14px}
+.loading-text{font-size:15px;color:var(--ink-3)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.draft-notice{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--amber);line-height:1.5;margin-bottom:16px}
+.draft-notice strong{font-weight:500}
+.empty-state{text-align:center;padding:24px;color:var(--ink-3);font-size:14px;line-height:1.6}
+.empty-state a{color:var(--green);font-weight:500}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media print{
+  nav,.step-indicator,.step-nav,.letter-actions,.draft-notice,.hamburger,.paywall-overlay{display:none!important}
+  body{background:#fff}
+  .page{max-width:100%;padding:20px}
+  .card{border:none;box-shadow:none;padding:0}
+  .letter-area{border:none;padding:0;font-size:12pt;min-height:auto}
+}
+
+@media(max-width:780px){
+  nav{padding:0 16px}
+  .hamburger{display:flex}
+  .user-email{display:none}
+  .signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-dropdown{border-bottom:1px solid var(--border)}
+  .nav-dropdown-trigger{padding:11px 0;font-size:15px;color:var(--ink-2);width:100%}
+  .nav-dropdown-menu{position:static;border:none;box-shadow:none;border-radius:0;padding:0 0 4px 16px;min-width:auto;background:transparent}
+  .nav-dropdown.open .nav-dropdown-menu{display:block}
+  .nav-dropdown-menu a{padding:8px 0;font-size:14px;border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .nav-links .mobile-tools-header{display:none}
+  .page{padding:24px 16px 60px}
+  .page-title{font-size:32px}
+  .card{padding:18px 14px}
+  .step-nav{flex-wrap:wrap;gap:10px}
+  .btn-back,.btn-next{flex:1;text-align:center}
+  .add-manual{flex-direction:column}
+  .radio-group{flex-direction:column}
+  .letter-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html" class="active">Nexus letter</a>
+          <a href="profile.html">Profile</a>
+        </div>
+      </div>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+<div class="paywall-overlay"><div class="paywall-card"><div class="paywall-lock">&#128274;</div><div class="paywall-title">This is a Pro feature</div><p class="paywall-sub">Upgrade to get access to the Nexus Letter Generator &mdash; plus everything else we build.</p><button class="paywall-btn" onclick="alert('Stripe integration coming soon \u2014 email support@getunderrated.com to get early access.')">Upgrade to Pro</button><a href="dashboard.html" class="paywall-back">Go back to dashboard</a></div></div>
+
+<div class="page">
+  <div class="page-eyebrow">Pro tool</div>
+  <div class="page-title">Nexus letter generator</div>
+  <p class="page-sub">AI-drafted nexus letters connecting secondary conditions to your primary service-connected ones. Always have a licensed provider review and sign.</p>
+
+  <div class="step-indicator">
+    <div class="step-dot" id="sd-0"></div>
+    <div class="step-dot" id="sd-1"></div>
+    <div class="step-dot" id="sd-2"></div>
+    <div class="step-dot" id="sd-3"></div>
+  </div>
+
+  <!-- STEP 1: Secondary condition -->
+  <div id="step-0" class="step-panel">
+    <div class="card">
+      <div class="card-title">Which condition do you need a nexus letter for?</div>
+      <div class="card-sub">This is the secondary condition you're claiming &mdash; the one caused or worsened by a service-connected condition.</div>
+      <div id="secondary-list"></div>
+      <div class="add-manual">
+        <input class="add-input" type="text" id="add-secondary" placeholder="Type a condition not listed above...">
+        <button class="add-btn-sm" onclick="addManualSecondary()">+ Add</button>
+      </div>
+    </div>
+    <div class="step-nav">
+      <div class="btn-spacer"></div>
+      <button class="btn-next" id="next-0" disabled onclick="goStep(1)">Select the primary condition</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Primary condition + connection type -->
+  <div id="step-1" class="step-panel" style="display:none">
+    <div class="card">
+      <div class="card-title">Which service-connected condition caused or worsened it?</div>
+      <div class="card-sub">Select the primary condition that <strong id="secondary-name-display"></strong> is linked to.</div>
+      <div id="primary-list"></div>
+      <div class="add-manual">
+        <input class="add-input" type="text" id="add-primary" placeholder="Type a condition not listed above...">
+        <button class="add-btn-sm" onclick="addManualPrimary()">+ Add</button>
+      </div>
+      <div class="form-group" style="margin-top:18px">
+        <label class="form-label">How are they connected?</label>
+        <div class="radio-group">
+          <div class="radio-opt selected" id="opt-caused" onclick="setConnectionType('caused')">Caused by</div>
+          <div class="radio-opt" id="opt-aggravated" onclick="setConnectionType('aggravated')">Aggravated / worsened by</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(0)">Back</button>
+      <button class="btn-next" id="next-1" disabled onclick="goStep(2)">Add supporting details</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Supporting details -->
+  <div id="step-2" class="step-panel" style="display:none">
+    <div class="card">
+      <div class="card-title">Supporting details</div>
+      <div class="card-sub">These details help the AI write a stronger, more specific letter.</div>
+
+      <div class="form-group">
+        <label class="form-label">When did this condition begin or worsen?</label>
+        <input class="form-input" type="text" id="onset-date" placeholder="e.g. Started in 2019, worsened after deployment">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Have you been diagnosed by a doctor?</label>
+        <div class="toggle-row">
+          <div class="toggle" id="diag-toggle" onclick="toggleDiag()"><div class="toggle-knob"></div></div>
+          <span class="toggle-label" id="diag-label">No</span>
+        </div>
+      </div>
+      <div class="form-group" id="doctor-group" style="display:none">
+        <label class="form-label">Doctor's name and specialty (optional)</label>
+        <input class="form-input" type="text" id="doctor-info" placeholder="e.g. Dr. Smith, Orthopedic Surgeon">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Are you currently receiving treatment?</label>
+        <div class="toggle-row">
+          <div class="toggle" id="treat-toggle" onclick="toggleTreat()"><div class="toggle-knob"></div></div>
+          <span class="toggle-label" id="treat-label">No</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Describe how the primary condition causes or worsens this one</label>
+        <textarea class="form-textarea" id="description" placeholder="2-3 sentences. Example: My service-connected knee injury causes me to walk with an altered gait, which has led to chronic lower back pain that wasn't present before my knee worsened."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Veteran's full name (for the letter)</label>
+        <input class="form-input" type="text" id="veteran-name" placeholder="e.g. John A. Smith">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Branch of service</label>
+        <select class="form-select" id="service-branch">
+          <option value="">Select...</option>
+          <option value="Army">Army</option>
+          <option value="Navy">Navy</option>
+          <option value="Air Force">Air Force</option>
+          <option value="Marines">Marines</option>
+          <option value="Coast Guard">Coast Guard</option>
+          <option value="Space Force">Space Force</option>
+          <option value="National Guard">National Guard</option>
+        </select>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(1)">Back</button>
+      <button class="btn-next" onclick="generateLetter()">Generate nexus letter</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Generated letter -->
+  <div id="step-3" class="step-panel" style="display:none">
+    <div class="card" id="letter-card">
+      <div class="draft-notice"><strong>Draft template.</strong> This letter must be reviewed and signed by a licensed medical professional (MD, DO, NP, or PA) before submitting to the VA.</div>
+      <div class="loading-state" id="loading-state">
+        <div class="spinner"></div>
+        <div class="loading-text">Drafting your nexus letter...</div>
+      </div>
+      <div id="letter-output" style="display:none">
+        <textarea class="letter-area" id="letter-text"></textarea>
+        <div class="letter-actions">
+          <button class="btn-copy" onclick="copyLetter()">Copy to clipboard</button>
+          <button class="btn-print" onclick="window.print()">Print letter</button>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(2)">Back to details</button>
+      <button class="btn-next" onclick="generateLetter()">Regenerate</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+var currentUser=null;
+var allConditions=[];
+var secondaryIdx=-1;
+var primaryIdx=-1;
+var connectionType='caused';
+var diagnosed=false;
+var hasTreatment=false;
+var currentStep=0;
+var sessionToken='';
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+
+function handleSignout(){
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
+  sb.auth.signOut().then(function(){window.location.href='login.html';});
+}
+
+function storageKey(){return 'ur_nexus_draft_'+currentUser.id;}
+function saveDraft(){
+  var d={secondaryIdx:secondaryIdx,primaryIdx:primaryIdx,connectionType:connectionType,diagnosed:diagnosed,hasTreatment:hasTreatment,allConditions:allConditions};
+  d.onset_date=document.getElementById('onset-date').value;
+  d.doctor_info=document.getElementById('doctor-info').value;
+  d.description=document.getElementById('description').value;
+  d.veteran_name=document.getElementById('veteran-name').value;
+  d.service_branch=document.getElementById('service-branch').value;
+  var letterEl=document.getElementById('letter-text');
+  if(letterEl.value)d.letter=letterEl.value;
+  localStorage.setItem(storageKey(),JSON.stringify(d));
+}
+function loadDraft(){
+  try{
+    var d=JSON.parse(localStorage.getItem(storageKey()));
+    if(!d)return;
+    if(d.allConditions)allConditions=d.allConditions;
+    if(d.secondaryIdx!=null)secondaryIdx=d.secondaryIdx;
+    if(d.primaryIdx!=null)primaryIdx=d.primaryIdx;
+    if(d.connectionType)connectionType=d.connectionType;
+    if(d.diagnosed)diagnosed=d.diagnosed;
+    if(d.hasTreatment)hasTreatment=d.hasTreatment;
+    if(d.onset_date)document.getElementById('onset-date').value=d.onset_date;
+    if(d.doctor_info)document.getElementById('doctor-info').value=d.doctor_info;
+    if(d.description)document.getElementById('description').value=d.description;
+    if(d.veteran_name)document.getElementById('veteran-name').value=d.veteran_name;
+    if(d.service_branch)document.getElementById('service-branch').value=d.service_branch;
+    if(d.letter){document.getElementById('letter-text').value=d.letter;}
+  }catch(e){}
+}
+
+// ── STEP NAV ──
+function goStep(n){
+  document.getElementById('step-'+currentStep).style.display='none';
+  currentStep=n;
+  document.getElementById('step-'+currentStep).style.display='block';
+  for(var i=0;i<4;i++){
+    var dot=document.getElementById('sd-'+i);
+    dot.className='step-dot'+(i<currentStep?' done':'')+(i===currentStep?' active':'');
+  }
+  if(n===1){renderPrimaryList();document.getElementById('secondary-name-display').textContent=allConditions[secondaryIdx].name;}
+  saveDraft();
+  window.scrollTo(0,0);
+}
+
+// ── STEP 1 ──
+function renderSecondaryList(){
+  var el=document.getElementById('secondary-list');
+  if(allConditions.length===0){
+    el.innerHTML='<div class="empty-state">No saved conditions found.<br><a href="calculator.html">Enter conditions in the calculator first</a>, or type one below.</div>';
+    return;
+  }
+  el.innerHTML='';
+  allConditions.forEach(function(c,i){
+    var sel=i===secondaryIdx;
+    var div=document.createElement('div');
+    div.className='cond-card'+(sel?' selected':'');
+    div.innerHTML='<div class="cond-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5L9.5 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cond-name">'+esc(c.name)+'</div>'+(c.rating?'<div class="cond-rating">'+c.rating+'%</div>':'')+'</div>';
+    div.onclick=function(){secondaryIdx=i;renderSecondaryList();document.getElementById('next-0').disabled=false;saveDraft();};
+    el.appendChild(div);
+  });
+}
+
+function addManualSecondary(){
+  var input=document.getElementById('add-secondary');
+  var v=input.value.trim();if(!v)return;
+  allConditions.push({name:v,rating:null});
+  input.value='';
+  renderSecondaryList();saveDraft();
+}
+document.getElementById('add-secondary').addEventListener('keydown',function(e){if(e.key==='Enter')addManualSecondary();});
+
+// ── STEP 2 ──
+function renderPrimaryList(){
+  var el=document.getElementById('primary-list');
+  el.innerHTML='';
+  allConditions.forEach(function(c,i){
+    if(i===secondaryIdx)return;
+    var sel=i===primaryIdx;
+    var div=document.createElement('div');
+    div.className='cond-card'+(sel?' selected':'');
+    div.innerHTML='<div class="cond-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5L9.5 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cond-name">'+esc(c.name)+'</div>'+(c.rating?'<div class="cond-rating">'+c.rating+'%</div>':'')+'</div>';
+    div.onclick=function(){primaryIdx=i;renderPrimaryList();document.getElementById('next-1').disabled=false;saveDraft();};
+    el.appendChild(div);
+  });
+  document.getElementById('opt-caused').className='radio-opt'+(connectionType==='caused'?' selected':'');
+  document.getElementById('opt-aggravated').className='radio-opt'+(connectionType==='aggravated'?' selected':'');
+}
+
+function addManualPrimary(){
+  var input=document.getElementById('add-primary');
+  var v=input.value.trim();if(!v)return;
+  allConditions.push({name:v,rating:null});
+  input.value='';
+  renderPrimaryList();saveDraft();
+}
+document.getElementById('add-primary').addEventListener('keydown',function(e){if(e.key==='Enter')addManualPrimary();});
+
+function setConnectionType(t){connectionType=t;renderPrimaryList();saveDraft();}
+
+// ── TOGGLES ──
+function toggleDiag(){diagnosed=!diagnosed;var el=document.getElementById('diag-toggle');el.className='toggle'+(diagnosed?' on':'');document.getElementById('diag-label').textContent=diagnosed?'Yes':'No';document.getElementById('doctor-group').style.display=diagnosed?'block':'none';saveDraft();}
+function toggleTreat(){hasTreatment=!hasTreatment;var el=document.getElementById('treat-toggle');el.className='toggle'+(hasTreatment?' on':'');document.getElementById('treat-label').textContent=hasTreatment?'Yes':'No';saveDraft();}
+
+// ── STEP 4: GENERATE ──
+async function generateLetter(){
+  goStep(3);
+  document.getElementById('loading-state').style.display='block';
+  document.getElementById('letter-output').style.display='none';
+
+  var payload={
+    secondary_condition:allConditions[secondaryIdx].name,
+    primary_condition:allConditions[primaryIdx].name,
+    connection_type:connectionType,
+    onset_date:document.getElementById('onset-date').value,
+    diagnosed:diagnosed,
+    doctor_info:document.getElementById('doctor-info').value,
+    has_treatment:hasTreatment,
+    description:document.getElementById('description').value,
+    veteran_name:document.getElementById('veteran-name').value,
+    service_branch:document.getElementById('service-branch').value
+  };
+
+  try{
+    var res=await fetch('/api/generate-nexus',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify(payload)
+    });
+    var data=await res.json();
+    if(!data.success)throw new Error(data.error||'Generation failed');
+    document.getElementById('letter-text').value=data.letter;
+    document.getElementById('loading-state').style.display='none';
+    document.getElementById('letter-output').style.display='block';
+    saveDraft();
+  }catch(err){
+    document.getElementById('loading-state').innerHTML='<div style="color:var(--red);font-size:14px">'+esc(err.message)+'</div><button class="btn-next" style="margin-top:14px" onclick="generateLetter()">Try again</button>';
+  }
+}
+
+function copyLetter(){
+  var text=document.getElementById('letter-text').value;
+  navigator.clipboard.writeText(text).then(function(){
+    var btn=document.querySelector('.btn-copy');
+    btn.textContent='Copied!';
+    setTimeout(function(){btn.textContent='Copy to clipboard';},2000);
+  });
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── INIT ──
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  sessionToken=session.access_token;
+  document.getElementById('user-email').textContent=currentUser.email;
+
+  // Check plan
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
+
+  loadDraft();
+
+  // Load conditions from Supabase if none in draft
+  if(allConditions.length===0){
+    sb.from('conditions').select('*').eq('user_id',currentUser.id).order('sort_order')
+      .then(function(r){
+        var data=r.data||[];
+        if(data.length>0){
+          allConditions=data.map(function(d){return{name:d.name,rating:d.rating?parseInt(d.rating):null};});
+          saveDraft();
+        }
+        renderSecondaryList();
+        goStep(currentStep);
+      });
+  }else{
+    renderSecondaryList();
+    goStep(currentStep);
+  }
+}).catch(function(){window.location.href='login.html';});
+</script>
+</body>
+</html>

@@ -154,6 +154,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
           <a href="vault.html" class="active">Vault</a>
           <a href="claim-builder.html">Claim builder</a>
           <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
           <a href="profile.html">Profile</a>
         </div>
       </div>
@@ -255,7 +256,7 @@ function toggleNav(){document.getElementById('nav-links').classList.toggle('open
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 
-function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
 
 function safeStr(v){return(v!==null&&v!==undefined)?String(v).toLowerCase():'';}
 function dpClass(d){var s=safeStr(d);if(!s)return'def';if(s.indexOf('not service')!==-1)return'den';if(s.indexOf('deferred')!==-1)return'def';if(s.indexOf('service')!==-1)return'sc';return'def';}
