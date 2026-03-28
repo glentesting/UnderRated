@@ -182,6 +182,16 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
         <span style="color:var(--green)">&#128274;</span>
         <span>Your profile is private and encrypted. Never shared or sold.</span>
       </div>
+    <div style="margin-top:48px;padding-top:28px;border-top:1px solid var(--border)">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Danger zone</div>
+      <div style="background:rgba(196,48,48,0.06);border:1px solid rgba(196,48,48,0.18);border-radius:14px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:14px;font-weight:500;color:var(--ink)">Delete my account</div>
+          <div style="font-size:13px;color:var(--ink-3);margin-top:3px">Permanently deletes your account, all conditions, and all uploaded documents. This cannot be undone.</div>
+        </div>
+        <button onclick="handleDeleteAccount()" style="background:none;border:1.5px solid rgba(196,48,48,0.4);color:#C43030;font-family:var(--ff-body);font-size:13px;font-weight:500;padding:9px 18px;border-radius:9px;cursor:pointer;white-space:nowrap;flex-shrink:0">Delete my account</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -195,6 +205,23 @@ var currentUser=null;
 var FIELDS=['first_name','branch','mos','era','years_of_service','dependents'];
 
 function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+
+async function handleDeleteAccount(){
+  if(!window.confirm('Are you absolutely sure? This will permanently delete your account, all your conditions, and all uploaded documents. This cannot be undone.'))return;
+  if(!window.confirm('Last chance \u2014 delete everything permanently?'))return;
+  try{
+    var session=await sb.auth.getSession();
+    var token=session.data.session.access_token;
+    await fetch('/api/delete-account',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({userId:currentUser.id})
+    });
+  }catch(e){}
+  Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
+  await sb.auth.signOut();
+  window.location.href='index.html';
+}
 
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
