@@ -112,6 +112,28 @@
   .smc-note{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:7px;padding:8px 11px;font-size:12px;color:var(--amber);margin-top:10px;line-height:1.55}
   .no-gaps{font-size:14px;color:var(--ink-3);padding:24px;text-align:center;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;line-height:1.6}
   .section-gap{margin-top:20px}
+  /* CFR Analysis cards */
+  .cfr-card{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px}
+  .cfr-card:last-child{margin-bottom:0}
+  .cfr-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .cfr-cond-name{font-size:15px;font-weight:500;color:var(--ink)}
+  .cfr-cond-rating{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
+  .cfr-badge{font-size:10px;font-weight:500;font-family:var(--ff-mono);letter-spacing:.06em;padding:3px 8px;border-radius:5px;text-transform:uppercase}
+  .cfr-badge.underpaid{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .cfr-badge.accurate{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+  .cfr-badge.needs_more_info{background:var(--bg-2);color:var(--ink-3);border:1px solid var(--border)}
+  .cfr-analysis{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:10px}
+  .cfr-rec{background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--green);line-height:1.5;margin-bottom:10px}
+  .cfr-rec strong{font-weight:500}
+  .cfr-evidence-list{list-style:none;padding:0;margin-bottom:10px}
+  .cfr-evidence-list li{font-size:12px;color:var(--ink-3);padding:4px 0;padding-left:16px;position:relative;line-height:1.5}
+  .cfr-evidence-list li::before{content:'\2022';position:absolute;left:0;color:var(--green)}
+  .cfr-secondary-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .cfr-chip{font-size:11px;padding:4px 10px;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;color:var(--ink-3);cursor:default}
+  .cfr-summary-bar{background:var(--surface);border:1.5px solid var(--green-border);border-radius:14px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .cfr-summary-stat{text-align:center}
+  .cfr-summary-num{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--green);line-height:1}
+  .cfr-summary-label{font-size:11px;color:var(--ink-3);font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
   .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -175,9 +197,9 @@
 </nav>
 
 <div class="page">
-  <div class="page-eyebrow">Step 2 of 3</div>
+  <div class="page-eyebrow">Free tool</div>
   <div class="page-title">Gap identifier</div>
-  <p class="page-sub">Tell us your MOS and service era. We'll surface what you haven't claimed &mdash; and explain exactly why you likely qualify.</p>
+  <p class="page-sub">We analyze your conditions against 38 CFR Part 4 criteria, surface unclaimed secondary conditions, and identify MOS-specific gaps.</p>
   <div class="info-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
     <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:10px;padding:14px 16px">
       <div style="font-family:var(--ff-mono);font-size:10px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Secondary conditions</div>
@@ -246,6 +268,36 @@
         <div class="empty-title">Ready to find your gaps</div>
         <p class="empty-sub">Fill in your service profile and hit "Run gap analysis" — takes about 2 seconds.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- AI CFR ANALYSIS SECTION -->
+  <div id="cfr-section" style="margin-top:28px;display:none">
+    <div class="card" style="border-color:var(--green-border)">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:4px">
+        <div class="card-title" style="margin:0">AI rating analysis</div>
+        <span id="cfr-last-run" style="font-size:11px;color:var(--ink-4);font-family:var(--ff-mono)"></span>
+      </div>
+      <div class="card-sub">Your conditions analyzed against 38 CFR Part 4 diagnostic criteria.</div>
+      <div id="cfr-disclaimer" style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--amber);line-height:1.5;margin-bottom:16px;display:none">
+        <strong>Disclaimer:</strong> This analysis is based on 38 CFR Part 4 criteria and is for informational purposes only. It is not legal or medical advice. Always verify with a VSO or accredited claims agent.
+      </div>
+      <div id="cfr-loading" style="display:none;text-align:center;padding:30px 0">
+        <div class="spinner" style="width:28px;height:28px;border:3px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px"></div>
+        <div style="font-size:14px;color:var(--ink-3)">Analyzing your conditions against 38 CFR Part 4...</div>
+        <div style="font-size:12px;color:var(--ink-4);margin-top:4px">This may take 10-15 seconds</div>
+      </div>
+      <div id="cfr-results"></div>
+      <div id="cfr-actions" style="display:none">
+        <button class="run-btn" id="cfr-run-btn" onclick="runCFRAnalysis()" style="margin-top:12px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          Run AI analysis on my conditions
+        </button>
+      </div>
+    </div>
+    <div id="cfr-summary" style="display:none"></div>
+    <div id="cfr-claim-link" style="display:none;text-align:center;margin-top:16px">
+      <a href="claim-builder.html" class="run-btn" style="display:inline-flex;text-decoration:none">Build your claim package &rarr;</a>
     </div>
   </div>
 </div>
@@ -527,6 +579,7 @@ function init() {
     var session = res && res.data && res.data.session ? res.data.session : null;
     if (session) {
       currentUser = session.user;
+      sessionToken = session.access_token;
       document.getElementById('user-email').textContent = currentUser.email;
       sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
         var plan=(pr.data&&pr.data.plan)||'free';
@@ -545,8 +598,9 @@ function init() {
 function loadConditions() {
   sb.from('conditions').select('*').eq('user_id', currentUser.id)
     .then(function(res) {
-      userConditions = (res.data || []).map(function(d) { return {name:d.name, rating:d.rating}; });
+      userConditions = (res.data || []).map(function(d) { return {name:d.name, rating:d.rating, decision:d.decision}; });
       renderCurrentConditions();
+      showCFRSection();
     })
     .catch(function() {
       userConditions = [];
@@ -663,6 +717,97 @@ function buildCard(gap, type, delay) {
   const presumptiveTag = gap.note ? ` <span style="font-size:11px;color:var(--amber);font-family:var(--ff-mono);font-weight:500;margin-left:4px">${gap.note}</span>` : '';
   return `<div class="gap-card animate-in" style="animation-delay:${delay}s"><div class="gap-card-top"><div class="gap-name">${gap.condition}${presumptiveTag}${sourceNote}</div><div class="gap-meta">${meta?`<span class="gap-rating">${meta.range}</span>`:''}<span class="confidence-badge ${gap.confidence}">${gap.confidence}</span></div></div><div class="gap-reason">${gap.reason}</div><div class="gap-evidence"><strong>Evidence needed</strong>${gap.evidence}</div>${bottomHtml}</div>`;
 }
+
+// ── AI CFR ANALYSIS ──
+var sessionToken='';
+function cfrCacheKey(){return 'ur_gap_analysis_'+currentUser.id;}
+
+function showCFRSection(){
+  if(!currentUser||!userConditions.length)return;
+  var sec=document.getElementById('cfr-section');
+  sec.style.display='block';
+  // Check cache
+  try{
+    var cached=JSON.parse(localStorage.getItem(cfrCacheKey()));
+    if(cached&&cached.results&&cached.timestamp){
+      renderCFRResults(cached.results);
+      var ago=Math.floor((Date.now()-cached.timestamp)/(1000*60*60*24));
+      document.getElementById('cfr-last-run').textContent=ago===0?'Analyzed today':'Analyzed '+ago+' day'+(ago!==1?'s':'')+' ago';
+      document.getElementById('cfr-actions').style.display='block';
+      document.getElementById('cfr-run-btn').innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Re-run AI analysis';
+      return;
+    }
+  }catch(e){}
+  document.getElementById('cfr-actions').style.display='block';
+  document.getElementById('cfr-results').innerHTML='<div style="font-size:14px;color:var(--ink-3);text-align:center;padding:16px">Click the button below to analyze your conditions against 38 CFR Part 4 criteria.</div>';
+}
+
+async function runCFRAnalysis(){
+  var btn=document.getElementById('cfr-run-btn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div> Analyzing...';
+  document.getElementById('cfr-loading').style.display='block';
+  document.getElementById('cfr-results').innerHTML='';
+  document.getElementById('cfr-disclaimer').style.display='none';
+  document.getElementById('cfr-summary').style.display='none';
+  document.getElementById('cfr-claim-link').style.display='none';
+
+  var payload={conditions:userConditions.filter(function(c){return c.name&&parseInt(c.rating)>=0;}).map(function(c){return{name:c.name,rating:parseInt(c.rating)||0,decision:c.decision||'service connected'};})};
+
+  try{
+    var res=await fetch('/api/analyze-gaps',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify(payload)
+    });
+    var data=await res.json();
+    if(!data.success)throw new Error(data.error||'Analysis failed');
+    localStorage.setItem(cfrCacheKey(),JSON.stringify({results:data.analysis,timestamp:Date.now()}));
+    document.getElementById('cfr-last-run').textContent='Analyzed today';
+    renderCFRResults(data.analysis);
+  }catch(err){
+    document.getElementById('cfr-results').innerHTML='<div style="color:var(--red);font-size:14px;text-align:center;padding:20px">'+esc(err.message)+'</div>';
+  }
+  document.getElementById('cfr-loading').style.display='none';
+  btn.disabled=false;
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Re-run AI analysis';
+}
+
+function renderCFRResults(results){
+  document.getElementById('cfr-disclaimer').style.display='block';
+  var el=document.getElementById('cfr-results');
+  var html='';
+  var underpaidCount=0;
+  results.forEach(function(r){
+    if(r.gap_assessment==='underpaid')underpaidCount++;
+    html+='<div class="cfr-card"><div class="cfr-card-top"><div><div class="cfr-cond-name">'+esc(r.condition_name)+'</div><div class="cfr-cond-rating">Currently rated '+r.current_rating+'%</div></div><span class="cfr-badge '+r.gap_assessment+'">'+esc(r.gap_assessment==='underpaid'?'Possibly underpaid':r.gap_assessment==='accurate'?'Appears accurate':'Needs more info')+'</span></div>';
+    html+='<div class="cfr-analysis">'+esc(r.cfr_analysis)+'</div>';
+    if(r.gap_assessment==='underpaid'&&r.recommended_rating!=null){
+      html+='<div class="cfr-rec"><strong>Recommended: '+r.recommended_rating+'%</strong>'+(r.why_higher?' — '+esc(r.why_higher):'')+'</div>';
+    }
+    if(r.evidence_needed&&r.evidence_needed.length){
+      html+='<div style="margin-bottom:8px"><div style="font-size:11px;font-family:var(--ff-mono);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Evidence needed</div><ul class="cfr-evidence-list">';
+      r.evidence_needed.forEach(function(e){html+='<li>'+esc(e)+'</li>';});
+      html+='</ul></div>';
+    }
+    if(r.secondary_conditions&&r.secondary_conditions.length){
+      html+='<div style="font-size:11px;font-family:var(--ff-mono);color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Related secondary conditions</div><div class="cfr-secondary-chips">';
+      r.secondary_conditions.forEach(function(s){html+='<span class="cfr-chip">'+esc(s)+'</span>';});
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  // Summary bar
+  if(results.length>0){
+    document.getElementById('cfr-summary').style.display='block';
+    document.getElementById('cfr-summary').innerHTML='<div class="cfr-summary-bar"><div class="cfr-summary-stat"><div class="cfr-summary-num">'+results.length+'</div><div class="cfr-summary-label">Analyzed</div></div><div class="cfr-summary-stat"><div class="cfr-summary-num" style="color:var(--amber)">'+underpaidCount+'</div><div class="cfr-summary-label">Possibly underpaid</div></div></div>';
+    if(underpaidCount>0)document.getElementById('cfr-claim-link').style.display='block';
+  }
+  document.getElementById('cfr-actions').style.display='block';
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 init();
 </script>
