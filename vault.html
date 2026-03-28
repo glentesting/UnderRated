@@ -76,6 +76,18 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.next-steps-strip{margin-top:40px;border-top:2px solid rgba(0,0,0,0.12);background:var(--bg-2);padding:36px 32px 44px;border-radius:0 0 16px 16px}
+.ns-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px}
+.ns-sub{font-size:14px;color:var(--ink-3);margin-bottom:20px}
+.ns-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ns-block{background:var(--surface);border-radius:16px;padding:22px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.05),0 4px 14px rgba(0,0,0,0.05)}
+.ns-icon{font-size:22px;margin-bottom:8px}
+.ns-block-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.ns-block-desc{font-size:12px;color:var(--ink-3);line-height:1.55;margin-bottom:12px}
+.ns-btn{display:inline-block;font-family:var(--ff-mono);font-size:11px;color:var(--green);font-weight:500;letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
+.ns-btn:hover{text-decoration:underline}
+@media(max-width:780px){.ns-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.ns-grid{grid-template-columns:1fr}}
 .upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
 .loading-note{margin-top:14px;font-size:13px;color:var(--ink-3);font-family:var(--ff-mono);text-align:center;display:none}
 .alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
@@ -88,6 +100,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .reupload-link:hover{background:var(--green-bg)}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px}
+.stat-card.green-tint{background:rgba(14,138,99,0.07);border-color:rgba(14,138,99,0.2)}
 .stat-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
 .stat-number{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
 .stat-number.green{color:var(--green)}
@@ -99,6 +112,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .card-sub{font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:16px}
 .cond-list{display:flex;flex-direction:column;gap:8px}
 .cond-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px}
+.cond-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cond-dot.green{background:var(--green)}.cond-dot.amber{background:var(--amber)}.cond-dot.red{background:var(--red)}.cond-dot.gray{background:var(--ink-4)}
 .cond-name{flex:1;font-size:13px;color:var(--ink);font-weight:500;line-height:1.35}
 .cond-meta{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4)}
 .cond-rating{font-family:var(--ff-mono);font-size:12px;font-weight:500;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:2px 10px;min-width:36px;text-align:center}
@@ -220,8 +235,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
     <div class="layout">
       <div>
         <div class="card">
-          <div class="card-title">Extracted conditions</div>
-          <div class="card-sub">From your rating decision document.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div>
+              <div class="card-title">Extracted conditions</div>
+              <div id="cond-count" style="font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)"></div>
+            </div>
+          </div>
           <div class="cond-list" id="cond-list"></div>
         </div>
         <div class="card">
@@ -251,6 +270,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
           <p style="font-size:12px;color:var(--ink-4);margin-top:10px;font-family:var(--ff-mono)">Veteran alone, no dependents.</p>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="next-steps-strip" id="next-steps" style="display:none">
+    <div class="ns-title">Next steps</div>
+    <div class="ns-sub">Now that your conditions are loaded, here's what to do next.</div>
+    <div class="ns-grid">
+      <div class="ns-block"><div class="ns-icon">&#128269;</div><div class="ns-block-title">Run gap identifier</div><div class="ns-block-desc">Find additional unclaimed conditions based on your MOS and service era.</div><a href="gap.html" class="ns-btn">Run analysis &rarr;</a></div>
+      <div class="ns-block"><div class="ns-icon">&#128203;</div><div class="ns-block-title">Build your claim</div><div class="ns-block-desc">Use your conditions to build a complete VA claim package.</div><a href="claim-builder.html" class="ns-btn">Build claim &rarr;</a></div>
+      <div class="ns-block"><div class="ns-icon">&#9993;</div><div class="ns-block-title">Generate a nexus letter</div><div class="ns-block-desc">AI-drafted letter connecting a secondary condition to a primary one.</div><a href="nexus-letter.html" class="ns-btn">Draft letter &rarr;</a></div>
+      <div class="ns-block"><div class="ns-icon">&#129309;</div><div class="ns-block-title">Connect with a VSO</div><div class="ns-block-desc">DAV, VFW, and American Legion reps are free and accredited.</div><a href="https://www.va.gov/vso/" class="ns-btn" target="_blank">Find a VSO &rarr;</a></div>
     </div>
   </div>
 </div>
@@ -426,7 +455,7 @@ function renderDashboard(data){
     var officialStored=localStorage.getItem('ur_combined_rating_'+currentUser.id);
     var displayRating=officialStored!=null?parseInt(officialStored):official;
     var ratingSubText=officialStored!=null?'As stated in your VA rating decision':'Exact '+exact.toFixed(1)+'% \u2192 rounded to '+official+'%';
-    document.getElementById('stat-row').innerHTML='<div class="stat-card"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+displayRating+'%</div><div class="stat-sub">'+ratingSubText+'</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[displayRating]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
+    document.getElementById('stat-row').innerHTML='<div class="stat-card green-tint"><div class="stat-label">Combined VA rating</div><div class="stat-number green">'+displayRating+'%</div><div class="stat-sub">'+ratingSubText+'</div></div><div class="stat-card"><div class="stat-label">Service connected</div><div class="stat-number">'+dc+'</div><div class="stat-sub">of '+data.length+' total conditions</div></div><div class="stat-card green-tint"><div class="stat-label">Monthly comp (est.)</div><div class="stat-number green">$'+(COMP[displayRating]||0).toLocaleString('en-US',{minimumFractionDigits:0})+'</div><div class="stat-sub">Veteran alone, no dependents</div></div>';
     document.getElementById('cond-list').innerHTML=data.map(function(x){
       var ratingHtml;
       var cls=dpClass(x.decision);
@@ -445,7 +474,8 @@ function renderDashboard(data){
       if(cls==='def') noteHtml='<div class="cond-note def-note">&#9432; Deferred: VA still deciding &mdash; follow up or add evidence</div>';
       if(cls==='den') noteHtml='<div class="cond-note den-note">&#9889; Denied: File a supplemental claim within 1 year with new evidence</div>';
       var decCls=cls==='sc'?'sc':cls==='den'?'nsc':'deferred';
-      return'<div class="cond-row '+(noteHtml?'has-note':'')+'"><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<span class="cond-decision '+decCls+'">'+dpLabel(x.decision)+'</span>'+ratingHtml+'</div>'+(noteHtml?'<div>'+noteHtml+'</div>':'');
+      var dotClass = x.decision && x.decision.toLowerCase().indexOf('service connected')!==-1 && x.decision.toLowerCase().indexOf('not')===-1 ? 'green' : x.decision && x.decision.toLowerCase().indexOf('deferred')!==-1 ? 'amber' : x.decision && (x.decision.toLowerCase().indexOf('denied')!==-1 || x.decision.toLowerCase().indexOf('not service')!==-1) ? 'red' : 'gray';
+      return'<div class="cond-row '+(noteHtml?'has-note':'')+'"><div class="cond-dot '+dotClass+'"></div><div class="cond-name">'+(x.name||'Unknown')+'</div>'+(x.diagnostic_code?'<div class="cond-meta">DC '+x.diagnostic_code+'</div>':'')+'<span class="cond-decision '+decCls+'">'+dpLabel(x.decision)+'</span>'+ratingHtml+'</div>'+(noteHtml?'<div>'+noteHtml+'</div>':'');
     }).join('');
     document.getElementById('math-steps').innerHTML=steps.map(function(s){return'<div class="math-row"><span class="math-label">'+s.name+'</span><span class="math-formula">'+s.rb+'% x '+s.rating+'%</span><span class="math-value">−'+s.taken+'%</span></div>';}).join('')+'<div class="math-row total"><span class="math-label">Combined (exact)</span><span class="math-formula">→ rounds to '+official+'%</span><span class="math-value">'+exact.toFixed(1)+'%</span></div>';
     document.getElementById('tier-fill').style.width=Math.min(displayRating,100)+'%';
@@ -462,6 +492,9 @@ function renderDashboard(data){
     if(displayRating<100){var nx2=displayRating+10;var ex2=Math.round((COMP[nx2]||0)-(COMP[displayRating]||0));si.push({icon:'&#128200;',title:'Getting to '+nx2+'% adds $'+ex2+'/month',desc:'If your conditions have worsened, request a new C&P exam to capture current severity.',tag:'rating increase',amber:false});}
     si.push({icon:'&#129309;',title:'Connect with a VSO',desc:'DAV, VFW, and American Legion all have accredited reps who advocate at no cost.',tag:'free resource',amber:false});
     document.getElementById('step-list').innerHTML=si.map(function(s){return'<div class="step-item"><div class="step-icon">'+s.icon+'</div><div class="step-content"><div class="step-title">'+s.title+'</div><div class="step-desc">'+s.desc+'</div><span class="step-tag'+(s.amber?' amber':'')+'">'+s.tag+'</span></div></div>';}).join('');
+    document.getElementById('next-steps').style.display='block';
+    var countEl = document.getElementById('cond-count');
+    if(countEl) countEl.textContent = data.length + ' condition' + (data.length !== 1 ? 's' : '') + ' extracted';
   }catch(err){console.error('render:',err);}
 }
 
