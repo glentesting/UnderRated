@@ -209,15 +209,28 @@ function toggleNav(){document.getElementById('nav-links').classList.toggle('open
 async function handleDeleteAccount(){
   if(!window.confirm('Are you absolutely sure? This will permanently delete your account, all your conditions, and all uploaded documents. This cannot be undone.'))return;
   if(!window.confirm('Last chance \u2014 delete everything permanently?'))return;
+  var deleteBtn=document.querySelector('[onclick="handleDeleteAccount()"]');
+  if(deleteBtn){deleteBtn.disabled=true;deleteBtn.textContent='Deleting...';}
   try{
     var session=await sb.auth.getSession();
     var token=session.data.session.access_token;
-    await fetch('/api/delete-account',{
+    var res=await fetch('/api/delete-account',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
       body:JSON.stringify({userId:currentUser.id})
     });
-  }catch(e){}
+    var data=await res.json();
+    if(!res.ok||!data.success){
+      var msg=data.error||'Account deletion failed. Please try again or email support@getunderrated.com.';
+      if(deleteBtn){deleteBtn.disabled=false;deleteBtn.textContent='Delete my account';}
+      alert(msg);
+      return;
+    }
+  }catch(e){
+    if(deleteBtn){deleteBtn.disabled=false;deleteBtn.textContent='Delete my account';}
+    alert('Account deletion failed \u2014 please check your connection and try again.');
+    return;
+  }
   Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});
   await sb.auth.signOut();
   window.location.href='index.html';

@@ -40,8 +40,8 @@ export default async function handler(req) {
       });
     }
 
-    // Delete conditions
-    await fetch(`${SUPABASE_URL}/rest/v1/conditions?user_id=eq.${userId}`, {
+    // 1. Delete conditions
+    const condRes = await fetch(`${SUPABASE_URL}/rest/v1/conditions?user_id=eq.${userId}`, {
       method: 'DELETE',
       headers: {
         'apikey': SUPABASE_KEY,
@@ -49,9 +49,12 @@ export default async function handler(req) {
         'Prefer': 'return=minimal'
       }
     });
+    if (!condRes.ok && condRes.status !== 404) {
+      console.error('Failed to delete conditions:', condRes.status);
+    }
 
-    // Delete profile
-    await fetch(`${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${userId}`, {
+    // 2. Delete profile
+    const profRes = await fetch(`${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${userId}`, {
       method: 'DELETE',
       headers: {
         'apikey': SUPABASE_KEY,
@@ -59,15 +62,25 @@ export default async function handler(req) {
         'Prefer': 'return=minimal'
       }
     });
+    if (!profRes.ok && profRes.status !== 404) {
+      console.error('Failed to delete profile:', profRes.status);
+    }
 
-    // Delete auth user (requires service role)
-    await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${userId}`, {
+    // 3. Delete auth user (requires service role — this is the critical step)
+    const authRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${userId}`, {
       method: 'DELETE',
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`
       }
     });
+    if (!authRes.ok) {
+      const authErr = await authRes.text();
+      console.error('Failed to delete auth user:', authRes.status, authErr);
+      return new Response(JSON.stringify({ error: 'Could not fully delete your account from authentication. Please email support@getunderrated.com for help.' }), {
+        status: 500, headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200, headers: { 'Content-Type': 'application/json' }
