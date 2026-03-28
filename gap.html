@@ -24,7 +24,8 @@
   .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
   .nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
   .nav-logo span{color:var(--green)}
-  .nav-links{display:flex;align-items:center;gap:24px}
+  .nav-links{display:flex;align-items:center;gap:18px}
+  .nav-links .mobile-signout{display:none}
   .nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
   .nav-links a:hover,.nav-links a.active{color:var(--ink)}
   .nav-links a.active{font-weight:500}
@@ -105,16 +106,19 @@
   .animate-in{animation:slideIn .3s ease both}
   @media(max-width:780px){
     .layout{grid-template-columns:1fr}
+    nav{padding:0 16px}
     .hamburger{display:flex}
     .user-pill{display:none}
+    .signout-btn{display:none}
     .summary-banner{gap:10px}
     .sb-divider{display:none}
     .info-grid{grid-template-columns:1fr!important}
     .page-title{font-size:32px}
-    .nav-links{display:none;position:absolute;top:64px;left:-28px;right:-28px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+    .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
     .nav-links.open{display:flex}
     .nav-links a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
     .nav-links a:last-child{border-bottom:none}
+    .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
   }
 </style>
 </head>
@@ -129,6 +133,7 @@
       <a href="vault.html">Vault</a>
       <a href="state-benefits.html">State benefits</a>
       <a href="profile.html">Profile</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
     </div>
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
