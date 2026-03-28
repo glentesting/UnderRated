@@ -10,7 +10,7 @@
 <style>
 :root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
 body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
 body.paywalled{overflow:hidden}
 .paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
@@ -55,7 +55,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
 .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
 .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
-.page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
+.page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
 .controls{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
 .select-wrap{position:relative}
 .select-wrap select{appearance:none;background:var(--surface);border:1.5px solid var(--border-2);border-radius:10px;padding:10px 36px 10px 14px;font-family:var(--ff-body);font-size:15px;color:var(--ink);cursor:pointer;min-width:220px}
