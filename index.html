@@ -34,6 +34,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .nav-links-static a:hover{color:var(--ink)}
 .nav-divider{width:1px;height:16px;background:var(--border-2);display:inline-block}
 .nav-cta-static{display:flex;align-items:center;gap:10px}
+.nav-hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.nav-hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+.nav-mobile-menu{display:none;position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;z-index:99}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-menu a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2);text-decoration:none}
+.nav-mobile-menu a:last-child{border-bottom:none}
+.nav-mobile-menu a.mobile-cta{color:var(--green);font-weight:500}
 .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 /* HERO */
@@ -162,6 +169,9 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   .trust-divider{display:none}
   .nav-marketing{display:none}
   .nav-links-static{display:none}
+  .nav-cta-static{display:none}
+  .nav-hamburger{display:flex}
+  .nav-inner{padding:0 16px;position:relative}
   .validate-h{font-size:40px}
   .section-title{font-size:38px}
   .final-cta h2{font-size:44px}
@@ -223,6 +233,18 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
       <a href="dashboard.html" class="btn-ghost" style="font-size:13px;padding:8px 14px">My dashboard</a>
       <a href="login.html" class="btn-ghost" id="nav-login">Log in</a>
       <a href="signup.html" class="btn-primary" id="nav-signup">Sign up free</a>
+    </div>
+    <button class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')">&#9776; Menu</button>
+    <div class="nav-mobile-menu" id="nav-mobile">
+      <a href="#how-it-works" onclick="document.getElementById('nav-mobile').classList.remove('open')">How it works</a>
+      <a href="#features" onclick="document.getElementById('nav-mobile').classList.remove('open')">Features</a>
+      <a href="#pricing" onclick="document.getElementById('nav-mobile').classList.remove('open')">Pricing</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <a href="vault.html">Vault</a>
+      <a href="dashboard.html">My dashboard</a>
+      <a href="login.html">Log in</a>
+      <a href="signup.html" class="mobile-cta">Sign up free</a>
     </div>
   </div>
 </nav>
