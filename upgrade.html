@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upgrade to Pro &mdash; UNDERRATED</title>
+<title>Upgrade to EARNED &mdash; UNDERRATED</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -54,10 +54,11 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 <div class="page">
   <a href="dashboard.html" class="back">&larr; Back to dashboard</a>
   <div class="page-eyebrow">Upgrade</div>
-  <div class="page-title">Unlock Pro</div>
-  <p class="page-sub">Everything you need to maximize your VA rating &mdash; tools that would cost thousands at a claims agency.</p>
+  <div class="page-title">Become EARNED</div>
+  <p class="page-sub">Everything you need to find what you're owed &mdash; for less than what an attorney charges per hour.</p>
 
   <div class="price-card">
+    <div style="display:inline-block;background:var(--green);color:#fff;font-family:var(--ff-mono);font-size:13px;font-weight:700;padding:6px 16px;border-radius:8px;letter-spacing:.04em;margin-bottom:16px">EARNED</div>
     <div class="price-row">
       <div class="price-amount">$19</div>
       <div class="price-period">/month</div>
@@ -87,11 +88,11 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
       </li>
       <li class="feature-item">
         <div class="feature-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3L10 3" stroke="#0E8A63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="feature-text"><div class="feature-name">Everything we build next</div><div class="feature-desc">Pro members get access to every new tool and feature as we ship them.</div></div>
+        <div class="feature-text"><div class="feature-name">Everything we build next</div><div class="feature-desc">EARNED members get access to every new tool and feature as we ship them.</div></div>
       </li>
     </ul>
 
-    <button class="upgrade-btn" id="upgrade-btn" onclick="startCheckout()">Upgrade to Pro &mdash; $19/mo</button>
+    <button class="upgrade-btn" id="upgrade-btn" onclick="startCheckout()">Upgrade to EARNED &mdash; $19/mo</button>
     <div class="guarantee">30-day money-back guarantee</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)"><span>&#128274;</span><span>Secure checkout &middot; Bank-level encryption &middot; Cancel anytime</span></div>
     <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--ink-3)">Same infrastructure trusted by Nike and Airbnb. Your data is never sold.</div>
@@ -128,7 +129,7 @@ async function startCheckout(){
     window.location.href=data.url;
   }catch(err){
     btn.disabled=false;
-    btn.textContent='Upgrade to Pro \u2014 $19/mo';
+    btn.textContent='Upgrade to EARNED \u2014 $19/mo';
     alert(err.message);
   }
 }
