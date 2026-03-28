@@ -49,7 +49,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .nav-mobile-menu.open{display:flex}
 .nav-mobile-menu a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2);text-decoration:none}
 .nav-mobile-menu a:last-child{border-bottom:none}
-.nav-mobile-menu a.mobile-cta{color:var(--green);font-weight:500}
+.nav-mobile-menu a.mobile-cta{color:#fff;font-weight:500;background:var(--green);border-radius:8px;text-align:center;padding:12px;margin-top:4px;border-bottom:none}
+.nav-mobile-menu .mobile-section-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+.nav-mobile-menu .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+.nav-mobile-menu .mobile-lock{font-size:11px;opacity:.7}
 .signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 /* HERO */
@@ -255,17 +258,21 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
     </div>
     <button class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')">&#9776; Menu</button>
     <div class="nav-mobile-menu" id="nav-mobile">
+      <div class="mobile-section-label">PRODUCT</div>
       <a href="#how-it-works" onclick="document.getElementById('nav-mobile').classList.remove('open')">How it works</a>
       <a href="#features" onclick="document.getElementById('nav-mobile').classList.remove('open')">Features</a>
       <a href="#pricing" onclick="document.getElementById('nav-mobile').classList.remove('open')">Pricing</a>
-      <a href="calculator.html">Calculator</a>
+      <div class="mobile-divider"></div>
+      <div class="mobile-section-label">TOOLS</div>
+      <a href="calculator.html">Rating calculator</a>
       <a href="gap.html">Gap identifier</a>
-      <a href="vault.html">Vault</a>
-      <a href="claim-builder.html">Claim builder</a>
-      <a href="state-benefits.html">State benefits</a>
-      <a href="nexus-letter.html">Nexus letter</a>
-      <a href="appeal-assistant.html">Appeal assistant</a>
-      <a href="profile.html">Profile</a>
+      <a href="vault.html">Vault <span class="mobile-lock">&#128274;</span></a>
+      <a href="claim-builder.html">Claim builder <span class="mobile-lock">&#128274;</span></a>
+      <a href="state-benefits.html">State benefits <span class="mobile-lock">&#128274;</span></a>
+      <a href="nexus-letter.html">Nexus letter <span class="mobile-lock">&#128274;</span></a>
+      <a href="appeal-assistant.html">Appeal assistant <span class="mobile-lock">&#128274;</span></a>
+      <div class="mobile-divider"></div>
+      <div class="mobile-section-label">ACCOUNT</div>
       <a href="dashboard.html">My dashboard</a>
       <a href="login.html">Log in</a>
       <a href="signup.html" class="mobile-cta">Sign up free</a>
