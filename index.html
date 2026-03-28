@@ -89,7 +89,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .social-proof-inner{max-width:1080px;margin:0 auto;text-align:center}
 .social-proof-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
 .social-proof-quotes{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-.sp-quote{max-width:300px;text-align:left;padding:16px 18px;background:var(--bg);border:1px solid var(--border);border-radius:12px}
+.sp-quote{max-width:300px;text-align:left;padding:16px 18px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:12px}
 .sp-quote-text{font-size:14px;color:var(--ink-2);line-height:1.6;font-style:italic;margin-bottom:8px}
 .sp-quote-author{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
 .sp-orgs{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:22px 0}
@@ -329,7 +329,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
 <!-- SOCIAL PROOF -->
 <div class="social-proof">
   <div class="social-proof-inner">
-    <div class="social-proof-label">What veterans are saying</div>
+    <div class="social-proof-label" style="font-size:13px">Real vets. Real results.</div>
     <div class="social-proof-quotes">
       <div class="sp-quote">
         <div class="sp-quote-text">&ldquo;I had no idea I was leaving $800/month on the table. UNDERRATED found 3 conditions I never thought to claim.&rdquo;</div>
@@ -436,6 +436,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
     <div class="section-header">
       <div class="section-eyebrow"><span class="tag">Who it's for</span></div>
       <div class="section-title">Sound familiar?</div>
+      <div style="font-family:var(--ff-display);font-size:26px;font-weight:800;color:var(--green);letter-spacing:-.3px;margin-top:4px">We built this for you.</div>
     </div>
     <div class="who-grid">
       <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You think you're underrated</h4><p>Your conditions are worse than your rating suggests, but the VA's math is a black box. UNDERRATED opens it up.</p></div></div>
@@ -468,7 +469,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
         <a href="signup.html" class="btn-ghost" style="width:100%">Get started free</a>
       </div>
       <div class="price-card featured">
-        <div class="price-tier">Full access</div>
+        <div class="price-tier">Earned</div>
         <div class="price-amount">$19 <span>/ month</span></div>
         <p class="price-desc">Everything you need to file, appeal, and stack benefits &mdash; from first claim to final decision.</p>
         <ul class="price-features">
@@ -481,6 +482,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
           <li><div class="check-icon"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5L8.5 2"/></svg></div>Full document vault + C&amp;P storage</li>
         </ul>
         <a href="signup.html" class="btn-primary" style="width:100%">Sign up free &mdash; upgrade anytime</a>
+        <div style="font-size:12px;color:var(--ink-3);text-align:center;margin-top:10px;font-family:var(--ff-mono)">vs. 20&ndash;33% attorney cut on back pay</div>
       </div>
     </div>
   </div>
@@ -570,7 +572,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   <div class="container" style="text-align:center">
     <h2>The VA underpaid you.<br>Don't let a lawyer take<br><em>another cut</em> on top of it.</h2>
     <p class="sub">You earned these benefits. UNDERRATED helps you get them &mdash; free to start, no attorneys, no percentage of your back pay.</p>
-    <a href="signup.html" class="btn-final" id="final-cta">Sign up free &mdash; it takes 2 minutes</a>
+    <a href="signup.html" class="btn-final" id="final-cta">Check my rating for free</a>
     <p class="final-note">No credit card required. No attorney fees. Ever.</p>
   </div>
 </div>
@@ -596,9 +598,9 @@ sb.auth.getSession().then(function(res) {
   if (session) {
     // Logged in - update CTAs
     var heroCta = document.getElementById('hero-cta');
-    if (heroCta) { heroCta.textContent = 'Go to my dashboard'; heroCta.href = 'dashboard.html'; }
+    if (heroCta) { heroCta.textContent = 'Check my rating'; heroCta.href = 'dashboard.html'; }
     var finalCta = document.getElementById('final-cta');
-    if (finalCta) { finalCta.textContent = 'Go to my dashboard'; finalCta.href = 'dashboard.html'; }
+    if (finalCta) { finalCta.textContent = 'Check my rating for free'; finalCta.href = 'dashboard.html'; }
     // Hide log in / sign up, show sign out
     var login = document.getElementById('nav-login');
     var signup = document.getElementById('nav-signup');
