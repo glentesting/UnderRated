@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ask VERA &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--red:#C43030;--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+
+nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100;flex-shrink:0}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:var(--ff-body);padding:4px 0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}
+.nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}
+.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2);transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}
+.nav-dropdown-menu a.active{color:var(--green);font-weight:500;background:var(--green-bg)}
+.nav-links .mobile-signout{display:none}
+.nav-links .mobile-section-label{display:none}
+.nav-links .mobile-divider{display:none}
+.nav-right{display:flex;align-items:center;gap:14px}
+.user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+/* CHAT LAYOUT */
+.chat-wrap{flex:1;display:flex;flex-direction:column;max-width:760px;width:100%;margin:0 auto;padding:0 20px;overflow:hidden}
+.chat-header{padding:24px 0 16px;flex-shrink:0}
+.chat-eyebrow{font-family:var(--ff-mono);font-size:10px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:6px}
+.chat-title{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:4px}
+.chat-sub{font-size:14px;color:var(--ink-3)}
+.chat-clear{font-size:12px;color:var(--ink-4);cursor:pointer;background:none;border:none;font-family:var(--ff-mono);float:right;margin-top:-28px}
+.chat-clear:hover{color:var(--ink-3)}
+
+/* MESSAGES */
+.chat-messages{flex:1;overflow-y:auto;padding:8px 0 16px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+.msg{max-width:85%;animation:msgIn .25s ease both}
+.msg.user{align-self:flex-end}
+.msg.assistant{align-self:flex-start}
+.msg-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);margin-bottom:4px}
+.msg.user .msg-label{text-align:right;color:var(--green)}
+.msg-bubble{padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.65;word-wrap:break-word}
+.msg.user .msg-bubble{background:var(--green);color:#fff;border-bottom-right-radius:4px}
+.msg.assistant .msg-bubble{background:var(--surface);border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.04);border-bottom-left-radius:4px;color:var(--ink-2)}
+.msg.assistant .msg-bubble p{margin-bottom:8px}
+.msg.assistant .msg-bubble p:last-child{margin-bottom:0}
+.msg.assistant .msg-bubble strong{color:var(--ink);font-weight:500}
+.msg.assistant .msg-bubble ul,.msg.assistant .msg-bubble ol{padding-left:18px;margin-bottom:8px}
+.msg.assistant .msg-bubble li{margin-bottom:4px}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* TYPING INDICATOR */
+.typing{align-self:flex-start;display:none}
+.typing .msg-bubble{display:flex;gap:4px;padding:14px 18px}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-4);animation:typePulse 1.2s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typePulse{0%,60%,100%{opacity:.3;transform:scale(.8)}30%{opacity:1;transform:scale(1)}}
+
+/* STARTERS */
+.starters{display:flex;flex-wrap:wrap;gap:8px;padding:16px 0;justify-content:center}
+.starter-chip{font-size:13px;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:8px 16px;cursor:pointer;transition:all .15s;font-family:var(--ff-body);line-height:1.3}
+.starter-chip:hover{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* INPUT BAR */
+.chat-input-bar{flex-shrink:0;padding:12px 0 20px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end}
+.chat-input{flex:1;padding:12px 16px;font-family:var(--ff-body);font-size:15px;color:var(--ink);background:var(--surface);border:1.5px solid var(--border-2);border-radius:14px;outline:none;resize:none;max-height:120px;min-height:46px;line-height:1.4;transition:border-color .15s}
+.chat-input:focus{border-color:var(--green)}
+.chat-input::placeholder{color:var(--ink-4)}
+.send-btn{width:46px;height:46px;border-radius:14px;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.send-btn:hover{background:var(--green-l)}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+.send-btn svg{width:20px;height:20px}
+
+@media(max-width:780px){
+  nav{padding:0 16px}
+  .hamburger{display:flex}
+  .user-email{display:none}
+  .signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}
+  .nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{opacity:1!important;visibility:visible!important;transform:none!important;transition:none;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{margin:0;border-radius:0;padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}
+  .nav-dropdown-menu a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .chat-wrap{padding:0 12px}
+  .chat-header{padding:16px 0 12px}
+  .chat-title{font-size:28px}
+  .chat-clear{margin-top:-22px}
+  .msg{max-width:90%}
+  .chat-input-bar{padding:8px 0 12px}
+  .starters{gap:6px}
+  .starter-chip{font-size:12px;padding:7px 12px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
+          <a href="vera.html" class="active">Ask VERA</a>
+        </div>
+      </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-email" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="chat-wrap">
+  <div class="chat-header">
+    <div class="chat-eyebrow">AI assistant</div>
+    <div class="chat-title">Ask VERA</div>
+    <div class="chat-sub">Veterans Entitlement &amp; Ratings Advisor &mdash; ask anything about your VA benefits</div>
+    <button class="chat-clear" id="clear-btn" onclick="clearChat()" style="display:none">Clear conversation</button>
+  </div>
+
+  <div class="chat-messages" id="chat-messages">
+    <div class="starters" id="starters">
+      <div class="starter-chip" onclick="sendStarter(this)">How does VA combined rating math work?</div>
+      <div class="starter-chip" onclick="sendStarter(this)">What conditions qualify as presumptive?</div>
+      <div class="starter-chip" onclick="sendStarter(this)">What's the difference between HLR and Supplemental Claim?</div>
+      <div class="starter-chip" onclick="sendStarter(this)">How do I claim a secondary condition?</div>
+    </div>
+    <div class="msg assistant typing" id="typing">
+      <div class="msg-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+    </div>
+  </div>
+
+  <div class="chat-input-bar">
+    <textarea class="chat-input" id="chat-input" placeholder="Ask VERA about your VA benefits..." rows="1" onkeydown="handleKey(event)"></textarea>
+    <button class="send-btn" id="send-btn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+var currentUser=null;
+var sessionToken='';
+var messages=[];
+var sending=false;
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+
+// Auto-resize textarea
+var input=document.getElementById('chat-input');
+input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+
+function handleKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+}
+
+function sendStarter(el){
+  document.getElementById('starters').style.display='none';
+  var text=el.textContent;
+  input.value=text;
+  sendMessage();
+}
+
+function addMsg(role,content){
+  var container=document.getElementById('chat-messages');
+  var typing=document.getElementById('typing');
+  var div=document.createElement('div');
+  div.className='msg '+role;
+  var label=role==='user'?'You':'VERA';
+  var html='<div class="msg-label">'+label+'</div><div class="msg-bubble">'+formatContent(content,role)+'</div>';
+  div.innerHTML=html;
+  container.insertBefore(div,typing);
+  container.scrollTop=container.scrollHeight;
+}
+
+function formatContent(text,role){
+  if(role==='user')return esc(text);
+  // Basic markdown-like formatting for VERA responses
+  var html=esc(text);
+  // Bold
+  html=html.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // Line breaks into paragraphs
+  html=html.split('\n\n').map(function(p){return '<p>'+p+'</p>';}).join('');
+  html=html.replace(/\n/g,'<br>');
+  // Lists (basic)
+  html=html.replace(/<p>- /g,'<p>\u2022 ');
+  return html;
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+async function sendMessage(){
+  var text=input.value.trim();
+  if(!text||sending)return;
+
+  sending=true;
+  input.value='';
+  input.style.height='auto';
+  document.getElementById('send-btn').disabled=true;
+  document.getElementById('starters').style.display='none';
+  document.getElementById('clear-btn').style.display='block';
+
+  addMsg('user',text);
+  messages.push({role:'user',content:text});
+
+  // Show typing
+  document.getElementById('typing').style.display='block';
+  document.getElementById('chat-messages').scrollTop=document.getElementById('chat-messages').scrollHeight;
+
+  try{
+    var res=await fetch('/api/ask-vera',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify({messages:messages})
+    });
+    var data=await res.json();
+    document.getElementById('typing').style.display='none';
+
+    if(!data.success)throw new Error(data.error||'VERA could not respond right now.');
+
+    messages.push({role:'assistant',content:data.reply});
+    addMsg('assistant',data.reply);
+  }catch(err){
+    document.getElementById('typing').style.display='none';
+    addMsg('assistant','Sorry \u2014 '+(err.message||'something went wrong. Try again.'));
+  }
+
+  sending=false;
+  document.getElementById('send-btn').disabled=false;
+  input.focus();
+}
+
+function clearChat(){
+  messages=[];
+  var container=document.getElementById('chat-messages');
+  var msgs=container.querySelectorAll('.msg:not(.typing)');
+  msgs.forEach(function(m){m.remove();});
+  document.getElementById('starters').style.display='flex';
+  document.getElementById('clear-btn').style.display='none';
+}
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  sessionToken=session.access_token;
+  document.getElementById('user-email').textContent=currentUser.email;
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro')addNavLocks();
+  }).catch(function(){addNavLocks();});
+  input.focus();
+}).catch(function(){window.location.href='login.html';});
+</script>
+</body>
+</html>
