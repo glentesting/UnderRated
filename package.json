@@ -1,0 +1,24 @@
+{
+  "name": "underrated",
+  "version": "1.0.0",
+  "description": "VA benefits intelligence for veterans. UNDERRATED helps service members understand their VA disability rating, find unclaimed conditions, and build stronger claims — no runaround, no guesswork.",
+  "main": "vera-widget.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glentesting/UnderRated.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/glentesting/UnderRated/issues"
+  },
+  "homepage": "https://github.com/glentesting/UnderRated#readme",
+  "dependencies": {
+    "stripe": "^21.0.1"
+  }
+}

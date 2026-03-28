@@ -224,7 +224,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
   </div>
   <div class="upgrade-banner" id="upgrade-banner">
     <p>Unlock the Vault, Claim Builder, State Benefits, and more.</p>
-    <button class="upgrade-btn" onclick="alert('Stripe integration coming soon — email support@getunderrated.com to get early access.')">Upgrade to Pro</button>
+    <button class="upgrade-btn" onclick="window.location.href='upgrade.html'">Upgrade to Pro &mdash; $19/mo</button>
   </div>
 </div>
 
@@ -262,6 +262,17 @@ sb.auth.getSession().then(function(res){
   document.getElementById('user-email').textContent=email;
   document.getElementById('greeting-text').textContent='Welcome back, '+name;
   document.getElementById('greeting-sub').textContent='Logged in as '+email;
+
+  // Check for upgrade success
+  if(window.location.search.includes('upgraded=true')){
+    var banner=document.createElement('div');
+    banner.style.cssText='background:rgba(14,138,99,0.09);border:1.5px solid rgba(14,138,99,0.25);border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:15px;color:#0E8A63;font-weight:500;text-align:center;animation:fadeUp .35s ease both';
+    banner.textContent='\u2705 You\u2019re now Pro. All features unlocked.';
+    var page=document.querySelector('.page');
+    page.insertBefore(banner,page.firstChild);
+    setTimeout(function(){banner.style.transition='opacity .5s';banner.style.opacity='0';setTimeout(function(){banner.remove();},500);},5000);
+    history.replaceState(null,'','/dashboard.html');
+  }
 
   // Check plan — show upgrade banner and lock icons for free users
   sb.from('profiles').select('plan').eq('user_id',session.user.id).single().then(function(pr){
