@@ -217,13 +217,13 @@
 <div class="page">
   <div class="page-eyebrow">Step 1 of 3</div>
   <div class="page-title">Rating calculator</div>
-  <p class="page-sub">Search for your service-connected conditions. We'll show the real VA math.</p>
+  <p class="page-sub">Add your service-connected conditions. We'll show the real VA math.</p>
 
   <div class="layout">
     <div>
       <div class="card">
         <div class="card-title">Your service-connected conditions</div>
-        <div class="card-sub">Search by condition name — select yours and pick your current rating.</div>
+        <div class="card-sub">Select each condition and pick your current rating.</div>
         <div class="condition-list" id="condition-list"></div>
         <button class="add-btn" onclick="addCondition()">+ Add another condition</button>
         <div class="save-bar">
@@ -235,7 +235,7 @@
       <div class="card">
         <div class="card-title">How the VA math works</div>
         <div class="explainer">
-          <p>The VA doesn't add ratings together. It uses <strong>"whole person" math</strong> — your highest condition takes its percentage from 100%. Each next condition takes from what's <em>left</em>, not from 100%. That's why 50% + 30% = 65%, not 80%.</p>
+          <p>The VA doesn't add ratings. Your highest condition claims its share first &mdash; each next one takes from what's left.</p>
         </div>
         <div class="math-steps" id="math-steps">
           <div class="math-empty">Add conditions above to see the step-by-step math.</div>
@@ -493,7 +493,7 @@ function renderConditions() {
     const searchInput = document.createElement('input');
     searchInput.className = 'condition-search';
     searchInput.type = 'text';
-    searchInput.placeholder = 'Search conditions (e.g. tinnitus, back pain, PTSD)…';
+    searchInput.placeholder = 'Type a condition \u2014 e.g. tinnitus, PTSD, back pain...';
     searchInput.value = c.conditionName;
     searchInput.autocomplete = 'off';
 
