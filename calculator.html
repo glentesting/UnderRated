@@ -191,6 +191,7 @@
           <a href="claim-builder.html">Claim builder</a>
           <a href="state-benefits.html">State benefits</a>
           <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
           <a href="profile.html">Profile</a>
         </div>
       </div>
@@ -287,7 +288,7 @@ function toggleNav() {
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 
-function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
 
 // ── CONDITION DATABASE ──
 const CONDITIONS = [
