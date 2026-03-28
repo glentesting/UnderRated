@@ -92,8 +92,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .sp-quote{max-width:300px;text-align:left;padding:16px 18px;background:var(--bg);border:1px solid var(--border);border-radius:12px}
 .sp-quote-text{font-size:14px;color:var(--ink-2);line-height:1.6;font-style:italic;margin-bottom:8px}
 .sp-quote-author{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
-.sp-orgs{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
-.sp-org{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.sp-orgs{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:22px 0}
+.sp-org{font-family:var(--ff-display);font-size:16px;font-weight:800;color:var(--ink-4);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.sp-org:first-child{font-family:var(--ff-mono);font-size:11px;font-weight:400;letter-spacing:.04em}
 .sp-org-icon{font-size:16px;opacity:.6}
 .trust-strip{background:var(--ink);padding:28px}
 .trust-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
@@ -267,9 +268,8 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
       </div>
     </div>
     <div class="nav-cta-static">
-      <a href="dashboard.html" class="btn-ghost" style="font-size:13px;padding:8px 14px">My dashboard</a>
-      <a href="login.html" class="btn-ghost" id="nav-login">Log in</a>
-      <a href="signup.html" class="btn-primary" id="nav-signup">Sign up free</a>
+      <a href="login.html" style="font-size:13px;color:var(--ink-3);transition:color .15s" id="nav-login">Log in</a>
+      <a href="signup.html" class="btn-primary" id="nav-signup" style="font-size:14px;padding:10px 22px">Get started free</a>
     </div>
     <button class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')">&#9776; Menu</button>
     <div class="nav-mobile-menu" id="nav-mobile">
@@ -299,11 +299,11 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
 <section>
   <div class="hero">
     <div>
-      <div class="hero-eyebrow"><span class="tag">Free VA benefits tool</span></div>
-      <h1 class="hero-headline">The VA thinks<br>you're worth<br><em>less than<br>you are.</em></h1>
+      <div class="hero-eyebrow"><span style="display:inline-block;background:var(--green-bg);border:1px solid var(--green-border);padding:5px 14px;border-radius:20px;font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.08em;text-transform:uppercase">Free VA benefits tool</span></div>
+      <h1 class="hero-headline">The VA thinks<br>you're worth<br><span style="display:block;color:var(--green)">less than you are.</span></h1>
       <p class="hero-body">UNDERRATED finds the conditions you haven't claimed, explains what the VA math actually means, and builds your case &mdash; no runaround, no guesswork.</p>
       <div class="hero-actions">
-        <a href="signup.html" class="btn-primary" id="hero-cta">Sign up free</a>
+        <a href="signup.html" class="btn-primary" id="hero-cta">Check my rating &mdash; it's free</a>
         <a href="#how-it-works" class="btn-ghost">See how it works</a>
       </div>
       <p class="hero-note">No credit card. No attorney fees. Built for vets.</p>
