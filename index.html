@@ -209,6 +209,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
 }
 @media(max-width:560px){
   .features-grid{grid-template-columns:1fr}
+  .security-strip{flex-wrap:wrap!important}
   .hero-headline{font-size:44px}
   .hero{padding:40px 16px 36px}
   .section-title{font-size:30px}
@@ -553,11 +554,10 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
         <div style="font-size:12px;color:var(--ink-3);text-align:center;margin-top:10px;font-family:var(--ff-mono)">vs. 20&ndash;33% attorney cut on back pay</div>
       </div>
     </div>
-    <div style="max-width:720px;margin:24px auto 0;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;padding:16px 20px;background:var(--bg-2);border-radius:12px;border:1px solid var(--border)">
-      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3)"><span style="color:var(--green)">🔒</span><span>Bank-level encryption</span></div>
-      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3)"><span style="color:var(--green)">🛡️</span><span>Trusted by Nike &amp; Airbnb's infrastructure</span></div>
-      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3)"><span style="color:var(--green)">🚫</span><span>Your data is never sold. Ever.</span></div>
-      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3)"><span style="color:var(--green)">👤</span><span>Only you can access your records</span></div>
+    <div class="security-strip" style="max-width:720px;margin:24px auto 0;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:nowrap;padding:16px 20px;background:var(--bg-2);border-radius:12px;border:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3);white-space:nowrap"><span style="color:var(--green)">🔒</span><span>Bank-level encryption</span></div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3);white-space:nowrap"><span style="color:var(--green)">🛡️</span><span>Trusted by Nike &amp; Airbnb's infrastructure</span></div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3);white-space:nowrap"><span style="color:var(--green)">🚫</span><span>Your data is never sold. Ever.</span></div>
     </div>
   </div>
 </section>
