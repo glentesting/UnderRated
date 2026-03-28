@@ -52,7 +52,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 .hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
 .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
-.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px}
+.page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .3s ease both}
 .page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
 .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
 .page-sub{font-size:15px;color:var(--ink-3);margin-bottom:28px}
@@ -75,6 +75,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step-spin{width:14px;height:14px;border:2px solid rgba(14,138,99,0.2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
 .step-check{width:14px;height:14px;flex-shrink:0;color:var(--green)}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .upload-error{background:var(--red-bg);border:1px solid var(--red-border);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-top:16px;display:none;text-align:left;line-height:1.5}
 .loading-note{margin-top:14px;font-size:13px;color:var(--ink-3);font-family:var(--ff-mono);text-align:center;display:none}
 .alt-action{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}

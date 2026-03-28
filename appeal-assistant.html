@@ -438,10 +438,12 @@ async function handlePDF(file){
 
 // ── ANALYZE ──
 async function analyzedenial(){
+  var analyzeBtn=document.getElementById('next-0');
+  analyzeBtn.disabled=true;
   var denialText=document.getElementById('denial-text').value.trim();
   var condName=document.getElementById('manual-cond').value.trim()||(selectedCondIdx>=0?allConditions[selectedCondIdx].name:'');
-  if(!denialText){alert('Please paste or enter the denial text.');return;}
-  if(!condName){alert('Please select or enter the denied condition.');return;}
+  if(!denialText){alert('Please paste or enter the denial text.');analyzeBtn.disabled=false;return;}
+  if(!condName){alert('Please select or enter the denied condition.');analyzeBtn.disabled=false;return;}
 
   goStep(1);
   document.getElementById('analysis-loading').style.display='block';
@@ -467,6 +469,7 @@ async function analyzedenial(){
     saveDraft();
   }catch(err){
     document.getElementById('analysis-loading').innerHTML='<div class="error-msg">'+esc(err.message)+'</div><button class="btn-next" style="margin-top:14px" onclick="analyzedenial()">Try again</button>';
+    analyzeBtn.disabled=false;
   }
 }
 
@@ -503,6 +506,8 @@ function renderAnalysis(){
 
 // ── BUILD RESPONSE ──
 async function buildResponse(){
+  var respBtns=document.querySelectorAll('[onclick*="buildResponse"]');
+  respBtns.forEach(function(b){b.disabled=true;});
   goStep(2);
   document.getElementById('response-loading').style.display='block';
   document.getElementById('response-output').style.display='none';
@@ -527,8 +532,10 @@ async function buildResponse(){
     document.getElementById('response-loading').style.display='none';
     document.getElementById('response-output').style.display='block';
     saveDraft();
+    respBtns.forEach(function(b){b.disabled=false;});
   }catch(err){
     document.getElementById('response-loading').innerHTML='<div class="error-msg">'+esc(err.message)+'</div><button class="btn-next" style="margin-top:14px" onclick="buildResponse()">Try again</button>';
+    respBtns.forEach(function(b){b.disabled=false;});
   }
 }
 
