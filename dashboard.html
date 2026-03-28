@@ -42,7 +42,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
 .page{max-width:1080px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .35s ease both}
 .greeting{margin-bottom:20px}
-.greeting h1{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.greeting h1{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);margin-bottom:4px}
 .greeting p{font-size:14px;color:var(--ink-3)}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
 .stat-card{background:rgba(14,138,99,0.04)}
@@ -258,7 +258,7 @@ sb.auth.getSession().then(function(res){
 
   // Set user info
   var email=session.user.email;
-  var name=email.split('@')[0];
+  var name=email.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
   document.getElementById('user-email').textContent=email;
   document.getElementById('greeting-text').textContent='Welcome back, '+name;
   document.getElementById('greeting-sub').textContent='Logged in as '+email;
