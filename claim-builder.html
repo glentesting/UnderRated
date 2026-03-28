@@ -351,7 +351,7 @@ function goStep(n){
 function renderCondList(){
   var el=document.getElementById('cond-list');
   if(allConditions.length===0){
-    el.innerHTML='<div class="empty-state">No saved conditions found.<br><a href="calculator.html">Enter conditions in the calculator first</a>, or add them manually below.</div>';
+    el.innerHTML='<div style="text-align:center;padding:24px 16px"><div style="font-size:32px;margin-bottom:10px">\uD83D\uDCE6</div><div style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:6px">No conditions to build a claim for</div><div style="font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:14px">Enter your conditions in the calculator or upload a rating decision in the vault first.</div><a href="calculator.html" style="display:inline-block;font-size:14px;color:#fff;background:var(--green);padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:500">Enter conditions \u2192</a></div>';
     return;
   }
   el.innerHTML='';

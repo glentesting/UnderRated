@@ -588,10 +588,10 @@ function init() {
       loadConditions();
     } else {
       // Not logged in - still works, just no saved conditions
-      document.getElementById('cond-list').innerHTML = '<div class="cond-empty" style="line-height:1.6">Want to match against your saved conditions?<br><a href="login.html" style="color:var(--green);font-size:13px">Log in or sign up free &rarr;</a></div>';
+      document.getElementById('cond-list').innerHTML = '<div style="text-align:center;padding:16px 0"><div style="font-size:24px;margin-bottom:8px">\uD83D\uDD13</div><div style="font-size:13px;color:var(--ink-3);line-height:1.6">Log in to load your saved conditions.</div><a href="login.html" style="display:inline-block;margin-top:10px;font-size:13px;color:var(--green);font-weight:500">Log in or sign up free \u2192</a></div>';
     }
   }).catch(function() {
-    document.getElementById('cond-list').innerHTML = '<div class="cond-empty">Enter conditions manually in the calculator to improve results.</div>';
+    document.getElementById('cond-list').innerHTML = '<div style="text-align:center;padding:16px 0"><div style="font-size:13px;color:var(--ink-3);line-height:1.6">Enter conditions in the calculator to improve results.</div><a href="calculator.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--green);font-weight:500">Open calculator \u2192</a></div>';
   });
 }
 
@@ -616,7 +616,7 @@ function handleSignout() {
 function renderCurrentConditions() {
   var list = document.getElementById('cond-list');
   if (!userConditions.length) {
-    list.innerHTML = '<div class="cond-empty" style="line-height:1.6">No conditions saved yet.<br><a href="calculator.html" style="color:var(--green);font-size:13px">Enter your conditions in the calculator first &rarr;</a></div>';
+    list.innerHTML = '<div style="text-align:center;padding:16px 0"><div style="font-size:24px;margin-bottom:8px">\uD83D\uDCCB</div><div style="font-size:13px;color:var(--ink-3);line-height:1.6">No conditions saved yet.</div><a href="calculator.html" style="display:inline-block;margin-top:10px;font-size:13px;color:var(--green);font-weight:500">Enter conditions in the calculator \u2192</a></div>';
     return;
   }
   list.innerHTML = userConditions.map(function(c) {

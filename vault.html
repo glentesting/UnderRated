@@ -314,7 +314,7 @@ sb.auth.getSession().then(function(res){
     // Not logged in - show upload screen with login prompt
     document.getElementById('loading-note').style.display='none';
     var altAction = document.querySelector('.alt-action');
-    if(altAction) altAction.innerHTML = 'Already have an account? <a href="login.html" style="color:var(--green)">Log in to access your vault</a>';
+    if(altAction) altAction.innerHTML = '\uD83D\uDD12 <a href="login.html" style="color:var(--green);font-weight:500">Log in</a> or <a href="signup.html" style="color:var(--green);font-weight:500">sign up free</a> to save your rating decision and unlock your vault.';
     return;
   }
   currentUser=session.user;
