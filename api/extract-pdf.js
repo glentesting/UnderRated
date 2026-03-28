@@ -36,7 +36,7 @@ export default async function handler(req) {
   // Rate limiting
   const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip');
   if (isRateLimited(ip)) {
-    return new Response(JSON.stringify({ error: 'Too many requests. Please wait a minute.' }), {
+    return new Response(JSON.stringify({ error: 'Too many requests — you can upload up to 5 PDFs per minute. Wait a moment and try again.' }), {
       status: 429,
       headers: { 'Content-Type': 'application/json' }
     });
@@ -45,7 +45,7 @@ export default async function handler(req) {
   // Auth check - require Supabase JWT
   const authHeader = req.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    return new Response(JSON.stringify({ error: 'You need to be logged in to upload files. Please log in and try again.' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' }
     });
@@ -72,7 +72,7 @@ export default async function handler(req) {
     // Fetch the PDF
     const pdfResponse = await fetch(file_url);
     if (!pdfResponse.ok) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch PDF' }), {
+      return new Response(JSON.stringify({ error: 'Could not retrieve your PDF from storage. The file may have been deleted or the link expired — try uploading again.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -157,7 +157,7 @@ Rules for conditions:
     });
 
     if (!claudeResponse.ok) {
-      return new Response(JSON.stringify({ error: 'Claude API error' }), {
+      return new Response(JSON.stringify({ error: 'Our AI could not process this document right now. Please try again in a few seconds.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -171,7 +171,7 @@ Rules for conditions:
       const cleaned = rawText.replace(/```json|```/g, '').trim();
       parsed = JSON.parse(cleaned);
     } catch {
-      return new Response(JSON.stringify({ error: 'Failed to parse response' }), {
+      return new Response(JSON.stringify({ error: 'We had trouble reading this PDF — it may be a scanned image or an unusual format. Try a different copy of your rating decision.' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -189,7 +189,7 @@ Rules for conditions:
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    return new Response(JSON.stringify({ error: 'Something unexpected happened on our end. Please try again — if this keeps happening, email support@getunderrated.com.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

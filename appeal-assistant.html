@@ -462,7 +462,7 @@ async function analyzedenial(){
       })
     });
     var data=await res.json();
-    if(!data.success)throw new Error(data.error||'Analysis failed');
+    if(!data.success)throw new Error(data.error||'The AI could not analyze your denial \u2014 try again in a few seconds.');
     analysis=data.analysis;
     analysis._condition=condName;
     analysis._denial_text=denialText;
@@ -528,7 +528,7 @@ async function buildResponse(){
       })
     });
     var data=await res.json();
-    if(!data.success)throw new Error(data.error||'Generation failed');
+    if(!data.success)throw new Error(data.error||'The AI could not generate your response \u2014 try again in a few seconds.');
     document.getElementById('response-text').value=data.response;
     document.getElementById('response-loading').style.display='none';
     document.getElementById('response-output').style.display='block';

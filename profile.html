@@ -246,7 +246,7 @@ async function saveProfile(){
   var {error}=await sb.from('profiles').upsert(data,{onConflict:'user_id'});
 
   if(error){
-    status.textContent='Error saving';
+    status.textContent='Could not save \u2014 check your connection and try again';
     status.className='save-status';
     btn.disabled=false;
     btn.textContent='Save profile';

@@ -302,7 +302,7 @@ document.getElementById('drop-zone').addEventListener('dragleave',function(){thi
 document.getElementById('drop-zone').addEventListener('drop',function(e){
   e.preventDefault();this.classList.remove('dragover');
   var f=e.dataTransfer.files[0];
-  if(f&&f.type==='application/pdf')handleFile(f);else showErr('Please upload a PDF file.');
+  if(f&&f.type==='application/pdf')handleFile(f);else showErr('Please upload a PDF file \u2014 other formats are not supported.');
 });
 document.getElementById('file-input').addEventListener('change',function(){
   if(this.files&&this.files[0])handleFile(this.files[0]);
@@ -350,7 +350,7 @@ function handleFile(file){
     }
     return;
   }
-  if(!file||file.type!=='application/pdf'){showErr('Please upload a PDF file.');return;}
+  if(!file||file.type!=='application/pdf'){showErr('Please upload a PDF file \u2014 other formats are not supported.');return;}
   document.getElementById('upload-error').style.display='none';
   document.getElementById('upload-progress').style.display='block';
   var dz=document.getElementById('drop-zone');if(dz){dz.style.pointerEvents='none';dz.style.opacity='0.5';}
@@ -369,7 +369,7 @@ function handleFile(file){
       });
     })
     .then(function(res){
-      if(!res.ok)return res.json().then(function(e){throw new Error(e.error||'Extraction failed.');});
+      if(!res.ok)return res.json().then(function(e){throw new Error(e.error||'We could not read this PDF \u2014 make sure it\u2019s a VA rating decision letter, not a scanned image.');});
       return res.json();
     })
     .then(function(extracted){
@@ -398,7 +398,7 @@ function handleFile(file){
         });
       },800);
     })
-    .catch(function(err){console.error('upload:',err);showErr(err.message);});
+    .catch(function(err){console.error('upload:',err);showErr(err.message||'Upload failed \u2014 the file may be too large (max 10MB) or your connection dropped. Try again.');});
 }
 
 // RENDER

@@ -22,14 +22,14 @@ export default async function handler(req) {
 
   const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip');
   if (isRateLimited(ip)) {
-    return new Response(JSON.stringify({ error: 'Too many requests. Please wait a minute.' }), {
+    return new Response(JSON.stringify({ error: 'You\u2019ve generated several documents recently. Wait a couple minutes before generating another.' }), {
       status: 429, headers: { 'Content-Type': 'application/json' }
     });
   }
 
   const authHeader = req.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    return new Response(JSON.stringify({ error: 'Your session has expired. Please refresh the page and log in again.' }), {
       status: 401, headers: { 'Content-Type': 'application/json' }
     });
   }
@@ -128,7 +128,7 @@ Write the appeal response document now.`;
     });
 
     if (!claudeResponse.ok) {
-      return new Response(JSON.stringify({ error: 'AI generation failed. Please try again.' }), {
+      return new Response(JSON.stringify({ error: 'The AI could not generate your appeal response right now — this is usually temporary. Wait a few seconds and try again.' }), {
         status: 500, headers: { 'Content-Type': 'application/json' }
       });
     }
@@ -141,7 +141,7 @@ Write the appeal response document now.`;
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    return new Response(JSON.stringify({ error: 'Something unexpected happened on our end. Please try again — if this keeps happening, email support@getunderrated.com.' }), {
       status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }

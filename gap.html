@@ -762,7 +762,7 @@ async function runCFRAnalysis(){
       body:JSON.stringify(payload)
     });
     var data=await res.json();
-    if(!data.success)throw new Error(data.error||'Analysis failed');
+    if(!data.success)throw new Error(data.error||'The AI could not complete the analysis \u2014 try again in a few seconds.');
     localStorage.setItem(cfrCacheKey(),JSON.stringify({results:data.analysis,timestamp:Date.now()}));
     document.getElementById('cfr-last-run').textContent='Analyzed today';
     renderCFRResults(data.analysis);

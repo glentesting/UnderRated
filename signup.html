@@ -123,7 +123,7 @@ async function handleSignup(){
   setLoading(true);
   const {data,error}=await sb.auth.signUp({email,password:pass});
   setLoading(false);
-  if(error){showError(error.message);return;}
+  if(error){showError(error.message||'Sign up failed \u2014 this email may already be registered. Try logging in instead.');return;}
   formWrap.style.display='none';
   successBox.style.display='block';
   setTimeout(()=>window.location.href='onboarding.html',1200);

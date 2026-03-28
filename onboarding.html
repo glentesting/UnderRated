@@ -318,7 +318,7 @@ async function handleUpload(){
     btn.disabled=false;
     btn.innerHTML='Upload &amp; analyze';
     prog.style.display='none';
-    showUploadErr('Upload failed: '+(err.message||'Please try again.'));
+    showUploadErr('Upload failed \u2014 '+(err.message||'the file may be too large (max 10MB) or your connection dropped. Try again.'));
   }
 }
 

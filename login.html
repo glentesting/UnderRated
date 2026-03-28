@@ -117,7 +117,7 @@ async function handleLogin(){
   if(error){
     if(error.message.toLowerCase().includes('invalid'))showError('Email or password is incorrect.');
     else if(error.message.toLowerCase().includes('confirm'))showError('Please confirm your email first — check your inbox.');
-    else showError(error.message);
+    else showError(error.message||'Login failed \u2014 please check your credentials and try again.');
     return;
   }
   window.location.href='dashboard.html';
@@ -128,7 +128,7 @@ async function handleReset(){
   const email=emailEl.value.trim();
   if(!email)return showError('Enter your email address first, then click "Forgot password?"');
   const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/update-password.html'});
-  if(error){showError(error.message);return;}
+  if(error){showError(error.message||'Could not send reset email \u2014 check your email address and try again.');return;}
   resetBox.textContent='Password reset email sent to '+email+'. Check your inbox.';
   resetBox.style.display='block';
 }

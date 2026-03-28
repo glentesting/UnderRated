@@ -495,7 +495,7 @@ async function generateLetter(){
       body:JSON.stringify(payload)
     });
     var data=await res.json();
-    if(!data.success)throw new Error(data.error||'Generation failed');
+    if(!data.success)throw new Error(data.error||'The AI could not generate your letter right now \u2014 try again in a few seconds.');
     document.getElementById('letter-text').value=data.letter;
     document.getElementById('loading-state').style.display='none';
     document.getElementById('letter-output').style.display='block';
