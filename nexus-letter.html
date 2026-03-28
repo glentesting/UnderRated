@@ -13,9 +13,9 @@
 body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;min-height:100vh;-webkit-font-smoothing:antialiased}
 body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
 body.paywalled{overflow:hidden}
-.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:90;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
 body.paywalled .paywall-overlay{display:flex}
-.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:min(420px,90vw);width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
 .paywall-lock{font-size:36px;margin-bottom:12px}
 .paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
 .paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
@@ -44,6 +44,8 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}
 .nav-dropdown-menu a.active{color:var(--green);font-weight:500}
 .nav-links .mobile-signout{display:none}
+.nav-links .mobile-section-label{display:none}
+.nav-links .mobile-divider{display:none}
 .nav-links .mobile-tools-header{display:none}
 .nav-right{display:flex;align-items:center;gap:14px}
 .user-email{font-size:13px;color:var(--ink-3);font-family:var(--ff-mono)}
@@ -144,13 +146,14 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
   .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
   .nav-links.open{display:flex}
   .nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
-  .nav-dropdown{border-bottom:1px solid var(--border)}
-  .nav-dropdown-trigger{padding:11px 0;font-size:15px;color:var(--ink-2);width:100%}
-  .nav-dropdown-menu{position:static;border:none;box-shadow:none;border-radius:0;padding:0 0 4px 16px;min-width:auto;background:transparent}
-  .nav-dropdown.open .nav-dropdown-menu{display:block}
-  .nav-dropdown-menu a{padding:8px 0;font-size:14px;border-bottom:none}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}
+  .nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{display:block!important;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}
+  .nav-dropdown-menu a:last-child{border-bottom:none}
   .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
-  .nav-links .mobile-tools-header{display:none}
   .page{padding:24px 16px 60px}
   .page-title{font-size:32px}
   .card{padding:18px 14px}
@@ -168,8 +171,10 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
   <div class="nav-inner">
     <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
     <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
       <a href="calculator.html">Rating calculator</a>
       <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
       <div class="nav-dropdown" id="nav-dropdown">
         <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-dropdown-menu">
@@ -178,9 +183,11 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
           <a href="state-benefits.html">State benefits</a>
           <a href="nexus-letter.html" class="active">Nexus letter</a>
           <a href="appeal-assistant.html">Appeal assistant</a>
-          <a href="profile.html">Profile</a>
         </div>
       </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
       <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
     </div>
     <div class="nav-right">
