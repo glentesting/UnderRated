@@ -87,14 +87,14 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 /* SOCIAL PROOF */
 .social-proof{padding:32px 28px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .social-proof-inner{max-width:1080px;margin:0 auto;text-align:center}
-.social-proof-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.social-proof-label{font-family:var(--ff-display);font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.3px;margin-bottom:16px}
 .social-proof-quotes{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
 .sp-quote{max-width:300px;text-align:left;padding:16px 18px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:12px}
 .sp-quote-text{font-size:14px;color:var(--ink-2);line-height:1.6;font-style:italic;margin-bottom:8px}
 .sp-quote-author{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)}
 .sp-orgs{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:22px 0}
 .sp-org{font-family:var(--ff-display);font-size:16px;font-weight:800;color:var(--ink-4);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.sp-org:first-child{font-family:var(--ff-mono);font-size:11px;font-weight:400;letter-spacing:.04em}
+.sp-org:first-child{font-family:var(--ff-mono);font-size:13px;font-weight:400;letter-spacing:.04em;color:var(--ink-2)}
 .sp-org-icon{font-size:16px;opacity:.6}
 .trust-strip{background:var(--ink);padding:28px}
 .trust-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
@@ -151,6 +151,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .price-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:30px}
 .price-card.featured{border-color:var(--green);border-width:2px}
 .price-tier{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:14px}
+.price-card.featured .price-tier{font-family:var(--ff-display);font-size:24px;font-weight:800;color:var(--ink);letter-spacing:0;margin-bottom:6px}
+.earned-badge{display:inline-block;background:var(--green);color:#fff;font-family:var(--ff-mono);font-size:13px;font-weight:700;padding:5px 12px;border-radius:6px;margin-right:8px;vertical-align:middle;letter-spacing:.06em}
 .price-amount{font-family:var(--ff-display);font-size:48px;font-weight:800;color:var(--ink);line-height:1}
 .price-amount span{font-size:18px;font-weight:400;color:var(--ink-3)}
 .price-desc{font-size:14px;color:var(--ink-2);margin:12px 0 22px;line-height:1.6}
@@ -359,10 +361,10 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
     </div>
     <div class="sp-orgs">
       <span class="sp-org"><span class="sp-org-icon">&#9733;</span> Trusted by veterans from</span>
-      <span class="sp-org">DAV</span>
-      <span class="sp-org">VFW</span>
-      <span class="sp-org">American Legion</span>
-      <span class="sp-org">Team Rubicon</span>
+      <span class="sp-org">DAV</span><span style="color:var(--ink-4)">&middot;</span>
+      <span class="sp-org">VFW</span><span style="color:var(--ink-4)">&middot;</span>
+      <span class="sp-org">American Legion</span><span style="color:var(--ink-4)">&middot;</span>
+      <span class="sp-org">Team Rubicon</span><span style="color:var(--ink-4)">&middot;</span>
       <span class="sp-org">IAVA</span>
     </div>
   </div>
@@ -502,7 +504,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
     <div class="section-header">
       <div class="section-eyebrow"><span class="tag">Who it's for</span></div>
       <div class="section-title">Sound familiar?</div>
-      <div style="font-family:var(--ff-display);font-size:26px;font-weight:800;color:var(--green);letter-spacing:-.3px;margin-top:4px">We built this for you.</div>
+      <div style="font-family:var(--ff-display);font-size:26px;font-weight:800;color:#0E8A63;letter-spacing:-.3px;margin-top:4px">We built this for you.</div>
     </div>
     <div class="who-grid">
       <div class="who-card"><div class="who-check"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5L13 5"/></svg></div><div class="who-text"><h4>You think you're underrated</h4><p>Your conditions are worse than your rating suggests, but the VA's math is a black box. UNDERRATED opens it up.</p></div></div>
@@ -535,7 +537,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
         <a href="signup.html" class="btn-ghost" style="width:100%">Get started free</a>
       </div>
       <div class="price-card featured">
-        <div class="price-tier">Earned</div>
+        <div class="price-tier"><span class="earned-badge">EARNED</span> Earned</div>
         <div class="price-amount">$19 <span>/ month</span></div>
         <p class="price-desc">Everything you need to file, appeal, and stack benefits &mdash; from first claim to final decision.</p>
         <ul class="price-features">
