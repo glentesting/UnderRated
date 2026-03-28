@@ -46,13 +46,7 @@ export default async function handler(req) {
     });
   }
 
-  const authHeader = req.headers.get('authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return new Response(JSON.stringify({ error: 'Your session has expired. Please refresh the page and log in again.' }), {
-      status: 401, headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
+  // No auth required — VERA works for logged-out visitors too
   try {
     const { messages } = await req.json();
 
