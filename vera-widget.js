@@ -62,7 +62,7 @@ document.head.appendChild(style);
 // Inject FAB
 var fab=document.createElement('button');
 fab.id='vera-fab';
-fab.innerHTML='<span class="vera-icon">\u2726</span><span class="vera-text">VERA</span>';
+fab.innerHTML='<span class="vera-icon">\u2726</span><span class="vera-text">ASK VERA</span>';
 fab.onclick=function(){openVera();};
 document.body.appendChild(fab);
 
