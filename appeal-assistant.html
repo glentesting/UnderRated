@@ -318,6 +318,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
 <script>
 var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
 var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
@@ -455,6 +456,7 @@ async function analyzedenial(){
   document.getElementById('analysis-results').style.display='none';
   document.getElementById('next-1').style.display='none';
 
+  var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
   try{
     var res=await fetch('/api/analyze-denial',{
       method:'POST',
@@ -462,7 +464,8 @@ async function analyzedenial(){
       body:JSON.stringify({
         denial_text:denialText,
         condition_name:condName,
-        decision_date:document.getElementById('decision-date').value
+        decision_date:document.getElementById('decision-date').value,
+        veteranContext:vc||undefined
       })
     });
     var data=await res.json();
@@ -517,6 +520,7 @@ async function buildResponse(){
   document.getElementById('response-loading').style.display='block';
   document.getElementById('response-output').style.display='none';
 
+  var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
   try{
     var res=await fetch('/api/generate-appeal',{
       method:'POST',
@@ -528,7 +532,8 @@ async function buildResponse(){
         denial_text:analysis._denial_text,
         action_items:analysis.action_items,
         veteran_name:'',
-        decision_date:document.getElementById('decision-date').value
+        decision_date:document.getElementById('decision-date').value,
+        veteranContext:vc||undefined
       })
     });
     var data=await res.json();

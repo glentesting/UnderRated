@@ -2,6 +2,9 @@
 // Don't init twice
 if(document.getElementById('vera-fab'))return;
 
+// Load veteran-context.js if not already loaded
+if(typeof buildVeteranContext==='undefined'){var s=document.createElement('script');s.src='js/veteran-context.js';document.head.appendChild(s);}
+
 // Inject CSS
 var style=document.createElement('style');
 style.textContent=`
@@ -154,10 +157,12 @@ window.veraSend=async function(){
   document.getElementById('vp-messages').scrollTop=document.getElementById('vp-messages').scrollHeight;
 
   try{
+    var vc='';
+    try{if(window.sb&&window.currentUser)vc=await buildVeteranContext(window.currentUser.id,window.sb);}catch(e){}
     var res=await fetch('/api/ask-vera',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:veraMessages})
+      body:JSON.stringify({messages:veraMessages,veteranContext:vc||undefined})
     });
     var data=await res.json();
     document.getElementById('vp-typing').style.display='none';

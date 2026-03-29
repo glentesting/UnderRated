@@ -320,6 +320,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
 <script>
 const SUPABASE_URL = 'https://bglhfmwjfnmybcrjlscm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
@@ -772,10 +773,11 @@ async function runCFRAnalysis(){
   var payload={conditions:userConditions.filter(function(c){return c.name&&parseInt(c.rating)>=0;}).map(function(c){return{name:c.name,rating:parseInt(c.rating)||0,decision:c.decision||'service connected'};})};
 
   try{
+    var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
     var res=await fetch('/api/analyze-gaps',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
-      body:JSON.stringify(payload)
+      body:JSON.stringify({conditions:payload.conditions,veteranContext:vc||undefined})
     });
     var data=await res.json();
     if(!data.success)throw new Error(data.error||'The AI could not complete the analysis \u2014 try again in a few seconds.');

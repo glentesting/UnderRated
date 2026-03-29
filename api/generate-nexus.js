@@ -38,7 +38,7 @@ export default async function handler(req) {
 
   try {
     const body = await req.json();
-    const { secondary_condition, primary_condition, connection_type, onset_date, diagnosed, doctor_info, has_treatment, description, veteran_name, service_branch } = body;
+    const { secondary_condition, primary_condition, connection_type, onset_date, diagnosed, doctor_info, has_treatment, description, veteran_name, service_branch, veteranContext } = body;
 
     if (!secondary_condition || !primary_condition) {
       return new Response(JSON.stringify({ error: 'Both conditions are required.' }), {
@@ -89,7 +89,7 @@ Write the nexus letter now.`;
         messages: [
           { role: 'user', content: userPrompt }
         ],
-        system: systemPrompt
+        system: veteranContext ? systemPrompt + '\n\nHere is this veteran\'s current situation:\n\n' + veteranContext + '\n\nUse this context to make the letter more specific and relevant.' : systemPrompt
       })
     });
 

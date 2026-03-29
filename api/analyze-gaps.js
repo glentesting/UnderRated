@@ -35,7 +35,7 @@ export default async function handler(req) {
   }
 
   try {
-    const { conditions } = await req.json();
+    const { conditions, veteranContext } = await req.json();
 
     if (!conditions || !conditions.length) {
       return new Response(JSON.stringify({ error: 'No conditions provided.' }), {
@@ -112,7 +112,7 @@ Return ONLY the JSON array — no markdown, no explanation, no wrapping.`;
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 3000,
-        system: systemPrompt,
+        system: veteranContext ? systemPrompt + '\n\nAdditional veteran context:\n\n' + veteranContext : systemPrompt,
         messages: [{ role: 'user', content: `Analyze these veteran's conditions against 38 CFR Part 4:\n\n${conditionSummary}` }]
       })
     });

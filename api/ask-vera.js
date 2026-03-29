@@ -48,7 +48,7 @@ export default async function handler(req) {
 
   // No auth required — VERA works for logged-out visitors too
   try {
-    const { messages } = await req.json();
+    const { messages, veteranContext } = await req.json();
 
     if (!messages || !messages.length) {
       return new Response(JSON.stringify({ error: 'No message provided.' }), {
@@ -71,7 +71,7 @@ export default async function handler(req) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1024,
-        system: SYSTEM_PROMPT,
+        system: veteranContext ? SYSTEM_PROMPT + '\n\nHere is this veteran\'s current situation:\n\n' + veteranContext + '\n\nUse this to give personalized, specific answers — not generic ones.' : SYSTEM_PROMPT,
         messages: claudeMessages
       })
     });

@@ -35,7 +35,7 @@ export default async function handler(req) {
   }
 
   try {
-    const { denial_text, condition_name, decision_date } = await req.json();
+    const { denial_text, condition_name, decision_date, veteranContext } = await req.json();
 
     if (!denial_text || !condition_name) {
       return new Response(JSON.stringify({ error: 'Denial text and condition name are required.' }), {
@@ -85,7 +85,7 @@ Return the JSON analysis.`;
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1200,
-        system: systemPrompt,
+        system: veteranContext ? systemPrompt + '\n\nHere is this veteran\'s current situation:\n\n' + veteranContext + '\n\nUse this context to make the analysis more specific.' : systemPrompt,
         messages: [{ role: 'user', content: userPrompt }]
       })
     });

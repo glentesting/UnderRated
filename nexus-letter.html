@@ -342,6 +342,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
 <script>
 var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
 var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
@@ -492,6 +493,8 @@ async function generateLetter(){
     service_branch:document.getElementById('service-branch').value
   };
 
+  var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
+  payload.veteranContext=vc||undefined;
   try{
     var res=await fetch('/api/generate-nexus',{
       method:'POST',

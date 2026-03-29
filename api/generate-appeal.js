@@ -35,7 +35,7 @@ export default async function handler(req) {
   }
 
   try {
-    const { appeal_lane, condition_name, denial_reason, denial_text, action_items, veteran_name, decision_date } = await req.json();
+    const { appeal_lane, condition_name, denial_reason, denial_text, action_items, veteran_name, decision_date, veteranContext } = await req.json();
 
     if (!appeal_lane || !condition_name || !denial_reason) {
       return new Response(JSON.stringify({ error: 'Appeal lane, condition, and denial reason are required.' }), {
@@ -122,7 +122,7 @@ Write the appeal response document now.`;
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
-        system: systemPrompt,
+        system: veteranContext ? systemPrompt + '\n\nHere is this veteran\'s current situation:\n\n' + veteranContext + '\n\nUse this context to make the appeal document more specific and personalized.' : systemPrompt,
         messages: [{ role: 'user', content: userPrompt }]
       })
     });
