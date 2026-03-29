@@ -123,7 +123,16 @@ async function handleSignup(){
   setLoading(true);
   const {data,error}=await sb.auth.signUp({email,password:pass});
   setLoading(false);
-  if(error){showError(error.message||'Sign up failed \u2014 this email may already be registered. Try logging in instead.');return;}
+  if(error){
+    if(error.message&&error.message.toLowerCase().includes('already registered')){
+      showError('This email is already registered. <a href="login.html" style="color:var(--green);font-weight:500">Log in here</a> or <a href="login.html" style="color:var(--green);font-weight:500">reset your password</a> if you forgot it.');
+      errorBox.innerHTML=errorBox.textContent;
+      errorBox.innerHTML='This email is already registered. <a href="login.html" style="color:var(--green);font-weight:500">Log in here</a> or <a href="login.html#reset" style="color:var(--green);font-weight:500">reset your password</a>.';
+    }else{
+      showError(error.message||'Sign up failed. Please try again.');
+    }
+    return;
+  }
   formWrap.style.display='none';
   successBox.style.display='block';
   setTimeout(()=>window.location.href='onboarding.html',1200);
