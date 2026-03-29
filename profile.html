@@ -238,7 +238,7 @@ async function handleDeleteAccount(){
     });
     var data=await res.json();
     if(!res.ok||!data.success){
-      var msg=data.error||'Account deletion failed. Please try again or email support@getunderrated.com.';
+      var msg=data.error||'Account deletion failed. Please try again or email support@underratedvets.com.';
       if(deleteBtn){deleteBtn.disabled=false;deleteBtn.textContent='Delete my account';}
       alert(msg);
       return;

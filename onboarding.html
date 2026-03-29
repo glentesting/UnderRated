@@ -310,7 +310,7 @@ async function handleUpload(){
     fill.style.width='60%';
     stat.textContent='Extracting conditions...';
     var pubUrl=SUPABASE_URL+'/storage/v1/object/public/rating-decisions/'+encodeURIComponent(fileName);
-    var res=await fetch('https://getunderrated.vercel.app/api/extract-pdf',{
+    var res=await fetch('https://underratedvets.com/api/extract-pdf',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({pdfUrl:pubUrl,userId:currentUser.id})
     });

@@ -232,7 +232,7 @@ Return ONLY the JSON array — no markdown, no explanation, no wrapping.`;
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Something unexpected happened on our end. Please try again \u2014 if this keeps happening, email support@getunderrated.com.' }), {
+    return new Response(JSON.stringify({ error: 'Something unexpected happened on our end. Please try again \u2014 if this keeps happening, email support@underratedvets.com.' }), {
       status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }

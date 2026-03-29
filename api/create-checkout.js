@@ -56,7 +56,7 @@ export default async function handler(req) {
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Could not create checkout session \u2014 please try again. If this keeps happening, email support@getunderrated.com.' }), {
+    return new Response(JSON.stringify({ error: 'Could not create checkout session \u2014 please try again. If this keeps happening, email support@underratedvets.com.' }), {
       status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }

@@ -3,7 +3,20 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(grep:*)",
+      "Bash(for file:*)",
+      "Bash(do echo:*)",
+      "Bash(for f:*)",
+      "Bash(sed -n '/<style>/,/<\\\\/style>/p' \"$f\")",
+      "Bash(done)",
+      "Bash(find /c/Users/glenh/UnderRated -type f \\\\\\(-name *.html -o -name *.js \\\\\\))",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(dashboard\".:*)",
+      "Bash(helps you get them.\" with muted subtext on its own line via:*)",
+      "Bash(python3:*)",
+      "Bash(account\" flow \\(signup.html CTA + login link\\). Logged-in free:*)"
     ]
   }
 }

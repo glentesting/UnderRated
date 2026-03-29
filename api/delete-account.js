@@ -33,7 +33,7 @@ export default async function handler(req) {
 
   if (!SUPABASE_KEY) {
     console.error('SUPABASE_SERVICE_ROLE_KEY is not set in environment variables');
-    return new Response(JSON.stringify({ error: 'Server configuration error — SUPABASE_SERVICE_ROLE_KEY is missing. Please email support@getunderrated.com.' }), {
+    return new Response(JSON.stringify({ error: 'Server configuration error — SUPABASE_SERVICE_ROLE_KEY is missing. Please email support@underratedvets.com.' }), {
       status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }
@@ -126,7 +126,7 @@ export default async function handler(req) {
       console.error('auth.admin.deleteUser FAILED:', authError.message);
       return new Response(JSON.stringify({
         success: false,
-        error: `Could not delete your login (${authError.message}). Your data was removed but your email is still registered. Please email support@getunderrated.com to complete the deletion.`
+        error: `Could not delete your login (${authError.message}). Your data was removed but your email is still registered. Please email support@underratedvets.com to complete the deletion.`
       }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 

@@ -98,7 +98,7 @@ export default async function handler(req) {
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Something unexpected happened. Please try again \u2014 if this keeps happening, email support@getunderrated.com.' }), {
+    return new Response(JSON.stringify({ error: 'Something unexpected happened. Please try again \u2014 if this keeps happening, email support@underratedvets.com.' }), {
       status: 500, headers: { 'Content-Type': 'application/json' }
     });
   }
