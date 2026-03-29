@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDIU &amp; SMC &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:min(420px,90vw);width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:var(--ff-body);padding:4px 0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}
+.nav-dropdown-trigger.active{color:var(--ink);font-weight:500}
+.nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}
+.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2);transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}
+.nav-dropdown-menu a.active{color:var(--green);font-weight:500;background:var(--green-bg)}
+.nav-links .mobile-signout{display:none}
+.nav-links .mobile-section-label{display:none}
+.nav-links .mobile-divider{display:none}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+.page{max-width:760px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .3s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+.loading{text-align:center;padding:40px 0;color:var(--ink-3);font-size:14px}
+.result-card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:28px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
+.result-card.qualifies{border-color:var(--green);border-width:2px}
+.result-card.possibly{border-color:var(--amber);border-width:2px}
+.rc-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.rc-name{font-family:var(--ff-display);font-size:26px;font-weight:800;color:var(--ink);line-height:1}
+.rc-badge{font-family:var(--ff-mono);font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
+.rc-badge.yes{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.rc-badge.maybe{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.rc-badge.no{background:var(--bg-2);color:var(--ink-4);border:1px solid var(--border)}
+.rc-amount{font-family:var(--ff-display);font-size:36px;font-weight:800;color:var(--green);line-height:1;margin-bottom:4px}
+.rc-amount-label{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px}
+.rc-explain{font-size:14px;color:var(--ink-2);line-height:1.65;margin-bottom:16px}
+.rc-explain strong{color:var(--ink);font-weight:500}
+.rc-qualify-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;font-size:13px;color:var(--ink-2);line-height:1.5}
+.rc-qualify-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.rc-qualify-dot.green{background:var(--green)}
+.rc-qualify-dot.amber{background:var(--amber)}
+.rc-qualify-dot.gray{background:var(--ink-4)}
+.rc-missing{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:14px 16px;margin-top:14px;font-size:13px;color:var(--amber);line-height:1.55}
+.rc-file-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:14px;font-weight:500;color:#fff;background:var(--green);padding:10px 20px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;text-decoration:none}
+.rc-file-btn:hover{background:var(--green-l)}
+.rc-file-btn.outline{background:none;color:var(--green);border:1.5px solid var(--green-border)}
+.rc-file-btn.outline:hover{background:var(--green-bg)}
+.no-conditions{text-align:center;padding:40px 20px}
+.no-conditions-icon{font-size:32px;margin-bottom:10px}
+.no-conditions-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.no-conditions-sub{font-size:14px;color:var(--ink-3);margin-bottom:16px;line-height:1.6}
+.disclaimer{font-size:12px;color:var(--ink-4);line-height:1.55;margin-top:24px;padding:14px 16px;background:var(--bg-2);border-radius:10px;border:1px solid var(--border)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){
+  nav{padding:0 16px}
+  .hamburger{display:flex}
+  .user-pill{display:none}
+  .signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}
+  .nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{opacity:1!important;visibility:visible!important;transform:none!important;transition:none;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{margin:0;border-radius:0;padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}
+  .nav-dropdown-menu a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .page{padding:24px 16px 60px}
+  .page-title{font-size:32px}
+  .rc-header{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
+          <a href="tdiu-smc.html" class="active">TDIU &amp; SMC</a>
+        </div>
+      </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Benefits check</div>
+  <div class="page-title">TDIU &amp; SMC</div>
+  <p class="page-sub">Two benefits most veterans never claim. Find out if you qualify.</p>
+  <div id="results"><div class="loading">Loading your conditions...</div></div>
+  <div class="disclaimer">This is an eligibility estimate based on your rated conditions. Actual eligibility depends on VA adjudication. TDIU also requires demonstrating that service-connected conditions prevent substantially gainful employment. Always consult a VSO or accredited claims agent.</div>
+</div>
+
+<div class="paywall-overlay">
+  <div class="paywall-card">
+    <div class="paywall-lock">&#128274;</div>
+    <div class="paywall-title">TDIU &amp; SMC Calculator</div>
+    <div class="paywall-sub">Upgrade to EARNED to check your TDIU and SMC eligibility.</div>
+    <button class="paywall-btn" onclick="window.location.href='upgrade.html'">Upgrade to EARNED &mdash; $19/mo</button>
+    <a href="dashboard.html" class="paywall-back">&larr; Back to dashboard</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+var currentUser=null;
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+
+function calcCombined(conditions){
+  var valid=conditions.filter(function(c){return parseInt(c.rating)>0;});
+  if(!valid.length)return 0;
+  var sorted=valid.slice().sort(function(a,b){return parseInt(b.rating)-parseInt(a.rating);});
+  var remaining=100;
+  sorted.forEach(function(c){remaining=remaining*(1-parseInt(c.rating)/100);});
+  var exact=100-remaining;
+  return exact>=95?100:Math.round(exact/10)*10;
+}
+
+function checkTDIU(conditions,combined){
+  var rated=conditions.filter(function(c){return c.decision&&c.decision.toLowerCase().includes('service connected')&&!c.decision.toLowerCase().includes('not service');});
+  var single60=rated.filter(function(c){return parseInt(c.rating)>=60;});
+  var single40=rated.filter(function(c){return parseInt(c.rating)>=40;});
+  var result={status:'no',qualifyingConditions:[],explanation:'',missing:''};
+  if(single60.length>0){
+    result.status='yes';
+    result.qualifyingConditions=single60.map(function(c){return c.name+' at '+c.rating+'% (meets single disability 60%+ threshold)';});
+    result.explanation='You have at least one service-connected disability rated 60% or higher. You meet the schedular threshold for TDIU. If your service-connected conditions prevent you from maintaining substantially gainful employment, you are eligible to file.';
+  }else if(single40.length>0&&combined>=70){
+    result.status='yes';
+    result.qualifyingConditions=single40.map(function(c){return c.name+' at '+c.rating+'%';});
+    result.qualifyingConditions.push('Combined rating: '+combined+'% (meets 70%+ threshold)');
+    result.explanation='You have at least one disability rated 40% or higher AND your combined rating is 70% or higher. You meet the schedular threshold for TDIU. If your service-connected conditions prevent substantially gainful employment, you are eligible.';
+  }else{
+    var highest=rated.length?Math.max.apply(null,rated.map(function(c){return parseInt(c.rating)||0;})):0;
+    if(highest>=40&&combined<70){
+      result.status='possibly';
+      result.explanation='You have a condition rated 40%+ but your combined rating is '+combined+'%, which is below the 70% threshold. You may qualify under extraschedular TDIU (38 CFR 4.16(b)) if you can demonstrate your conditions prevent employment.';
+      result.missing='To meet the standard schedular threshold, you need either: (1) a single condition rated 60%+, or (2) your combined rating to reach 70% with at least one condition at 40%+. Filing for increased ratings or additional conditions could get you there.';
+    }else{
+      result.status='no';
+      result.explanation='Your current ratings don\'t meet the schedular TDIU thresholds. You need either a single disability at 60%+ or a combined rating of 70%+ with at least one at 40%+.';
+      result.missing='Your highest single rating is '+highest+'% and your combined rating is '+combined+'%. Consider filing for increased ratings on conditions that have worsened, or claim additional service-connected conditions to raise your combined rating.';
+    }
+  }
+  return result;
+}
+
+function checkSMCK(conditions){
+  var result={status:'no',qualifyingConditions:[],explanation:'',missing:''};
+  var edConditions=conditions.filter(function(c){
+    var name=c.name.toLowerCase();
+    return name.includes('erectile')|| name.includes('loss of use')|| name.includes('creative organ');
+  });
+  if(edConditions.length>0){
+    result.status='yes';
+    result.qualifyingConditions=edConditions.map(function(c){return c.name+' — qualifies for SMC-K (loss of use of creative organ)';});
+    result.explanation='Erectile dysfunction or loss of use of a creative organ is service-connected. SMC-K adds $132.74/month on top of your regular compensation — even if the condition itself is rated 0%. This is one of the most under-claimed VA benefits.';
+  }else{
+    result.status='no';
+    result.explanation='SMC-K applies when you have service-connected loss or loss of use of a creative organ (includes erectile dysfunction), hand, foot, or eye. ED is the most commonly missed SMC-K qualifier.';
+    result.missing='If you experience erectile dysfunction related to PTSD medications, diabetes, hypertension, spinal conditions, or TBI — file for it as a secondary condition. Even at 0% rating, you get SMC-K adding $132.74/month.';
+  }
+  return result;
+}
+
+function checkSMCS(conditions,combined){
+  var result={status:'no',qualifyingConditions:[],explanation:'',missing:''};
+  if(combined<100){result.explanation='SMC-S requires a 100% schedular rating plus a separate independent disability rated 60%+. Your combined rating is '+combined+'%.';result.missing='You need to reach 100% schedular rating first. Consider filing for increased ratings or additional conditions.';return result;}
+  var rated=conditions.filter(function(c){var r=parseInt(c.rating)||0;return r>=60&&c.decision&&c.decision.toLowerCase().includes('service connected');});
+  // Check if there are separate independent conditions at 60%+
+  // (simplified — actual SMC-S requires the 60% condition to be independent of the 100% condition)
+  if(rated.length>=2){
+    result.status='possibly';
+    result.qualifyingConditions=rated.map(function(c){return c.name+' at '+c.rating+'%';});
+    result.explanation='You have a 100% combined rating and multiple conditions rated 60%+. You may qualify for SMC-S if at least one of the 60%+ conditions is independent of the condition providing 100%. SMC-S adds $408.67/month above the 100% rate.';
+  }else{
+    result.explanation='SMC-S requires your 100% rating PLUS a separate independent disability rated 60%+. You currently have one qualifying condition but need a second independent one at 60%+.';
+    result.missing='Consider whether any of your conditions could be rated higher through increased rating claims.';
+  }
+  return result;
+}
+
+function checkSMCL(conditions,combined){
+  var result={status:'no',explanation:'',missing:''};
+  if(combined>=100){
+    result.status='possibly';
+    result.explanation='SMC-L applies if you need regular aid and attendance of another person due to service-connected conditions, OR if you are housebound (100% rating and unable to leave home). With your 100% rating, you may qualify if your conditions require daily assistance with bathing, dressing, eating, or other activities of daily living. SMC-L adds $1,239.89/month.';
+    result.missing='To file: submit VA Form 21-2680 (Examination for Housebound Status or Permanent Need for Regular Aid and Attendance). Your doctor must document that you need help with daily living activities.';
+  }else{
+    result.explanation='SMC-L requires a 100% rating and either needing aid and attendance or being housebound. Your combined rating is '+combined+'%.';
+    result.missing='You need to reach 100% schedular rating first before SMC-L eligibility.';
+  }
+  return result;
+}
+
+function renderResults(conditions){
+  var el=document.getElementById('results');
+  if(!conditions.length){
+    el.innerHTML='<div class="no-conditions"><div class="no-conditions-icon">&#128203;</div><div class="no-conditions-title">No conditions found</div><div class="no-conditions-sub">Upload your rating decision in the Vault or enter conditions in the Calculator first.</div><a href="vault.html" class="rc-file-btn">Upload rating decision &rarr;</a></div>';
+    return;
+  }
+  var combined=calcCombined(conditions);
+  var tdiu=checkTDIU(conditions,combined);
+  var smck=checkSMCK(conditions);
+  var smcs=checkSMCS(conditions,combined);
+  var smcl=checkSMCL(conditions,combined);
+  var html='';
+  // TDIU card
+  html+='<div class="result-card '+(tdiu.status==='yes'?'qualifies':tdiu.status==='possibly'?'possibly':'')+'">';
+  html+='<div class="rc-header"><div class="rc-name">TDIU</div><span class="rc-badge '+(tdiu.status==='yes'?'yes':tdiu.status==='possibly'?'maybe':'no')+'">'+(tdiu.status==='yes'?'You likely qualify':tdiu.status==='possibly'?'Possibly eligible':'Not yet eligible')+'</span></div>';
+  if(tdiu.status==='yes'){html+='<div class="rc-amount">$3,757.03</div><div class="rc-amount-label">Monthly — same as 100% rate</div>';}
+  html+='<div class="rc-explain">'+tdiu.explanation+'</div>';
+  if(tdiu.qualifyingConditions.length){tdiu.qualifyingConditions.forEach(function(q){html+='<div class="rc-qualify-item"><div class="rc-qualify-dot green"></div>'+q+'</div>';});}
+  if(tdiu.missing){html+='<div class="rc-missing"><strong>What you need:</strong> '+tdiu.missing+'</div>';}
+  if(tdiu.status==='yes'){html+='<a href="https://www.va.gov/disability/how-to-file-claim/" target="_blank" class="rc-file-btn">How to file for TDIU &rarr;</a>';}
+  html+='</div>';
+  // SMC-K card
+  html+='<div class="result-card '+(smck.status==='yes'?'qualifies':'')+'">';
+  html+='<div class="rc-header"><div class="rc-name">SMC-K</div><span class="rc-badge '+(smck.status==='yes'?'yes':'no')+'">'+(smck.status==='yes'?'You likely qualify':'Check eligibility')+'</span></div>';
+  if(smck.status==='yes'){html+='<div class="rc-amount">+$132.74</div><div class="rc-amount-label">Extra per month — on top of regular comp</div>';}
+  html+='<div class="rc-explain">'+smck.explanation+'</div>';
+  if(smck.qualifyingConditions.length){smck.qualifyingConditions.forEach(function(q){html+='<div class="rc-qualify-item"><div class="rc-qualify-dot green"></div>'+q+'</div>';});}
+  if(smck.missing){html+='<div class="rc-missing"><strong>Tip:</strong> '+smck.missing+'</div>';}
+  if(smck.status==='yes'){html+='<a href="https://www.va.gov/disability/compensation-rates/special-monthly-compensation-rates/" target="_blank" class="rc-file-btn">SMC-K details at VA.gov &rarr;</a>';}
+  html+='</div>';
+  // SMC-S card
+  html+='<div class="result-card '+(smcs.status==='possibly'?'possibly':'')+'">';
+  html+='<div class="rc-header"><div class="rc-name">SMC-S</div><span class="rc-badge '+(smcs.status==='possibly'?'maybe':'no')+'">'+(smcs.status==='possibly'?'Possibly eligible':'Not yet eligible')+'</span></div>';
+  if(smcs.status==='possibly'){html+='<div class="rc-amount">+$408.67</div><div class="rc-amount-label">Extra per month — above 100% rate</div>';}
+  html+='<div class="rc-explain">'+smcs.explanation+'</div>';
+  if(smcs.qualifyingConditions&&smcs.qualifyingConditions.length){smcs.qualifyingConditions.forEach(function(q){html+='<div class="rc-qualify-item"><div class="rc-qualify-dot amber"></div>'+q+'</div>';});}
+  if(smcs.missing){html+='<div class="rc-missing"><strong>What you need:</strong> '+smcs.missing+'</div>';}
+  html+='</div>';
+  // SMC-L card
+  html+='<div class="result-card '+(smcl.status==='possibly'?'possibly':'')+'">';
+  html+='<div class="rc-header"><div class="rc-name">SMC-L</div><span class="rc-badge '+(smcl.status==='possibly'?'maybe':'no')+'">'+(smcl.status==='possibly'?'Possibly eligible':'Not yet eligible')+'</span></div>';
+  if(smcl.status==='possibly'){html+='<div class="rc-amount">+$1,239.89</div><div class="rc-amount-label">Extra per month — aid &amp; attendance</div>';}
+  html+='<div class="rc-explain">'+smcl.explanation+'</div>';
+  if(smcl.missing){html+='<div class="rc-missing"><strong>What you need:</strong> '+smcl.missing+'</div>';}
+  if(smcl.status==='possibly'){html+='<a href="https://www.va.gov/disability/compensation-rates/special-monthly-compensation-rates/" target="_blank" class="rc-file-btn outline">SMC-L details at VA.gov &rarr;</a>';}
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  document.getElementById('user-email').textContent=currentUser.email;
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'&&plan!=='earned'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
+  sb.from('conditions').select('name,rating,decision').eq('user_id',currentUser.id).then(function(qr){
+    renderResults(qr.data||[]);
+  }).catch(function(){renderResults([]);});
+}).catch(function(){window.location.href='login.html';});
+</script>
+<script src="vera-widget.js"></script>
+</body>
+</html>
