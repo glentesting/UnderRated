@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statement Builder &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:min(420px,90vw);width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}.nav-links a:hover,.nav-links a.active{color:var(--ink)}.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:var(--ff-body);padding:4px 0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}.nav-dropdown-trigger.active{color:var(--ink);font-weight:500}
+.nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2);transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}.nav-dropdown-menu a.active{color:var(--green);font-weight:500;background:var(--green-bg)}
+.nav-links .mobile-signout{display:none}.nav-links .mobile-section-label{display:none}.nav-links .mobile-divider{display:none}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;font-family:var(--ff-body)}.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px}.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.page{max-width:760px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .3s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+.step-bar{display:flex;gap:6px;margin-bottom:24px}
+.step-dot{flex:1;height:6px;border-radius:3px;background:var(--border-2);transition:background .3s,box-shadow .3s}
+.step-dot.active{background:var(--green);box-shadow:0 0 8px rgba(14,138,99,0.3)}
+.step-dot.done{background:var(--green);opacity:.5}
+.step-label{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:28px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
+.card-title{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:16px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.type-card{padding:22px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:14px;cursor:pointer;transition:all .15s;text-align:center}
+.type-card:hover{border-color:var(--green-border);background:var(--green-bg)}
+.type-card.selected{border-color:var(--green);background:var(--green-bg);border-width:2px}
+.type-icon{font-size:28px;margin-bottom:8px}
+.type-name{font-family:var(--ff-display);font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.type-desc{font-size:12px;color:var(--ink-3);line-height:1.5}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px;line-height:1.4}
+.form-select,.form-input{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.form-select:focus,.form-input:focus{border-color:var(--green);background:var(--surface)}
+.form-textarea{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;resize:vertical;min-height:70px;line-height:1.5}
+.form-textarea:focus{border-color:var(--green);background:var(--surface)}
+.form-textarea::placeholder{color:var(--ink-4)}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s}
+.btn-primary:hover{background:var(--green-l)}.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{display:flex;align-items:center;justify-content:center;width:100%;padding:12px;background:transparent;color:var(--ink-3);font-family:var(--ff-body);font-size:14px;border:1.5px solid var(--border-2);border-radius:10px;cursor:pointer;transition:all .15s;margin-top:8px}
+.btn-secondary:hover{color:var(--ink);border-color:var(--ink-3)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.statement-output{background:var(--surface);border:2px solid var(--green);border-radius:16px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.statement-text{font-family:var(--ff-mono);font-size:13px;color:var(--ink-2);line-height:1.75;white-space:pre-wrap}
+.action-btns{display:flex;gap:8px;margin-top:16px}
+.action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;border:1.5px solid var(--border-2);background:var(--surface);color:var(--ink-2);font-family:var(--ff-body);transition:all .15s}
+.action-btn:hover{border-color:var(--green);color:var(--green)}
+.action-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.form-note{font-size:12px;color:var(--ink-3);margin-top:16px;padding:12px 14px;background:var(--bg);border-radius:8px;line-height:1.55}
+.form-note a{color:var(--green);font-weight:500}
+.loading-state{text-align:center;padding:40px 0}
+.loading-spinner{width:28px;height:28px;border:3px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+.disclaimer{font-size:12px;color:var(--ink-4);line-height:1.55;margin-top:24px;padding:14px 16px;background:var(--bg-2);border-radius:10px;border:1px solid var(--border)}
+.panel{display:none}.panel.active{display:block;animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){
+  nav{padding:0 16px}.hamburger{display:flex}.user-pill{display:none}.signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}.nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}.nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{opacity:1!important;visibility:visible!important;transform:none!important;transition:none;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{margin:0;border-radius:0;padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}.nav-dropdown-menu a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .page{padding:24px 16px 60px}.page-title{font-size:32px}.type-grid{grid-template-columns:1fr}.action-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
+          <a href="tdiu-smc.html">TDIU &amp; SMC</a>
+          <a href="cp-prep.html">C&amp;P Prep</a>
+          <a href="rating-analyzer.html">Decision analyzer</a>
+          <a href="statement-gen.html" class="active">Statement builder</a>
+        </div>
+      </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Statement builder</div>
+  <div class="page-title">Buddy &amp; Lay Statements</div>
+  <p class="page-sub">The VA ignores what it can't see. Show them.</p>
+  <div class="step-bar"><div class="step-dot active" id="sd-1"></div><div class="step-dot" id="sd-2"></div><div class="step-dot" id="sd-3"></div><div class="step-dot" id="sd-4"></div></div>
+
+  <!-- Step 1: Type -->
+  <div class="panel active" id="panel-1">
+    <div class="step-label">Step 1 of 4 &mdash; Statement type</div>
+    <div class="card">
+      <div class="card-title">What kind of statement?</div>
+      <div class="card-sub">Both types carry real weight with VA raters when written with specific details.</div>
+      <div class="type-grid">
+        <div class="type-card" onclick="selectType('lay',this)">
+          <div class="type-icon">&#128221;</div>
+          <div class="type-name">Lay Statement</div>
+          <div class="type-desc">Written by you &mdash; describes how the condition affects your daily life, work, and relationships in your own words.</div>
+        </div>
+        <div class="type-card" onclick="selectType('buddy',this)">
+          <div class="type-icon">&#129309;</div>
+          <div class="type-name">Buddy Statement</div>
+          <div class="type-desc">Written by someone who served with you &mdash; a fellow servicemember who witnessed your condition or the events that caused it.</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-step2" disabled onclick="goStep(2)">Continue &rarr;</button>
+  </div>
+
+  <!-- Step 2: Condition -->
+  <div class="panel" id="panel-2">
+    <div class="step-label">Step 2 of 4 &mdash; Condition</div>
+    <div class="card">
+      <div class="card-title">Which condition is this statement for?</div>
+      <div class="card-sub">Select from your rated conditions or type a new one.</div>
+      <div class="form-group">
+        <label class="form-label">Condition</label>
+        <select class="form-select" id="cond-select"><option value="">Select a condition...</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Or type a condition not listed</label>
+        <input class="form-input" type="text" id="cond-custom" placeholder="e.g. Sleep apnea, GERD, sciatica...">
+      </div>
+    </div>
+    <button class="btn-primary" onclick="goStep3()">Continue to interview &rarr;</button>
+    <button class="btn-secondary" onclick="goStep(1)">&#8592; Back</button>
+  </div>
+
+  <!-- Step 3: Interview -->
+  <div class="panel" id="panel-3">
+    <div class="step-label">Step 3 of 4 &mdash; Interview</div>
+    <div class="card">
+      <div class="card-title" id="interview-title">Tell us the details</div>
+      <div class="card-sub">Be specific. Real dates, real incidents, real impact. The more detail, the more credible the statement.</div>
+      <div id="interview-questions"></div>
+    </div>
+    <button class="btn-primary" id="btn-generate" onclick="generateStatement()">Generate statement</button>
+    <button class="btn-secondary" onclick="goStep(2)">&#8592; Back</button>
+  </div>
+
+  <!-- Step 4: Output -->
+  <div class="panel" id="panel-4">
+    <div class="step-label">Step 4 of 4 &mdash; Your statement</div>
+    <div id="loading-state" class="loading-state" style="display:none">
+      <div class="loading-spinner"></div>
+      <div style="font-size:14px;color:var(--ink-3)">Writing your statement...</div>
+    </div>
+    <div id="statement-output"></div>
+    <div class="disclaimer">Review this statement carefully and edit any details before submitting. This is a draft &mdash; you or the statement author must verify all facts are accurate before signing.</div>
+  </div>
+</div>
+
+<div class="paywall-overlay">
+  <div class="paywall-card">
+    <div class="paywall-lock">&#128274;</div>
+    <div class="paywall-title">Statement Builder</div>
+    <div class="paywall-sub">Upgrade to EARNED to generate buddy and lay statements.</div>
+    <button class="paywall-btn" onclick="window.location.href='upgrade.html'">Upgrade to EARNED &mdash; $19/mo</button>
+    <a href="dashboard.html" class="paywall-back">&larr; Back to dashboard</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+var currentUser=null;var sessionToken='';
+var statementType=null;var conditionName='';
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer|statement-gen/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+var LAY_QUESTIONS=[
+  {q:'How does this condition affect your daily life? (self-care, household tasks, driving, errands)',ph:'e.g. "I can\'t stand long enough to cook dinner. I need help getting dressed on bad days."'},
+  {q:'How does it affect your ability to work or hold a job?',ph:'e.g. "I\'ve missed 8 days in the past 3 months. I was written up for inability to focus."'},
+  {q:'Describe your worst days — what happens and what can\'t you do?',ph:'Walk through a specific bad day in detail'},
+  {q:'How has this condition changed since you left service?',ph:'e.g. "It started as occasional pain but now it\'s constant. I could run 3 miles in service, now I can barely walk a block."'},
+  {q:'How does it affect your relationships and family life?',ph:'e.g. "My wife says I\'m a different person. I snap at my kids. I\'ve stopped going to family gatherings."'},
+  {q:'Any specific incidents that show how severe it gets?',ph:'e.g. "Last month I fell in the shower because my knee gave out. In January I had to leave my son\'s baseball game because of a panic attack."'}
+];
+
+var BUDDY_QUESTIONS=[
+  {q:'What is your relationship to the veteran? (unit, rank, role)',ph:'e.g. "We served in the same platoon in 2nd Battalion, 3rd Marines from 2014-2017."'},
+  {q:'How long did you serve together and where?',ph:'e.g. "18 months together at Camp Lejeune and on deployment to Afghanistan in 2015-2016."'},
+  {q:'What did you personally witness regarding this condition or the events that caused it?',ph:'e.g. "I was 20 feet away when the IED hit their vehicle. I saw them get pulled out with blood coming from their ears."'},
+  {q:'How did it affect their duty performance?',ph:'e.g. "After the blast they couldn\'t remember orders. They had to be reminded multiple times. The platoon sergeant started giving them lighter duties."'},
+  {q:'Any specific incidents you remember clearly?',ph:'e.g. "One night they woke up screaming and punched the wall. Another time they broke down during a convoy brief."'},
+  {q:'How has it affected them since leaving service? (if you know)',ph:'e.g. "They told me they can\'t hold a job. They don\'t come to reunions anymore. Their spouse reached out to me saying things are bad."'}
+];
+
+function selectType(type,el){
+  document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+  statementType=type;
+  document.getElementById('btn-step2').disabled=false;
+}
+
+function goStep(n){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('panel-'+n).classList.add('active');
+  for(var i=1;i<=4;i++){var d=document.getElementById('sd-'+i);d.className='step-dot'+(i<n?' done':'')+(i===n?' active':'');}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep3(){
+  var sel=document.getElementById('cond-select').value;
+  var custom=document.getElementById('cond-custom').value.trim();
+  conditionName=custom||sel;
+  if(!conditionName){alert('Please select or type a condition.');return;}
+  var typeLabel=statementType==='buddy'?'buddy statement':'lay statement';
+  document.getElementById('interview-title').textContent=(statementType==='buddy'?'Buddy':'Lay')+' statement for: '+conditionName;
+  var questions=statementType==='buddy'?BUDDY_QUESTIONS:LAY_QUESTIONS;
+  var html='';
+  questions.forEach(function(item,i){
+    html+='<div class="form-group"><label class="form-label">'+item.q+'</label><textarea class="form-textarea" id="ans-'+i+'" placeholder="'+item.ph+'" rows="3"></textarea></div>';
+  });
+  document.getElementById('interview-questions').innerHTML=html;
+  goStep(3);
+}
+
+async function generateStatement(){
+  var btn=document.getElementById('btn-generate');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Generating...';
+  var questions=statementType==='buddy'?BUDDY_QUESTIONS:LAY_QUESTIONS;
+  var answers={};
+  questions.forEach(function(item,i){var v=document.getElementById('ans-'+i).value.trim();if(v)answers[item.q]=v;});
+
+  goStep(4);
+  document.getElementById('loading-state').style.display='block';
+  document.getElementById('statement-output').innerHTML='';
+
+  try{
+    var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
+    var res=await fetch('/api/generate-statement',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify({statementType:statementType,conditionName:conditionName,answers:answers,veteranContext:vc||undefined})
+    });
+    var data=await res.json();
+    if(!data.success)throw new Error(data.error||'Could not generate statement.');
+    renderStatement(data.statement);
+  }catch(err){
+    document.getElementById('statement-output').innerHTML='<div style="color:var(--red);text-align:center;padding:20px">'+esc(err.message)+'<br><button class="btn-secondary" style="margin-top:12px;display:inline-flex" onclick="goStep(3)">&#8592; Try again</button></div>';
+  }
+  document.getElementById('loading-state').style.display='none';
+  btn.disabled=false;btn.innerHTML='Generate statement';
+}
+
+function renderStatement(text){
+  var html='<div class="statement-output"><div class="statement-text">'+esc(text)+'</div></div>';
+  html+='<div class="action-btns"><button class="action-btn" onclick="copyStatement()">&#128203; Copy statement</button><button class="action-btn" onclick="window.print()">&#128424; Print</button><button class="action-btn" onclick="goStep(1)">&#8592; Write another</button></div>';
+  html+='<div class="form-note">Submit this statement with <strong>VA Form 21-4138</strong> (Statement in Support of Claim). <a href="https://www.va.gov/find-forms/about-form-21-4138/" target="_blank">Download the form at VA.gov &rarr;</a></div>';
+  document.getElementById('statement-output').innerHTML=html;
+}
+
+function copyStatement(){
+  var el=document.querySelector('.statement-text');if(!el)return;
+  navigator.clipboard.writeText(el.innerText).then(function(){
+    var btn=document.querySelector('.action-btns .action-btn');
+    btn.classList.add('copied');btn.innerHTML='&#10003; Copied!';
+    setTimeout(function(){btn.classList.remove('copied');btn.innerHTML='&#128203; Copy statement';},2000);
+  });
+}
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;sessionToken=session.access_token;
+  document.getElementById('user-email').textContent=currentUser.email;
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'&&plan!=='earned'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
+  sb.from('conditions').select('name,rating').eq('user_id',currentUser.id).then(function(qr){
+    var sel=document.getElementById('cond-select');
+    (qr.data||[]).forEach(function(c){var o=document.createElement('option');o.value=c.name;o.textContent=c.name+' ('+c.rating+'%)';sel.appendChild(o);});
+  });
+}).catch(function(){window.location.href='login.html';});
+</script>
+<script src="vera-widget.js"></script>
+</body>
+</html>

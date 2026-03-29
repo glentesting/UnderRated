@@ -128,6 +128,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
           <a href="tdiu-smc.html" class="active">TDIU &amp; SMC</a>
           <a href="cp-prep.html">C&amp;P Prep</a>
           <a href="rating-analyzer.html">Decision analyzer</a>
+          <a href="statement-gen.html">Statement builder</a>
         </div>
       </div>
       <div class="mobile-divider"></div>
@@ -170,7 +171,7 @@ var currentUser=null;
 
 function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
-function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer|statement-gen/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
 function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
 
 function calcCombined(conditions){
