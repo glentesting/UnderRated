@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C&amp;P Prep Coach &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:min(420px,90vw);width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:var(--ff-body);padding:4px 0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}
+.nav-dropdown-trigger.active{color:var(--ink);font-weight:500}
+.nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}
+.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2);transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}
+.nav-dropdown-menu a.active{color:var(--green);font-weight:500;background:var(--green-bg)}
+.nav-links .mobile-signout{display:none}
+.nav-links .mobile-section-label{display:none}
+.nav-links .mobile-divider{display:none}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}
+.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
+.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.page{max-width:760px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .3s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+.step-bar{display:flex;gap:6px;margin-bottom:24px}
+.step-dot{flex:1;height:6px;border-radius:3px;background:var(--border-2);transition:background .3s,box-shadow .3s}
+.step-dot.active{background:var(--green);box-shadow:0 0 8px rgba(14,138,99,0.3)}
+.step-dot.done{background:var(--green);opacity:.5}
+.step-label{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:20px;padding:28px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
+.card-title{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:16px}
+.cond-grid{display:flex;flex-direction:column;gap:6px}
+.cond-option{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg);border:1.5px solid var(--border-2);border-radius:12px;cursor:pointer;transition:all .15s}
+.cond-option:hover{border-color:var(--green-border);background:var(--green-bg)}
+.cond-option.selected{border-color:var(--green);background:var(--green-bg)}
+.cond-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-2);flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.cond-option.selected .cond-dot{border-color:var(--green);border-width:5px}
+.cond-label{font-size:15px;color:var(--ink)}
+.cond-rating{font-family:var(--ff-mono);font-size:12px;color:var(--green);margin-left:auto}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-bottom:6px;line-height:1.4}
+.form-textarea{display:block;width:100%;padding:11px 14px;font-family:var(--ff-body);font-size:14px;color:var(--ink);background:var(--bg);border:1.5px solid var(--border-2);border-radius:10px;outline:none;transition:border-color .15s;resize:vertical;min-height:70px;line-height:1.5}
+.form-textarea:focus{border-color:var(--green);background:var(--surface)}
+.form-textarea::placeholder{color:var(--ink-4)}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s}
+.btn-primary:hover{background:var(--green-l)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{display:flex;align-items:center;justify-content:center;width:100%;padding:12px;background:transparent;color:var(--ink-3);font-family:var(--ff-body);font-size:14px;border:1.5px solid var(--border-2);border-radius:10px;cursor:pointer;transition:all .15s;margin-top:8px}
+.btn-secondary:hover{color:var(--ink);border-color:var(--ink-3)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Results */
+.prep-sheet{background:var(--surface);border:2px solid var(--green);border-radius:20px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
+.prep-section{margin-bottom:20px}
+.prep-section:last-child{margin-bottom:0}
+.prep-section h3{font-family:var(--ff-display);font-size:18px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.prep-section p,.prep-section li{font-size:14px;color:var(--ink-2);line-height:1.65}
+.prep-section ul{padding-left:18px;margin-bottom:0}
+.prep-section li{margin-bottom:4px}
+.prep-section.highlight{background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:16px 18px;margin-bottom:20px}
+.prep-section.highlight h3{color:var(--green)}
+.prep-section.warning{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:12px;padding:16px 18px}
+.prep-section.warning h3{color:var(--amber)}
+.action-btns{display:flex;gap:8px;margin-top:16px}
+.action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;border:1.5px solid var(--border-2);background:var(--surface);color:var(--ink-2);font-family:var(--ff-body);transition:all .15s}
+.action-btn:hover{border-color:var(--green);color:var(--green)}
+.action-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.loading-state{text-align:center;padding:40px 0}
+.loading-spinner{width:28px;height:28px;border:3px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+.disclaimer{font-size:12px;color:var(--ink-4);line-height:1.55;margin-top:24px;padding:14px 16px;background:var(--bg-2);border-radius:10px;border:1px solid var(--border)}
+.panel{display:none}
+.panel.active{display:block;animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:780px){
+  nav{padding:0 16px}
+  .hamburger{display:flex}
+  .user-pill{display:none}
+  .signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}
+  .nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{opacity:1!important;visibility:visible!important;transform:none!important;transition:none;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{margin:0;border-radius:0;padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}
+  .nav-dropdown-menu a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .page{padding:24px 16px 60px}
+  .page-title{font-size:32px}
+  .action-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
+          <a href="tdiu-smc.html">TDIU &amp; SMC</a>
+          <a href="cp-prep.html" class="active">C&amp;P Prep</a>
+        </div>
+      </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Exam preparation</div>
+  <div class="page-title">C&amp;P Prep Coach</div>
+  <p class="page-sub">Most veterans undersell their symptoms. Don't be one of them.</p>
+
+  <div class="step-bar">
+    <div class="step-dot active" id="sd-1"></div>
+    <div class="step-dot" id="sd-2"></div>
+    <div class="step-dot" id="sd-3"></div>
+  </div>
+
+  <!-- STEP 1: Condition selector -->
+  <div class="panel active" id="panel-1">
+    <div class="step-label">Step 1 of 3 &mdash; Select condition</div>
+    <div class="card">
+      <div class="card-title">Which condition is your exam for?</div>
+      <div class="card-sub">Select the condition you have an upcoming C&amp;P exam for. We'll tailor the prep sheet to that specific exam.</div>
+      <div class="cond-grid" id="cond-grid">
+        <div style="text-align:center;padding:20px;color:var(--ink-3);font-size:14px">Loading conditions...</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-step2" disabled onclick="goStep2()">Continue to interview &rarr;</button>
+  </div>
+
+  <!-- STEP 2: Symptom interview -->
+  <div class="panel" id="panel-2">
+    <div class="step-label">Step 2 of 3 &mdash; Symptom interview</div>
+    <div class="card">
+      <div class="card-title" id="interview-title">Tell us about your symptoms</div>
+      <div class="card-sub">Answer honestly. The more detail you give, the better your prep sheet will be. Describe your <strong>worst days</strong>, not your best.</div>
+      <div id="interview-questions"></div>
+    </div>
+    <button class="btn-primary" id="btn-generate" onclick="generatePrep()">Generate my prep sheet</button>
+    <button class="btn-secondary" onclick="goStep(1)">&#8592; Back to condition</button>
+  </div>
+
+  <!-- STEP 3: Results -->
+  <div class="panel" id="panel-3">
+    <div class="step-label">Step 3 of 3 &mdash; Your prep sheet</div>
+    <div id="loading-state" class="loading-state" style="display:none">
+      <div class="loading-spinner"></div>
+      <div style="font-size:14px;color:var(--ink-3)">Generating your personalized prep sheet...</div>
+      <div style="font-size:12px;color:var(--ink-4);margin-top:4px">This may take 10&ndash;15 seconds</div>
+    </div>
+    <div id="prep-output"></div>
+    <div class="disclaimer">This prep sheet helps you accurately describe your symptoms. It is not medical advice and does not instruct you to exaggerate or misrepresent your condition. Always be truthful with VA examiners.</div>
+  </div>
+</div>
+
+<div class="paywall-overlay">
+  <div class="paywall-card">
+    <div class="paywall-lock">&#128274;</div>
+    <div class="paywall-title">C&amp;P Prep Coach</div>
+    <div class="paywall-sub">Upgrade to EARNED to get a personalized C&amp;P exam prep sheet.</div>
+    <button class="paywall-btn" onclick="window.location.href='upgrade.html'">Upgrade to EARNED &mdash; $19/mo</button>
+    <a href="dashboard.html" class="paywall-back">&larr; Back to dashboard</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+var currentUser=null;
+var sessionToken='';
+var selectedCondition=null;
+var userConditions=[];
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+
+var CONDITION_QUESTIONS={
+  'mental':[
+    {q:'How often do you experience intrusive thoughts, flashbacks, or nightmares?',ph:'e.g. "Nightmares 4-5 nights per week, flashbacks triggered by loud noises 2-3 times weekly"'},
+    {q:'How does this condition affect your ability to work or hold a job?',ph:'e.g. "Missed 3 days last month, had to leave work twice due to panic attacks"'},
+    {q:'How does it affect your relationships and social life?',ph:'e.g. "Isolated from family, haven\'t seen friends in months, spouse says I\'m a different person"'},
+    {q:'Describe your sleep — how many hours, how often do you wake up, quality?',ph:'e.g. "3-4 hours per night, wake up 2-3 times, never feel rested"'},
+    {q:'Have you had suicidal thoughts, self-harm urges, or psychiatric hospitalizations?',ph:'Answer honestly — this directly affects your rating'},
+    {q:'What medications do you take and what side effects do you experience?',ph:'e.g. "Sertraline 100mg — causes drowsiness, weight gain, sexual dysfunction"'},
+    {q:'Describe your WORST day in the past month — what happened and how did it affect you?',ph:'Walk through the day from waking up to going to bed'},
+    {q:'Do you have difficulty with memory, concentration, or making decisions?',ph:'e.g. "Forget appointments, can\'t follow conversations, take 10 minutes to make simple decisions"'}
+  ],
+  'musculoskeletal':[
+    {q:'Where exactly is your pain, and how would you rate it on a 1-10 scale on your worst days?',ph:'e.g. "Lower back, radiates to left leg. Worst days: 8/10, average: 5-6/10"'},
+    {q:'How does the pain affect your daily activities — bending, sitting, standing, walking?',ph:'e.g. "Can\'t sit more than 20 minutes, can\'t bend to tie shoes, use a reacher for objects on floor"'},
+    {q:'How does it affect your ability to work?',ph:'e.g. "Can\'t lift more than 10 lbs, have to take breaks every 30 minutes, missed 5 days last month"'},
+    {q:'Describe your flare-ups — how often, how long do they last, and what are you unable to do during them?',ph:'e.g. "Flare-ups 2-3 times per month, last 3-5 days, basically bedridden — can\'t dress myself"'},
+    {q:'Do you use any assistive devices — brace, cane, wheelchair, special mattress?',ph:'List everything you use and how often'},
+    {q:'What medications or treatments have you tried, and what are the side effects?',ph:'e.g. "Ibuprofen 800mg 3x/day (stomach problems), physical therapy (temporary relief only)"'},
+    {q:'Does the pain wake you up at night or prevent you from falling asleep?',ph:'e.g. "Wake up 2-3 times from pain, takes 30+ minutes to find a comfortable position"'},
+    {q:'Have you had any surgery, injections, or ER visits for this condition?',ph:'List dates and what happened'}
+  ],
+  'neurological':[
+    {q:'Describe the frequency of your episodes — how often per week/month?',ph:'e.g. "Migraines: 3-4 per month, each lasting 8-24 hours"'},
+    {q:'When an episode hits, what are you unable to do? Are they prostrating (force you to stop and lie down)?',ph:'e.g. "Have to lie in a dark room, can\'t drive, can\'t work, sensitivity to all light and sound"'},
+    {q:'How does this condition affect your ability to work?',ph:'e.g. "Missed 4 work days last month, left early 3 other times, can\'t look at screens during episodes"'},
+    {q:'Describe any numbness, tingling, or weakness — where, how often, how severe?',ph:'e.g. "Constant tingling in both feet, numbness in left hand, weak grip — drop things daily"'},
+    {q:'What medications do you take and do they fully control symptoms?',ph:'e.g. "Sumatriptan for acute attacks — only works 50% of the time, Topiramate daily — causes brain fog"'},
+    {q:'Describe your worst episode in the past 3 months.',ph:'What happened, how long it lasted, what you couldn\'t do'}
+  ],
+  'respiratory':[
+    {q:'Do you use a CPAP, inhaler, or other breathing device? How often?',ph:'e.g. "CPAP every night, rescue inhaler 3-4 times per week"'},
+    {q:'Even with treatment, what symptoms persist?',ph:'e.g. "Still exhausted during the day, fall asleep at my desk, can\'t exercise without wheezing"'},
+    {q:'How does this condition limit your physical activity?',ph:'e.g. "Can\'t walk more than 1 block, can\'t climb stairs without stopping, can\'t exercise at all"'},
+    {q:'How does it affect your work and daily life?',ph:'e.g. "Almost fell asleep driving twice, need daily naps, can\'t do yard work"'},
+    {q:'How often do you have exacerbations or ER/urgent care visits?',ph:'e.g. "Asthma attacks requiring ER visit 2x in past year, prednisone courses 3x"'},
+    {q:'Describe your worst breathing day in the past month.',ph:'What happened and what you couldn\'t do'}
+  ],
+  'general':[
+    {q:'How often do you experience symptoms, and how severe are they at their worst?',ph:'Be specific with frequency and severity'},
+    {q:'How does this condition affect your ability to work?',ph:'Missed days, limitations, accommodations needed'},
+    {q:'How does it affect your daily life — self-care, household tasks, relationships?',ph:'Be specific about what you can\'t do or need help with'},
+    {q:'What medications or treatments do you use, and do they fully control symptoms?',ph:'List everything and any side effects'},
+    {q:'Describe your worst day with this condition in the past month.',ph:'Walk through what happened'},
+    {q:'Have you had any hospitalizations, ER visits, or surgeries for this condition?',ph:'Dates and what happened'}
+  ]
+};
+
+function getQuestionSet(condName){
+  var n=condName.toLowerCase();
+  if(n.includes('ptsd')||n.includes('depress')||n.includes('anxiety')||n.includes('adjustment')||n.includes('tbi')||n.includes('mood'))return 'mental';
+  if(n.includes('back')||n.includes('lumbar')||n.includes('cervical')||n.includes('knee')||n.includes('shoulder')||n.includes('hip')||n.includes('ankle')||n.includes('foot')||n.includes('flat')||n.includes('arthritis')||n.includes('strain'))return 'musculoskeletal';
+  if(n.includes('migraine')||n.includes('tinnitus')||n.includes('hearing')||n.includes('neuropathy')||n.includes('radiculopathy')||n.includes('sciatic')||n.includes('vertigo'))return 'neurological';
+  if(n.includes('sleep apnea')||n.includes('asthma')||n.includes('rhinitis')||n.includes('sinusitis')||n.includes('bronchitis')||n.includes('respiratory'))return 'respiratory';
+  return 'general';
+}
+
+function goStep(n){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('panel-'+n).classList.add('active');
+  for(var i=1;i<=3;i++){
+    var dot=document.getElementById('sd-'+i);
+    dot.className='step-dot'+(i<n?' done':'')+(i===n?' active':'');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selectCondition(el,name,rating){
+  document.querySelectorAll('.cond-option').forEach(function(o){o.classList.remove('selected');});
+  el.classList.add('selected');
+  selectedCondition={name:name,rating:rating};
+  document.getElementById('btn-step2').disabled=false;
+}
+
+function goStep2(){
+  if(!selectedCondition)return;
+  document.getElementById('interview-title').textContent='Tell us about your '+selectedCondition.name;
+  var qset=getQuestionSet(selectedCondition.name);
+  var questions=CONDITION_QUESTIONS[qset];
+  var html='';
+  questions.forEach(function(item,i){
+    html+='<div class="form-group"><label class="form-label">'+item.q+'</label><textarea class="form-textarea" id="answer-'+i+'" placeholder="'+item.ph+'" rows="3"></textarea></div>';
+  });
+  document.getElementById('interview-questions').innerHTML=html;
+  goStep(2);
+}
+
+async function generatePrep(){
+  var btn=document.getElementById('btn-generate');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div> Generating...';
+
+  var qset=getQuestionSet(selectedCondition.name);
+  var questions=CONDITION_QUESTIONS[qset];
+  var answers={};
+  questions.forEach(function(item,i){
+    var val=document.getElementById('answer-'+i).value.trim();
+    if(val)answers[item.q]=val;
+  });
+
+  goStep(3);
+  document.getElementById('loading-state').style.display='block';
+  document.getElementById('prep-output').innerHTML='';
+
+  try{
+    var vc='';
+    try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
+
+    var res=await fetch('/api/cp-prep',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify({conditionName:selectedCondition.name,answers:answers,veteranContext:vc||undefined})
+    });
+    var data=await res.json();
+    if(!data.success)throw new Error(data.error||'Could not generate prep sheet.');
+
+    renderPrepSheet(data.prepSheet);
+  }catch(err){
+    document.getElementById('prep-output').innerHTML='<div style="color:var(--red);text-align:center;padding:20px">'+escHtml(err.message)+'<br><button class="btn-secondary" style="margin-top:12px;display:inline-flex" onclick="goStep(2)">&#8592; Try again</button></div>';
+  }
+
+  document.getElementById('loading-state').style.display='none';
+  btn.disabled=false;
+  btn.innerHTML='Generate my prep sheet';
+}
+
+function renderPrepSheet(text){
+  // Parse markdown-like sections into HTML
+  var html='<div class="prep-sheet">';
+  var sections=text.split(/\*\*(\d+)\.\s*(.+?)\*\*/);
+  if(sections.length<4){
+    // Fallback: try splitting on numbered headers
+    sections=text.split(/(?:^|\n)#+\s*\d+[\.\)]\s*/);
+    if(sections.length<4){
+      // Simple render
+      html+='<div class="prep-section"><div style="white-space:pre-wrap;font-size:14px;color:var(--ink-2);line-height:1.65">'+escHtml(text).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</div></div>';
+      html+='</div>';
+      document.getElementById('prep-output').innerHTML=html+renderActionButtons();
+      return;
+    }
+  }
+
+  // Format into styled sections
+  var formatted=escHtml(text);
+  formatted=formatted.replace(/\*\*(\d+)\.\s*WHAT TO TELL THE EXAMINER\*\*/gi,'</div><div class="prep-section highlight"><h3>What to tell the examiner</h3>');
+  formatted=formatted.replace(/\*\*(\d+)\.\s*WHAT NOT TO SAY\*\*/gi,'</div><div class="prep-section warning"><h3>What NOT to say</h3>');
+  formatted=formatted.replace(/\*\*(\d+)\.\s*SYMPTOMS YOU MAY BE FORGETTING.*?\*\*/gi,'</div><div class="prep-section"><h3>Symptoms you may be forgetting</h3>');
+  formatted=formatted.replace(/\*\*(\d+)\.\s*HOW TO DESCRIBE YOUR WORST DAY\*\*/gi,'</div><div class="prep-section"><h3>How to describe your worst day</h3>');
+  formatted=formatted.replace(/\*\*(\d+)\.\s*ONE PARAGRAPH SUMMARY.*?\*\*/gi,'</div><div class="prep-section highlight"><h3>Read this before you walk in</h3>');
+  formatted=formatted.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  formatted=formatted.replace(/^- (.+)$/gm,'<li>$1</li>');
+  formatted=formatted.replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>');
+  formatted=formatted.replace(/\n\n/g,'</p><p>');
+  formatted=formatted.replace(/\n/g,'<br>');
+
+  html+='<div>'+formatted+'</div></div>';
+  document.getElementById('prep-output').innerHTML=html+renderActionButtons();
+}
+
+function renderActionButtons(){
+  return '<div class="action-btns"><button class="action-btn" onclick="copyPrepSheet()">&#128203; Copy prep sheet</button><button class="action-btn" onclick="window.print()">&#128424; Print</button><button class="action-btn" onclick="goStep(1)">&#8592; Prep another condition</button></div>';
+}
+
+function copyPrepSheet(){
+  var el=document.querySelector('.prep-sheet');
+  if(!el)return;
+  var text=el.innerText;
+  navigator.clipboard.writeText(text).then(function(){
+    var btn=document.querySelector('.action-btns .action-btn');
+    btn.classList.add('copied');
+    btn.innerHTML='&#10003; Copied!';
+    setTimeout(function(){btn.classList.remove('copied');btn.innerHTML='&#128203; Copy prep sheet';},2000);
+  });
+}
+
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderConditions(conditions){
+  var el=document.getElementById('cond-grid');
+  if(!conditions.length){
+    el.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:24px;margin-bottom:8px">&#128203;</div><div style="font-size:14px;color:var(--ink-3);margin-bottom:12px">No conditions found. Upload your rating decision or enter conditions first.</div><a href="vault.html" style="font-size:13px;color:var(--green);font-weight:500">Upload in Vault &rarr;</a></div>';
+    return;
+  }
+  el.innerHTML=conditions.map(function(c){
+    return '<div class="cond-option" onclick="selectCondition(this,\''+c.name.replace(/'/g,"\\'")+'\',\''+c.rating+'\')"><div class="cond-dot"></div><div class="cond-label">'+escHtml(c.name)+'</div><span class="cond-rating">'+c.rating+'%</span></div>';
+  }).join('');
+}
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  sessionToken=session.access_token;
+  document.getElementById('user-email').textContent=currentUser.email;
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'&&plan!=='earned'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
+  sb.from('conditions').select('name,rating,decision').eq('user_id',currentUser.id).then(function(qr){
+    userConditions=qr.data||[];
+    renderConditions(userConditions);
+  }).catch(function(){renderConditions([]);});
+}).catch(function(){window.location.href='login.html';});
+</script>
+<script src="vera-widget.js"></script>
+</body>
+</html>
