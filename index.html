@@ -135,14 +135,20 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .step h3{font-size:20px;font-weight:500;color:var(--ink);margin-bottom:10px}
 .step p{font-size:14px;color:var(--ink-2);line-height:1.65}
 /* FEATURES */
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.feat-card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:14px;padding:26px;transition:border-color .2s}
-.feat-card:hover{border-color:var(--border-2)}
-.feat-card.highlight{border-color:var(--green-border)}
+.feat-free-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.feat-card{background:var(--surface);border:1.5px solid var(--border-2);border-radius:14px;padding:24px;transition:border-color .2s}
+.feat-card:hover{border-color:var(--green-border)}
+.feat-card.free{background:rgba(14,138,99,0.06);border-color:rgba(14,138,99,0.25);padding:28px}
 .feat-badge{display:inline-block;font-family:var(--ff-mono);font-size:10px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);border-radius:4px;padding:3px 9px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px;font-weight:500}
-.feat-badge.paid{background:var(--amber-bg);color:var(--amber);border-color:rgba(196,127,10,0.25)}
-.feat-title{font-size:17px;font-weight:500;color:var(--ink);margin-bottom:9px}
-.feat-desc{font-size:14px;color:var(--ink-2);line-height:1.65}
+.feat-divider{display:flex;align-items:center;gap:12px;margin:8px 0 20px}
+.feat-divider::before,.feat-divider::after{content:'';flex:1;height:1px;background:var(--border-2)}
+.feat-divider-text{font-family:var(--ff-mono);font-size:11px;color:var(--ink-4);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.feat-divider-text svg{opacity:.5}
+.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.feat-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.feat-desc{font-size:13px;color:var(--ink-2);line-height:1.6}
+.feat-unlock{display:block;margin-top:12px;font-size:12px;font-weight:500;color:var(--green);font-family:var(--ff-mono);opacity:.8;transition:opacity .15s;text-decoration:none}
+.feat-unlock:hover{opacity:1;text-decoration:underline}
 /* WHO */
 .who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .who-card{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:24px;transition:border-color .15s}
@@ -194,6 +200,7 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   .hero-headline{font-size:54px}
   .steps{grid-template-columns:1fr}
   .features-grid{grid-template-columns:1fr 1fr}
+  .feat-free-row{grid-template-columns:1fr 1fr}
   .who-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr}
   .validate-cards{grid-template-columns:1fr}
@@ -213,7 +220,8 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
   .final-cta h2{font-size:44px}
 }
 @media(max-width:560px){
-  .features-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .feat-free-row{grid-template-columns:1fr}
   .security-strip{flex-wrap:wrap!important}
   .hero-headline{font-size:44px}
   .hero{padding:40px 16px 36px}
@@ -455,17 +463,25 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
       <div class="section-title">Everything in one place</div>
       <p class="section-sub" style="max-width:480px;white-space:nowrap;font-size:15px">The tools attorneys use &mdash; without the 20&ndash;33% contingency fee.</p>
     </div>
+    <!-- FREE TOOLS ROW -->
+    <div class="feat-free-row">
+      <div class="feat-card free"><div class="feat-badge">Free</div><div class="feat-title">Rating calculator</div><p class="feat-desc">Input your conditions and ratings. Get the combined math explained step by step &mdash; and see exactly how far you are from the next compensation tier.</p></div>
+      <div class="feat-card free"><div class="feat-badge">Free</div><div class="feat-title">Gap identifier</div><p class="feat-desc">AI-powered analysis based on your MOS, service era, and current conditions. Surfaces unclaimed conditions with the specific reason you likely qualify.</p></div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="feat-divider"><span class="feat-divider-text"><svg viewBox="0 0 10 12" fill="none" width="10" height="12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Earned &mdash; $39/month</span></div>
+
+    <!-- PAID TOOLS GRID -->
     <div class="features-grid">
-      <div class="feat-card highlight"><div class="feat-badge">Free</div><div class="feat-title">Rating calculator</div><p class="feat-desc">Input your conditions and ratings. Get the combined math explained step by step &mdash; and see exactly how far you are from the next compensation tier.</p></div>
-      <div class="feat-card highlight"><div class="feat-badge">Free</div><div class="feat-title">Gap identifier</div><p class="feat-desc">AI-powered analysis based on your MOS, service era, and current conditions. Surfaces unclaimed conditions with the specific reason you likely qualify.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Claim builder</div><p class="feat-desc">Guided step-by-step workflow that outputs a ready-to-file claim package &mdash; evidence requirements, form instructions, and personal statement templates.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Nexus letter generator</div><p class="feat-desc">AI-assisted drafts connecting secondary conditions to primary ones. The nexus letter makes or breaks a secondary claim &mdash; most vets never file one.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Appeal assistant</div><p class="feat-desc">Got denied? UNDERRATED reads the denial code, explains it in plain English, picks the right appeal lane, and helps you build the response.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Document vault + state benefits</div><p class="feat-desc">Store your DD-214, C&amp;P exam results, and records securely. Plus your federal rating stacked with every state-specific benefit you qualify for.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">TDIU &amp; SMC calculator</div><p class="feat-desc">Find out if you qualify for TDIU or Special Monthly Compensation &mdash; two benefits most veterans never claim.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">C&amp;P Exam Prep Coach</div><p class="feat-desc">Walk into your C&amp;P exam knowing exactly what to say. Stop underselling your symptoms.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Rating Decision Analyzer</div><p class="feat-desc">Find wrong diagnostic codes, procedural errors, and appeal opportunities in your VA decision.</p></div>
-      <div class="feat-card"><div class="feat-badge paid">Earned</div><div class="feat-title">Buddy &amp; Lay Statement Builder</div><p class="feat-desc">Generate properly formatted VA statements that move ratings. Massively underused.</p></div>
+      <div class="feat-card"><div class="feat-title">Claim builder</div><p class="feat-desc">Guided step-by-step workflow that outputs a ready-to-file claim package &mdash; evidence requirements, form instructions, and templates.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">Nexus letter generator</div><p class="feat-desc">AI-assisted drafts connecting secondary conditions to primary ones. The nexus letter makes or breaks a secondary claim.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">Appeal assistant</div><p class="feat-desc">Got denied? Reads the denial code, explains it in plain English, picks the right appeal lane, and builds the response.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">Document vault</div><p class="feat-desc">Store your DD-214, C&amp;P exam results, and records securely. AI extracts all conditions from your rating decision PDF.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">TDIU &amp; SMC calculator</div><p class="feat-desc">Find out if you qualify for TDIU or Special Monthly Compensation &mdash; two benefits most veterans never claim.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">C&amp;P Exam Prep Coach</div><p class="feat-desc">Walk into your C&amp;P exam knowing exactly what to say. Personalized prep sheet for your specific condition.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">Rating Decision Analyzer</div><p class="feat-desc">Find wrong diagnostic codes, procedural errors, and appeal opportunities in your VA decision.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
+      <div class="feat-card"><div class="feat-title">Buddy &amp; Lay Statement Builder</div><p class="feat-desc">Generate properly formatted VA statements that move ratings. Massively underused by veterans.</p><a href="signup.html" class="feat-unlock">Unlock &rarr;</a></div>
     </div>
   </div>
 </section>
