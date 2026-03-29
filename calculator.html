@@ -54,6 +54,9 @@
   .page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
   .page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
 
+  .import-toggle{font-family:var(--ff-mono);font-size:12px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border-2);background:var(--bg);color:var(--ink-3);cursor:pointer;transition:all .15s}
+  .import-toggle:hover{border-color:var(--green-border);color:var(--ink)}
+  .import-toggle.active{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:500}
   .layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
   .card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04)}
   .card:last-child{margin-bottom:0}
@@ -223,6 +226,16 @@
   <div class="page-title">Rating calculator</div>
   <p class="page-sub">Add your service-connected conditions. We'll show the real VA math.</p>
 
+  <div id="import-bar" style="display:none;margin-bottom:16px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="import-toggle active" id="toggle-manual" onclick="setMode('manual')">Enter manually</button>
+      <button class="import-toggle" id="toggle-vault" onclick="setMode('vault')">Import from my vault</button>
+    </div>
+    <div id="import-pdf-link" style="font-size:12px;color:var(--ink-3)">Or <button onclick="document.getElementById('pdf-picker').click()" style="background:none;border:none;color:var(--green);font-weight:500;font-family:var(--ff-body);font-size:12px;cursor:pointer;padding:0">upload a rating decision PDF</button> for one-time import</div>
+    <input type="file" accept=".pdf" id="pdf-picker" style="display:none" onchange="handlePDFImport(event)">
+    <div id="import-status" style="display:none;margin-top:8px;font-size:13px;padding:10px 14px;border-radius:8px"></div>
+  </div>
+
   <div class="layout">
     <div>
       <div class="card">
@@ -349,6 +362,7 @@ async function init() {
     if (session) {
       currentUser = session.user;
       document.getElementById("user-email").textContent = currentUser.email;
+      document.getElementById('import-bar').style.display='block';
       sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
         var plan=(pr.data&&pr.data.plan)||'free';
         if(plan!=='pro')addNavLocks();
@@ -726,6 +740,72 @@ function renderCompTable() {
     row.innerHTML = `<span>${t}%${isActive ? ' ← you are here' : ''}</span><span style="font-family:var(--ff-mono);font-size:13px">$${(COMP_RATES[t] || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}/mo</span>`;
     el.appendChild(row);
   });
+}
+
+// ── IMPORT FUNCTIONS ──
+function setMode(mode){
+  document.getElementById('toggle-manual').classList.toggle('active',mode==='manual');
+  document.getElementById('toggle-vault').classList.toggle('active',mode==='vault');
+  if(mode==='vault')importFromVault();
+}
+
+function importFromVault(){
+  if(!currentUser){showImportStatus('Log in to import from your vault.','var(--amber-bg)','var(--amber)');return;}
+  showImportStatus('Loading conditions from your vault...','var(--bg-2)','var(--ink-3)');
+  sb.from('conditions').select('name,rating').eq('user_id',currentUser.id).then(function(res){
+    var data=res.data||[];
+    if(!data.length){
+      showImportStatus('No conditions in your vault yet. <a href="vault.html" style="color:var(--green);font-weight:500">Upload your rating decision in the Vault first &rarr;</a>','var(--amber-bg)','var(--amber)');
+      return;
+    }
+    populateFromData(data);
+    showImportStatus('Loaded '+data.length+' condition'+(data.length!==1?'s':'')+' from your vault.','var(--green-bg)','var(--green)');
+  }).catch(function(){
+    showImportStatus('Could not load conditions. Try again.','var(--amber-bg)','var(--amber)');
+  });
+}
+
+function populateFromData(data){
+  conditions=[];
+  data.forEach(function(d){
+    var match=CONDITIONS.find(function(c){return c.name===d.name;});
+    conditions.push({conditionName:d.name,rating:parseInt(d.rating)||0,conditionData:match||null});
+  });
+  render();
+}
+
+async function handlePDFImport(e){
+  var file=e.target.files[0];
+  if(!file)return;
+  if(!file.name.toLowerCase().endsWith('.pdf')){showImportStatus('Please select a PDF file.','var(--amber-bg)','var(--amber)');return;}
+  showImportStatus('Extracting conditions from PDF...','var(--bg-2)','var(--ink-3)');
+  try{
+    // Upload to temp storage
+    var fileName='temp/'+Date.now()+'-'+file.name;
+    var upRes=await sb.storage.from('rating-decisions').upload(fileName,file,{contentType:'application/pdf',upsert:false});
+    if(upRes.error)throw new Error(upRes.error.message);
+    var fileUrl=SUPABASE_URL+'/storage/v1/object/public/rating-decisions/'+encodeURIComponent(fileName);
+    // Extract
+    var token=currentUser?(await sb.auth.getSession()).data.session.access_token:'';
+    var res=await fetch('https://getunderrated.vercel.app/api/extract-pdf',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({file_url:fileUrl,user_id:currentUser?currentUser.id:'temp'})
+    });
+    var data=await res.json();
+    if(!data.success||!data.conditions||!data.conditions.length)throw new Error('No conditions found in this PDF.');
+    var mapped=data.conditions.map(function(c){return{name:c.condition_name||c.name||'Unknown',rating:c.rating!=null?String(c.rating):'0'};});
+    populateFromData(mapped);
+    showImportStatus('Extracted '+mapped.length+' condition'+(mapped.length!==1?'s':'')+' from your PDF.','var(--green-bg)','var(--green)');
+  }catch(err){
+    showImportStatus('Could not extract conditions \u2014 '+(err.message||'try again.'),'var(--amber-bg)','var(--amber)');
+  }
+  e.target.value='';
+}
+
+function showImportStatus(html,bg,color){
+  var el=document.getElementById('import-status');
+  el.style.display='block';el.style.background=bg;el.style.color=color;el.innerHTML=html;
 }
 
 init();
