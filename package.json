@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/glentesting/UnderRated#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.100.1",
     "stripe": "^21.0.1"
   }
 }
