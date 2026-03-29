@@ -205,14 +205,22 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
         </div>
       </div>
       <div class="mobile-divider"></div>
-      <a href="profile.html">Profile</a>
-      <a href="dashboard.html">My dashboard</a>
-      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      <div id="nav-auth-items">
+        <a href="profile.html">Profile</a>
+        <a href="dashboard.html">My dashboard</a>
+        <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      </div>
+      <div id="nav-guest-items" style="display:none">
+        <a href="login.html">Log in</a>
+        <a href="signup.html" style="color:var(--green);font-weight:500">Sign up free</a>
+      </div>
     </div>
     <div class="nav-right">
       <span class="user-email" id="user-email"></span>
+      <a href="login.html" id="nav-login-desktop" style="display:none;font-size:13px;color:var(--ink-3)">Log in</a>
+      <a href="signup.html" id="nav-signup-desktop" style="display:none;font-size:13px;color:#fff;background:var(--green);padding:7px 16px;border-radius:8px;font-weight:500;white-space:nowrap">Sign up</a>
       <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
-      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+      <button class="signout-btn" id="nav-signout-desktop" onclick="handleSignout()">Sign out</button>
     </div>
   </div>
 </nav>
@@ -546,10 +554,11 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 // ── INIT ──
 sb.auth.getSession().then(function(res){
   var session=res&&res.data&&res.data.session?res.data.session:null;
-  if(!session){document.body.classList.add('paywalled');return;}
+  if(!session){document.body.classList.add('paywalled');updateNavAuth(false);return;}
   currentUser=session.user;
   sessionToken=session.access_token;
   document.getElementById('user-email').textContent=currentUser.email;
+  updateNavAuth(true);
 
   // Check plan
   sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){

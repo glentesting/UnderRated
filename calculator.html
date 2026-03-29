@@ -222,13 +222,21 @@
         </div>
       </div>
       <div class="mobile-divider"></div>
-      <a href="profile.html">Profile</a>
-      <a href="dashboard.html">My dashboard</a>
-      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      <div id="nav-auth-items">
+        <a href="profile.html">Profile</a>
+        <a href="dashboard.html">My dashboard</a>
+        <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      </div>
+      <div id="nav-guest-items" style="display:none">
+        <a href="login.html">Log in</a>
+        <a href="signup.html" style="color:var(--green);font-weight:500">Sign up free</a>
+      </div>
     </div>
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
-      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+      <a href="login.html" id="nav-login-desktop" style="display:none;font-size:13px;color:var(--ink-3)">Log in</a>
+      <a href="signup.html" id="nav-signup-desktop" style="display:none;font-size:13px;color:#fff;background:var(--green);padding:7px 16px;border-radius:8px;font-weight:500;white-space:nowrap">Sign up</a>
+      <button class="signout-btn" id="nav-signout-desktop" onclick="handleSignout()">Sign out</button>
       <button class="hamburger" onclick="toggleNav()">☰ Menu</button>
     </div>
   </div>
@@ -375,6 +383,7 @@ async function init() {
     if (session) {
       currentUser = session.user;
       document.getElementById("user-email").textContent = currentUser.email;
+      updateNavAuth(true);
       document.getElementById('import-bar').style.display='block';
       sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
         var plan=(pr.data&&pr.data.plan)||'free';
@@ -385,7 +394,8 @@ async function init() {
         render();
       });
     } else {
-      // Not logged in - tool still works, save will prompt signup
+      // Not logged in
+      updateNavAuth(false);
       addCondition();
       render();
     }

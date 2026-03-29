@@ -144,9 +144,15 @@ nav{position:sticky;top:0;z-index:600;background:rgba(245,242,236,0.93);backdrop
         </div>
       </div>
       <div class="mobile-divider"></div>
-      <a href="profile.html">Profile</a>
-      <a href="dashboard.html">My dashboard</a>
-      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      <div id="nav-auth-items">
+        <a href="profile.html">Profile</a>
+        <a href="dashboard.html">My dashboard</a>
+        <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      </div>
+      <div id="nav-guest-items" style="display:none">
+        <a href="login.html">Log in</a>
+        <a href="signup.html" style="color:var(--green);font-weight:500">Sign up free</a>
+      </div>
     </div>
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
@@ -298,7 +304,7 @@ function handleSignout() {
 
 sb.auth.getSession().then(function(res) {
   var session = res&&res.data&&res.data.session?res.data.session:null;
-  if(!session){document.body.classList.add('paywalled');return;}
+  if(!session){document.body.classList.add('paywalled');updateNavAuth(false);return;}
   currentUser = session.user;
   document.getElementById('user-email').textContent = currentUser.email;
   // Check plan

@@ -170,9 +170,15 @@ nav{position:sticky;top:0;z-index:600;background:rgba(245,242,236,0.93);backdrop
         </div>
       </div>
       <div class="mobile-divider"></div>
-      <a href="profile.html">Profile</a>
-      <a href="dashboard.html">My dashboard</a>
-      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      <div id="nav-auth-items">
+        <a href="profile.html">Profile</a>
+        <a href="dashboard.html">My dashboard</a>
+        <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+      </div>
+      <div id="nav-guest-items" style="display:none">
+        <a href="login.html">Log in</a>
+        <a href="signup.html" style="color:var(--green);font-weight:500">Sign up free</a>
+      </div>
     </div>
     <div class="nav-right">
       <span class="user-pill" id="user-email"></span>
@@ -248,6 +254,7 @@ function toggleNav(){document.getElementById('nav-links').classList.toggle('open
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 function addNavLocks(){var lockSvg='<svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>';document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer|statement-gen/)&&!a.querySelector('.nav-lock')){a.innerHTML=lockSvg+a.textContent;}});}
 function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+function updateNavAuth(loggedIn){var ai=document.getElementById("nav-auth-items");var gi=document.getElementById("nav-guest-items");var ue=document.getElementById("user-email");var ld=document.getElementById("nav-login-desktop");var sd=document.getElementById("nav-signup-desktop");var so=document.getElementById("nav-signout-desktop");if(loggedIn){if(ai)ai.style.display="";if(gi)gi.style.display="none";if(ld)ld.style.display="none";if(sd)sd.style.display="none";if(so)so.style.display="";}else{if(ai)ai.style.display="none";if(gi)gi.style.display="";if(ue)ue.style.display="none";if(ld)ld.style.display="";if(sd)sd.style.display="";if(so)so.style.display="none";}}
 
 var CONDITION_QUESTIONS={
   'mental':[
@@ -439,10 +446,11 @@ function renderConditions(conditions){
 // Init
 sb.auth.getSession().then(function(res){
   var session=res&&res.data&&res.data.session?res.data.session:null;
-  if(!session){document.body.classList.add('paywalled');return;}
+  if(!session){document.body.classList.add('paywalled');updateNavAuth(false);return;}
   currentUser=session.user;
   sessionToken=session.access_token;
   document.getElementById('user-email').textContent=currentUser.email;
+  updateNavAuth(true);
   sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
     var plan=(pr.data&&pr.data.plan)||'free';
     if(plan!=='pro'&&plan!=='earned'){document.body.classList.add('paywalled');addNavLocks();document.getElementById('paywall-cta').href='upgrade.html';document.getElementById('paywall-cta').textContent='Unlock EARNED \u2014 $39/mo';document.getElementById('paywall-alt').innerHTML='Already EARNED? <a href="login.html">Log in</a>';}
