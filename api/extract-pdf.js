@@ -177,6 +177,29 @@ Rules for conditions:
       });
     }
 
+    // Log upload to uploads table
+    if (user_id && user_id !== 'temp') {
+      try {
+        const filename = file_url.split('/').pop().split('?')[0];
+        const decodedFilename = decodeURIComponent(filename).replace(/^\d+-/, '');
+        await fetch(`https://bglhfmwjfnmybcrjlscm.supabase.co/rest/v1/uploads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': process.env.SUPABASE_SERVICE_ROLE_KEY,
+            'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            user_id,
+            original_filename: decodedFilename,
+            file_url,
+            conditions_found: (parsed.conditions || []).length
+          })
+        });
+      } catch { /* non-fatal */ }
+    }
+
     return new Response(JSON.stringify({
       success: true,
       user_id: user_id || null,
