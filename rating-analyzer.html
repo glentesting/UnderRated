@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rating Decision Analyzer &mdash; UNDERRATED</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--bg-2:#EDEAE2;--surface:#FFFFFF;--border:rgba(0,0,0,0.09);--border-2:rgba(0,0,0,0.16);--green:#0E8A63;--green-l:#10A376;--green-bg:rgba(14,138,99,0.09);--green-border:rgba(14,138,99,0.25);--ink:#18191A;--ink-2:#4A4845;--ink-3:#8A8780;--ink-4:#B8B5AE;--amber:#C47F0A;--amber-bg:rgba(196,127,10,0.09);--amber-border:rgba(196,127,10,0.25);--red:#C43030;--red-bg:rgba(196,48,48,0.07);--red-border:rgba(196,48,48,0.2);--ff-display:'Barlow Condensed',sans-serif;--ff-body:'DM Sans',sans-serif;--ff-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+body.paywalled .page{filter:blur(6px);pointer-events:none;user-select:none}
+body.paywalled{overflow:hidden}
+.paywall-overlay{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:999;background:rgba(245,242,236,0.85);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px}
+body.paywalled .paywall-overlay{display:flex}
+.paywall-card{background:var(--surface);border:1.5px solid var(--green-border);border-radius:20px;padding:40px 36px;max-width:min(420px,90vw);width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.paywall-lock{font-size:36px;margin-bottom:12px}
+.paywall-title{font-family:var(--ff-display);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:8px}
+.paywall-sub{font-size:15px;color:var(--ink-3);line-height:1.5;margin-bottom:24px}
+.paywall-btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;padding:14px 30px;border-radius:10px;border:none;cursor:pointer;transition:background .15s;width:100%}
+.paywall-btn:hover{background:var(--green-l)}
+.paywall-back{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px}
+.nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;position:relative}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:800;letter-spacing:.5px;color:var(--ink)}.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:14px;color:var(--ink-3);transition:color .15s}.nav-links a:hover,.nav-links a.active{color:var(--ink)}.nav-links a.active{font-weight:500}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger{font-size:14px;color:var(--ink-3);cursor:pointer;transition:color .15s;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:var(--ff-body);padding:4px 0}
+.nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}.nav-dropdown-trigger.active{color:var(--ink);font-weight:500}
+.nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}.nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2);transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)}.nav-dropdown-menu a.active{color:var(--green);font-weight:500;background:var(--green-bg)}
+.nav-links .mobile-signout{display:none}.nav-links .mobile-section-label{display:none}.nav-links .mobile-divider{display:none}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--ink-3);font-family:var(--ff-mono);background:var(--bg-2);padding:5px 10px;border-radius:20px}
+.signout-btn{font-size:13px;color:var(--ink-3);background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:var(--ff-body)}.signout-btn:hover{color:var(--ink);border-color:var(--ink-3)}
+.hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}.hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.page{max-width:820px;margin:0 auto;padding:36px 28px 60px;animation:fadeUp .3s ease both}
+.page-eyebrow{font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.page-title{font-family:var(--ff-display);font-size:40px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px}
+.page-sub{font-size:15px;color:var(--ink-3);line-height:1.6;margin-bottom:28px}
+
+.summary-strip{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.summary-stat{flex:1;min-width:120px;background:var(--surface);border:1.5px solid var(--border-2);border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.summary-num{font-family:var(--ff-display);font-size:32px;font-weight:800;line-height:1}
+.summary-num.green{color:var(--green)}.summary-num.amber{color:var(--amber)}.summary-num.red{color:var(--red)}
+.summary-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+.rc{background:var(--surface);border-radius:16px;padding:24px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);border-left:4px solid var(--border-2)}
+.rc.accept{border-left-color:var(--green)}.rc.supplement{border-left-color:var(--amber)}.rc.appeal{border-left-color:var(--red)}
+.rc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.rc-name{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);line-height:1}
+.rc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rc-code{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);background:var(--bg-2);padding:3px 8px;border-radius:6px}
+.rc-rating{font-family:var(--ff-mono);font-size:12px;font-weight:500;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:12px;padding:2px 10px}
+.rc-action{font-family:var(--ff-mono);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
+.rc-action.accept{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.rc-action.supplement{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.rc-action.appeal{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.rc-confidence{font-family:var(--ff-mono);font-size:10px;color:var(--ink-4);letter-spacing:.05em;text-transform:uppercase}
+.rc-reason{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:12px}
+.rc-issues{margin-bottom:12px}
+.rc-issues-title{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.rc-issue{font-size:13px;color:var(--ink-2);line-height:1.55;padding:6px 0 6px 16px;position:relative;border-bottom:1px solid var(--border)}
+.rc-issue:last-child{border-bottom:none}
+.rc-issue::before{content:'\2022';position:absolute;left:0;color:var(--amber)}
+.rc-next{background:var(--bg);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--ink-2);line-height:1.55}
+.rc-next strong{color:var(--ink);font-weight:500}
+.rc-secondaries{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.rc-sec-title{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;width:100%}
+.rc-sec-tag{font-size:11px;padding:4px 10px;background:var(--bg-2);border:1px solid var(--border);border-radius:16px;color:var(--ink-3)}
+
+.next-steps{background:var(--surface);border:2px solid var(--green);border-radius:16px;padding:24px;margin-top:24px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.ns-title{font-family:var(--ff-display);font-size:22px;font-weight:800;color:var(--ink);margin-bottom:12px}
+.ns-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink-2);line-height:1.55}
+.ns-item:last-child{border-bottom:none}
+.ns-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ns-dot.green{background:var(--green)}.ns-dot.amber{background:var(--amber)}.ns-dot.red{background:var(--red)}
+.ns-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:500;color:var(--green);text-decoration:none}
+.ns-link:hover{text-decoration:underline}
+
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:var(--green);color:#fff;font-family:var(--ff-body);font-size:15px;font-weight:500;border:none;border-radius:10px;cursor:pointer;transition:background .15s}
+.btn-primary:hover{background:var(--green-l)}.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:40px 0}
+.loading-spinner{width:28px;height:28px;border:3px solid var(--border-2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+.empty{text-align:center;padding:40px 20px}.empty-icon{font-size:32px;margin-bottom:10px}.empty-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:6px}.empty-sub{font-size:14px;color:var(--ink-3);margin-bottom:16px;line-height:1.6}
+.disclaimer{font-size:12px;color:var(--ink-4);line-height:1.55;margin-top:24px;padding:14px 16px;background:var(--bg-2);border-radius:10px;border:1px solid var(--border)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){
+  nav{padding:0 16px}.hamburger{display:flex}.user-pill{display:none}.signout-btn{display:none}
+  .nav-links{display:none;position:absolute;top:64px;left:-16px;right:-16px;background:var(--surface);border-bottom:1.5px solid var(--border-2);flex-direction:column;padding:8px 20px 14px;gap:0;z-index:99}
+  .nav-links.open{display:flex}.nav-links>a{padding:11px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--ink-2)}
+  .nav-links .mobile-section-label{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);padding:14px 0 4px;border-bottom:none}
+  .nav-links .mobile-divider{height:1px;background:var(--border-2);margin:6px 0}
+  .nav-dropdown{border-bottom:none}.nav-dropdown-trigger{display:none}
+  .nav-dropdown-menu{opacity:1!important;visibility:visible!important;transform:none!important;transition:none;position:static;border:none;box-shadow:none;border-radius:0;padding:0;min-width:auto;background:transparent}
+  .nav-dropdown-menu a{margin:0;border-radius:0;padding:8px 0;font-size:15px;color:var(--ink-2);border-bottom:1px solid var(--border)}.nav-dropdown-menu a:last-child{border-bottom:none}
+  .nav-links .mobile-signout{display:block;padding:11px 0;font-size:15px;color:var(--red);cursor:pointer;border:none;background:none;font-family:var(--ff-body);width:100%;text-align:left}
+  .page{padding:24px 16px 60px}.page-title{font-size:32px}.summary-strip{flex-direction:row}.summary-stat{min-width:0}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">UNDER<span>RATED</span></a>
+    <div class="nav-links" id="nav-links">
+      <div class="mobile-section-label">FREE</div>
+      <a href="calculator.html">Rating calculator</a>
+      <a href="gap.html">Gap identifier</a>
+      <div class="mobile-section-label">PRO TOOLS</div>
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button class="nav-dropdown-trigger active" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="vault.html">Vault</a>
+          <a href="claim-builder.html">Claim builder</a>
+          <a href="state-benefits.html">State benefits</a>
+          <a href="nexus-letter.html">Nexus letter</a>
+          <a href="appeal-assistant.html">Appeal assistant</a>
+          <a href="tdiu-smc.html">TDIU &amp; SMC</a>
+          <a href="cp-prep.html">C&amp;P Prep</a>
+          <a href="rating-analyzer.html" class="active">Decision analyzer</a>
+        </div>
+      </div>
+      <div class="mobile-divider"></div>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">My dashboard</a>
+      <button class="mobile-signout" onclick="handleSignout()">Sign out</button>
+    </div>
+    <div class="nav-right">
+      <span class="user-pill" id="user-email"></span>
+      <button class="hamburger" onclick="toggleNav()">&#9776; Menu</button>
+      <button class="signout-btn" onclick="handleSignout()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-eyebrow">Decision review</div>
+  <div class="page-title">Rating Decision Analyzer</div>
+  <p class="page-sub">Attorney-level analysis of your VA rating decision. Finds wrong diagnostic codes, procedural errors, and appeal opportunities.</p>
+  <div id="content"><div class="loading"><div class="loading-spinner"></div><div style="font-size:14px;color:var(--ink-3)">Loading your conditions...</div></div></div>
+  <div class="disclaimer">This analysis is for informational purposes only. It is not legal advice. The VA decision review process has strict deadlines — always consult a VSO or accredited claims agent before filing. <a href="https://www.va.gov/decision-reviews/" target="_blank" style="color:var(--green);font-weight:500">VA Decision Reviews &rarr;</a></div>
+</div>
+
+<div class="paywall-overlay">
+  <div class="paywall-card">
+    <div class="paywall-lock">&#128274;</div>
+    <div class="paywall-title">Decision Analyzer</div>
+    <div class="paywall-sub">Upgrade to EARNED to get attorney-level analysis of your rating decision.</div>
+    <button class="paywall-btn" onclick="window.location.href='upgrade.html'">Upgrade to EARNED &mdash; $19/mo</button>
+    <a href="dashboard.html" class="paywall-back">&larr; Back to dashboard</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/veteran-context.js"></script>
+<script>
+var SUPABASE_URL='https://bglhfmwjfnmybcrjlscm.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnbGhmbXdqZm5teWJjcmpsc2NtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzk2MjYsImV4cCI6MjA4OTg1NTYyNn0.Pd1mHpNdHWAh4OKsPBXpCs86OXNOYMPxxhGVwBuEqqI';
+var sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+var currentUser=null;var sessionToken='';var userConditions=[];
+
+function toggleNav(){document.getElementById('nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function handleSignout(){Object.keys(localStorage).filter(function(k){return k.startsWith('ur_');}).forEach(function(k){localStorage.removeItem(k);});sb.auth.signOut().then(function(){window.location.href='login.html';});}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function showConditions(conditions){
+  var el=document.getElementById('content');
+  if(!conditions.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">&#128203;</div><div class="empty-title">No rating decision found</div><div class="empty-sub">Upload your VA rating decision PDF in the Vault first. We\'ll extract your conditions and then analyze the decision.</div><a href="vault.html" class="btn-primary" style="max-width:300px;margin:0 auto;text-decoration:none">Upload in Vault &rarr;</a></div>';
+    return;
+  }
+  var html='<div style="background:var(--surface);border:1.5px solid var(--border-2);border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06)">';
+  html+='<div style="font-family:var(--ff-display);font-size:20px;font-weight:800;color:var(--ink);margin-bottom:4px">Your rated conditions</div>';
+  html+='<div style="font-size:13px;color:var(--ink-3);margin-bottom:16px">'+conditions.length+' condition'+(conditions.length!==1?'s':'')+' found. The analyzer will check each for errors, wrong codes, and appeal opportunities.</div>';
+  conditions.forEach(function(c){
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:4px;font-size:13px"><span style="color:var(--ink)">'+esc(c.name)+'</span><span style="font-family:var(--ff-mono);color:var(--green);font-weight:500">'+c.rating+'%</span></div>';
+  });
+  html+='</div>';
+  html+='<button class="btn-primary" id="analyze-btn" onclick="runAnalysis()">Analyze my rating decision</button>';
+  el.innerHTML=html;
+}
+
+async function runAnalysis(){
+  var btn=document.getElementById('analyze-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Analyzing your decision...';
+  var el=document.getElementById('content');
+
+  try{
+    var vc='';try{vc=await buildVeteranContext(currentUser.id,sb);}catch(e){}
+    var payload=userConditions.map(function(c){return{name:c.name,rating:parseInt(c.rating)||0,decision:c.decision||'service connected'};});
+    var res=await fetch('/api/analyze-decision',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+sessionToken},
+      body:JSON.stringify({conditions:payload,veteranContext:vc||undefined})
+    });
+    var data=await res.json();
+    if(!data.success)throw new Error(data.error||'Analysis failed.');
+    renderResults(data.analysis);
+  }catch(err){
+    btn.disabled=false;btn.innerHTML='Analyze my rating decision';
+    el.innerHTML+='<div style="color:var(--red);text-align:center;padding:16px;margin-top:12px">'+esc(err.message)+'</div>';
+  }
+}
+
+function renderResults(analysis){
+  var el=document.getElementById('content');
+  var accepts=0,supplements=0,appeals=0;
+  analysis.forEach(function(r){
+    if(r.recommended_action==='ACCEPT')accepts++;
+    else if(r.recommended_action==='SUPPLEMENT')supplements++;
+    else appeals++;
+  });
+
+  var html='<div class="summary-strip">';
+  html+='<div class="summary-stat"><div class="summary-num">'+analysis.length+'</div><div class="summary-label">Conditions analyzed</div></div>';
+  html+='<div class="summary-stat"><div class="summary-num green">'+accepts+'</div><div class="summary-label">Appear correct</div></div>';
+  html+='<div class="summary-stat"><div class="summary-num amber">'+supplements+'</div><div class="summary-label">Supplement</div></div>';
+  html+='<div class="summary-stat"><div class="summary-num red">'+appeals+'</div><div class="summary-label">Appeal</div></div>';
+  html+='</div>';
+
+  analysis.forEach(function(r){
+    var act=(r.recommended_action||'ACCEPT').toLowerCase();
+    html+='<div class="rc '+act+'">';
+    html+='<div class="rc-top"><div><div class="rc-name">'+esc(r.condition_name)+'</div><div class="rc-meta"><span class="rc-code">'+esc(r.diagnostic_code||'—')+'</span><span class="rc-rating">'+r.current_rating+'%</span><span class="rc-confidence">'+esc(r.confidence||'')+' confidence</span></div></div>';
+    html+='<span class="rc-action '+act+'">'+esc(r.recommended_action)+'</span></div>';
+    html+='<div class="rc-reason">'+esc(r.action_reason)+'</div>';
+
+    if(r.issues_found&&r.issues_found.length){
+      html+='<div class="rc-issues"><div class="rc-issues-title">Issues identified</div>';
+      r.issues_found.forEach(function(issue){html+='<div class="rc-issue">'+esc(issue)+'</div>';});
+      html+='</div>';
+    }
+
+    if(r.next_rating_tier&&r.next_tier_criteria){
+      html+='<div class="rc-next"><strong>Next tier: '+r.next_rating_tier+'%</strong> &mdash; '+esc(r.next_tier_criteria)+'</div>';
+    }
+
+    if(r.missed_secondaries&&r.missed_secondaries.length){
+      html+='<div class="rc-secondaries"><div class="rc-sec-title">Unclaimed secondary conditions</div>';
+      r.missed_secondaries.forEach(function(s){html+='<span class="rc-sec-tag">'+esc(s)+'</span>';});
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+
+  // Next steps summary
+  var actionItems=analysis.filter(function(r){return r.recommended_action!=='ACCEPT';});
+  if(actionItems.length){
+    html+='<div class="next-steps"><div class="ns-title">What to do next</div>';
+    actionItems.forEach(function(r){
+      var act=(r.recommended_action||'').toLowerCase();
+      var color=act==='appeal'?'red':'amber';
+      html+='<div class="ns-item"><div class="ns-dot '+color+'"></div><strong>'+esc(r.condition_name)+'</strong>: '+esc(r.action_reason)+'</div>';
+    });
+    html+='<a href="https://www.va.gov/decision-reviews/" target="_blank" class="ns-link">Get help with decision reviews at VA.gov &rarr;</a>';
+    html+='<a href="appeal-assistant.html" class="ns-link" style="margin-left:20px">Use Appeal Assistant &rarr;</a>';
+    html+='</div>';
+  }
+
+  el.innerHTML=html;
+}
+
+// Init
+sb.auth.getSession().then(function(res){
+  var session=res&&res.data&&res.data.session?res.data.session:null;
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;sessionToken=session.access_token;
+  document.getElementById('user-email').textContent=currentUser.email;
+  sb.from('profiles').select('plan').eq('user_id',currentUser.id).single().then(function(pr){
+    var plan=(pr.data&&pr.data.plan)||'free';
+    if(plan!=='pro'&&plan!=='earned'){document.body.classList.add('paywalled');addNavLocks();}
+  }).catch(function(){document.body.classList.add('paywalled');addNavLocks();});
+  sb.from('conditions').select('name,rating,decision').eq('user_id',currentUser.id).then(function(qr){
+    userConditions=qr.data||[];showConditions(userConditions);
+  }).catch(function(){showConditions([]);});
+}).catch(function(){window.location.href='login.html';});
+</script>
+<script src="vera-widget.js"></script>
+</body>
+</html>

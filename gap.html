@@ -191,6 +191,7 @@
           <a href="appeal-assistant.html">Appeal assistant</a>
           <a href="tdiu-smc.html">TDIU &amp; SMC</a>
           <a href="cp-prep.html">C&amp;P Prep</a>
+          <a href="rating-analyzer.html">Decision analyzer</a>
         </div>
       </div>
       <div class="mobile-divider"></div>
@@ -337,7 +338,7 @@ function toggleNav() {
 // Close dropdown when clicking outside
 document.addEventListener('click',function(e){var dd=document.getElementById('nav-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 
-function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
+function addNavLocks(){document.querySelectorAll('.nav-dropdown-menu a').forEach(function(a){if(a.href.match(/vault|claim-builder|state-benefits|nexus-letter|appeal-assistant|tdiu-smc|cp-prep|rating-analyzer/)&&!a.textContent.includes('\uD83D\uDD12')){a.textContent=a.textContent+' \uD83D\uDD12';}});}
 
 const CONDITION_META = {
   'Tinnitus (ringing in ears)':{ default:10, range:'10%' },
