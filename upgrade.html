@@ -60,7 +60,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
   <div class="price-card">
     <div style="display:inline-block;background:var(--green);color:#fff;font-family:var(--ff-mono);font-size:13px;font-weight:700;padding:6px 16px;border-radius:8px;letter-spacing:.04em;margin-bottom:16px">EARNED</div>
     <div class="price-row">
-      <div class="price-amount">$19</div>
+      <div class="price-amount">$39</div>
       <div class="price-period">/month</div>
     </div>
     <div class="price-note">Cancel anytime. No contracts.</div>
@@ -92,7 +92,7 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
       </li>
     </ul>
 
-    <button class="upgrade-btn" id="upgrade-btn" onclick="startCheckout()">Upgrade to EARNED &mdash; $19/mo</button>
+    <button class="upgrade-btn" id="upgrade-btn" onclick="startCheckout()">Upgrade to EARNED &mdash; $39/mo</button>
     <div class="guarantee">30-day money-back guarantee</div>
     <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:12px;color:var(--ink-3);font-family:var(--ff-mono)"><span>&#128274;</span><span>Secure checkout &middot; Bank-level encryption &middot; Cancel anytime</span></div>
     <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--ink-3)">Same infrastructure trusted by Nike and Airbnb. Your data is never sold.</div>
@@ -129,7 +129,7 @@ async function startCheckout(){
     window.location.href=data.url;
   }catch(err){
     btn.disabled=false;
-    btn.textContent='Upgrade to EARNED \u2014 $19/mo';
+    btn.textContent='Upgrade to EARNED \u2014 $39/mo';
     alert(err.message);
   }
 }
