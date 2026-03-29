@@ -79,6 +79,15 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
 .step{display:none}
 .step.active{display:block;animation:fadeUp .35s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.mos-wrap{position:relative}
+.mos-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1.5px solid var(--border-2);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,0.08);max-height:220px;overflow-y:auto;z-index:50;margin-top:4px}
+.mos-dropdown.open{display:block}
+.mos-opt{padding:9px 13px;font-size:13px;color:var(--ink-2);cursor:pointer;transition:background .1s;border-bottom:1px solid var(--border)}
+.mos-opt:last-child{border-bottom:none}
+.mos-opt:hover,.mos-opt.active{background:rgba(14,138,99,0.09);color:var(--ink)}
+.mos-opt .mos-code{font-family:var(--ff-mono);font-weight:500;color:var(--green)}
+.mos-opt .mos-branch{font-size:11px;color:var(--ink-4);margin-left:4px}
+.mos-hint{font-size:11px;color:var(--ink-4);margin-top:4px;font-family:var(--ff-mono)}
 @media(max-width:540px){
   .page{padding:28px 16px 48px}
   .card{padding:28px 20px}
@@ -134,9 +143,11 @@ nav{background:rgba(245,242,236,0.93);backdrop-filter:blur(12px);border-bottom:1
         </select>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group mos-wrap">
       <label class="form-label">MOS / Rate / AFSC <span style="color:var(--ink-4);font-weight:400">(your job code)</span></label>
-      <input class="form-input" type="text" id="mos" placeholder="e.g. 11B, 0311, 3P0X1" autocomplete="off">
+      <input class="form-input" type="text" id="mos" placeholder="Type code or job name..." autocomplete="off">
+      <div class="mos-dropdown" id="mos-dropdown"></div>
+      <div class="mos-hint">Select your branch first to filter results</div>
     </div>
     <button class="btn-primary" onclick="goStep2()">Continue</button>
     <button class="btn-secondary" onclick="showStep(2)">Skip this step</button>
@@ -226,6 +237,7 @@ function showStep(n){
 function goStep2(){
   od.branch=document.getElementById('branch').value;
   od.mos=document.getElementById('mos').value.trim();
+  od.mosTitle=selectedMosTitle||'';
   showStep(2);
   saveProfile();
 }
@@ -344,6 +356,7 @@ function saveProfile(){
     var u={user_id:currentUser.id,updated_at:new Date().toISOString()};
     if(od.branch)u.branch=od.branch;
     if(od.mos)u.mos=od.mos;
+    if(od.mosTitle)u.mos_title=od.mosTitle;
     if(od.rating!==null)u.current_rating=od.rating;
     sb.from('profiles').upsert(u,{onConflict:'user_id'}).catch(function(){});
   }catch(e){}
@@ -353,6 +366,70 @@ function skipOnboarding(){
   if(currentUser)localStorage.setItem('ur_onboarded_'+currentUser.id,'1');
   window.location.href='dashboard.html';
 }
+
+// ── MOS AUTOCOMPLETE ──
+var selectedMosTitle='';
+var MOS_DATA=[
+{code:'11B',name:'Infantryman',branch:'Army'},{code:'11C',name:'Indirect Fire Infantryman',branch:'Army'},{code:'12B',name:'Combat Engineer',branch:'Army'},{code:'13B',name:'Cannon Crewmember',branch:'Army'},{code:'13F',name:'Fire Support Specialist',branch:'Army'},{code:'18X',name:'Special Forces Candidate',branch:'Army'},{code:'19D',name:'Cavalry Scout',branch:'Army'},{code:'19K',name:'M1 Armor Crewman',branch:'Army'},{code:'25B',name:'IT Specialist',branch:'Army'},{code:'25U',name:'Signal Support',branch:'Army'},{code:'31B',name:'Military Police',branch:'Army'},{code:'35F',name:'Intelligence Analyst',branch:'Army'},{code:'42A',name:'Human Resources',branch:'Army'},{code:'68W',name:'Combat Medic',branch:'Army'},{code:'88M',name:'Motor Transport Operator',branch:'Army'},{code:'91B',name:'Wheeled Vehicle Mechanic',branch:'Army'},{code:'92F',name:'Petroleum Supply',branch:'Army'},{code:'92Y',name:'Unit Supply',branch:'Army'},{code:'15T',name:'UH-60 Helicopter Repairer',branch:'Army'},{code:'14T',name:'Patriot Missile Operator',branch:'Army'},{code:'68A',name:'Biomedical Equipment Specialist',branch:'Army'},{code:'68X',name:'Behavioral Health Specialist',branch:'Army'},{code:'74D',name:'CBRN Specialist',branch:'Army'},{code:'89D',name:'Explosive Ordnance Disposal',branch:'Army'},{code:'94F',name:'Computer/Detection Systems Repairer',branch:'Army'},{code:'27D',name:'Paralegal Specialist',branch:'Army'},{code:'36B',name:'Financial Management',branch:'Army'},{code:'37F',name:'Psychological Operations',branch:'Army'},{code:'38B',name:'Civil Affairs',branch:'Army'},
+{code:'0311',name:'Rifleman',branch:'Marines'},{code:'0331',name:'Machine Gunner',branch:'Marines'},{code:'0341',name:'Mortarman',branch:'Marines'},{code:'0351',name:'Infantry Assaultman',branch:'Marines'},{code:'0317',name:'Scout Sniper',branch:'Marines'},{code:'0321',name:'Recon Marine',branch:'Marines'},{code:'0621',name:'Field Radio Operator',branch:'Marines'},{code:'0811',name:'Field Artillery Cannoneer',branch:'Marines'},{code:'1141',name:'Electrician',branch:'Marines'},{code:'1371',name:'Combat Engineer',branch:'Marines'},{code:'3531',name:'Motor Vehicle Operator',branch:'Marines'},{code:'3043',name:'Supply Administration',branch:'Marines'},{code:'5811',name:'Military Police',branch:'Marines'},{code:'6176',name:'Helicopter Crew Chief',branch:'Marines'},{code:'2336',name:'EOD Technician',branch:'Marines'},
+{code:'HM',name:'Hospital Corpsman',branch:'Navy'},{code:'IT',name:'Information Systems Technician',branch:'Navy'},{code:'BM',name:'Boatswain\'s Mate',branch:'Navy'},{code:'GM',name:'Gunner\'s Mate',branch:'Navy'},{code:'MM',name:'Machinist\'s Mate',branch:'Navy'},{code:'ET',name:'Electronics Technician',branch:'Navy'},{code:'CTI',name:'Cryptologic Technician',branch:'Navy'},{code:'EOD',name:'EOD Technician',branch:'Navy'},{code:'SO',name:'Special Warfare Operator (SEAL)',branch:'Navy'},{code:'SW',name:'Steelworker',branch:'Navy'},{code:'MA',name:'Master-at-Arms',branch:'Navy'},{code:'DC',name:'Damage Controlman',branch:'Navy'},{code:'ND',name:'Navy Diver',branch:'Navy'},{code:'LS',name:'Logistics Specialist',branch:'Navy'},{code:'OS',name:'Operations Specialist',branch:'Navy'},
+{code:'3P0X1',name:'Security Forces',branch:'Air Force'},{code:'2W1X1',name:'Aircraft Armament Systems',branch:'Air Force'},{code:'1A0X1',name:'In-Flight Refueling',branch:'Air Force'},{code:'1C1X1',name:'Air Traffic Control',branch:'Air Force'},{code:'1C2X1',name:'Combat Control',branch:'Air Force'},{code:'1T2X1',name:'Pararescue',branch:'Air Force'},{code:'3D1X2',name:'Cyber Transport Systems',branch:'Air Force'},{code:'4N0X1',name:'Aerospace Medical Service',branch:'Air Force'},{code:'6C0X1',name:'Contracting',branch:'Air Force'},{code:'2A3X3',name:'F-16 Aircraft Maintenance',branch:'Air Force'},{code:'3E8X1',name:'Explosive Ordnance Disposal',branch:'Air Force'},{code:'1N0X1',name:'Operations Intelligence',branch:'Air Force'},{code:'3E7X1',name:'Fire Protection',branch:'Air Force'},{code:'2A5X1',name:'Aerospace Maintenance',branch:'Air Force'},{code:'8F000',name:'First Sergeant',branch:'Air Force'},
+{code:'BM',name:'Boatswain\'s Mate',branch:'Coast Guard'},{code:'ME',name:'Maritime Enforcement Specialist',branch:'Coast Guard'},{code:'MK',name:'Machinery Technician',branch:'Coast Guard'},{code:'OS',name:'Operations Specialist',branch:'Coast Guard'},{code:'HS',name:'Health Services Technician',branch:'Coast Guard'}
+];
+
+var BRANCH_MAP={'Army':'Army','Navy':'Navy','Marine Corps':'Marines','Air Force':'Air Force','Coast Guard':'Coast Guard','Space Force':'Air Force','National Guard':'Army','Reserves':'Army'};
+
+(function(){
+  var input=document.getElementById('mos');
+  var dd=document.getElementById('mos-dropdown');
+  var branchSelect=document.getElementById('branch');
+  var activeIdx=-1;
+
+  function getFilteredBranch(){
+    var val=branchSelect.value;
+    return BRANCH_MAP[val]||null;
+  }
+
+  function filter(q){
+    if(!q||q.length<1){dd.classList.remove('open');return;}
+    var lq=q.toLowerCase();
+    var branch=getFilteredBranch();
+    var matches=MOS_DATA.filter(function(m){
+      var nameMatch=m.code.toLowerCase().indexOf(lq)!==-1||m.name.toLowerCase().indexOf(lq)!==-1;
+      if(!nameMatch)return false;
+      if(branch)return m.branch===branch;
+      return true;
+    }).slice(0,8);
+    if(!matches.length){dd.classList.remove('open');return;}
+    activeIdx=-1;
+    dd.innerHTML=matches.map(function(m,i){return '<div class="mos-opt" data-code="'+m.code+'" data-name="'+m.name+'" data-idx="'+i+'"><span class="mos-code">'+m.code+'</span> \u2014 '+m.name+' <span class="mos-branch">('+m.branch+')</span></div>';}).join('');
+    dd.classList.add('open');
+  }
+
+  input.addEventListener('input',function(){filter(this.value.trim());});
+  input.addEventListener('focus',function(){if(this.value.trim().length>=1)filter(this.value.trim());});
+
+  dd.addEventListener('mousedown',function(e){
+    var opt=e.target.closest('.mos-opt');
+    if(opt){input.value=opt.dataset.code;selectedMosTitle=opt.dataset.name;dd.classList.remove('open');}
+  });
+
+  input.addEventListener('keydown',function(e){
+    var opts=dd.querySelectorAll('.mos-opt');
+    if(!opts.length)return;
+    if(e.key==='ArrowDown'){e.preventDefault();activeIdx=Math.min(activeIdx+1,opts.length-1);opts.forEach(function(o,i){o.classList.toggle('active',i===activeIdx);});opts[activeIdx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='ArrowUp'){e.preventDefault();activeIdx=Math.max(activeIdx-1,0);opts.forEach(function(o,i){o.classList.toggle('active',i===activeIdx);});opts[activeIdx].scrollIntoView({block:'nearest'});}
+    else if(e.key==='Enter'&&activeIdx>=0){e.preventDefault();input.value=opts[activeIdx].dataset.code;selectedMosTitle=opts[activeIdx].dataset.name;dd.classList.remove('open');}
+    else if(e.key==='Escape'){dd.classList.remove('open');}
+  });
+
+  document.addEventListener('click',function(e){if(!e.target.closest('.mos-wrap'))dd.classList.remove('open');});
+
+  // Re-filter when branch changes
+  branchSelect.addEventListener('change',function(){
+    if(input.value.trim().length>=1)filter(input.value.trim());
+  });
+})();
 
 sb.auth.getSession().then(function(res){
   var session=res&&res.data&&res.data.session?res.data.session:null;
