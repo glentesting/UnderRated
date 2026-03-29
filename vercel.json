@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "getunderrated.vercel.app"
+        }
+      ],
+      "destination": "https://underratedvets.com/$1",
+      "permanent": true
+    }
+  ]
+}
