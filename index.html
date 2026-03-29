@@ -38,10 +38,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(245,242,236,0.93);backdrop
 .nav-dropdown-trigger:hover,.nav-dropdown.open .nav-dropdown-trigger{color:var(--ink)}
 .nav-dropdown-trigger svg{transition:transform .2s ease;flex-shrink:0}
 .nav-dropdown.open .nav-dropdown-trigger svg{transform:rotate(180deg)}
-.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);left:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:190px;padding:6px 0;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 8px);right:-12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06),0 12px 32px rgba(0,0,0,0.08);min-width:420px;padding:10px 0 8px;z-index:200;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
 .nav-dropdown.open .nav-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
-.nav-dropdown-menu a{display:block;padding:10px 16px;font-size:14px;color:var(--ink-2)!important;transition:background .12s,color .12s;border-radius:6px;margin:0 4px}
+.nav-dd-label{font-family:var(--ff-mono);font-size:10px;color:var(--ink-4);letter-spacing:.08em;text-transform:uppercase;padding:2px 16px 8px}
+.nav-dd-cols{display:grid;grid-template-columns:1fr 1px 1fr;gap:0}
+.nav-dd-divider{background:var(--border);margin:0 0}
+.nav-dd-col{display:flex;flex-direction:column}
+.nav-dropdown-menu a{display:flex;align-items:center;padding:7px 16px;font-size:13px;color:var(--ink-2)!important;transition:background .12s,color .12s;border-radius:0;margin:0;line-height:1.3}
 .nav-dropdown-menu a:hover{background:var(--green-bg);color:var(--ink)!important}
+.nav-lock{width:9px;height:11px;opacity:.4;flex-shrink:0;margin-right:5px;vertical-align:middle;position:relative;top:-1px}
 .nav-cta-static{display:flex;align-items:center;gap:10px}
 .nav-hamburger{display:none;background:none;border:1.5px solid var(--border-2);border-radius:8px;padding:6px 11px;cursor:pointer;color:var(--ink-2);font-family:var(--ff-mono);font-size:14px;line-height:1;align-items:center;gap:5px;transition:all .15s}
 .nav-hamburger:hover{border-color:var(--ink-3);color:var(--ink)}
@@ -274,15 +279,23 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
       <div class="nav-dropdown" id="nav-dropdown">
         <button class="nav-dropdown-trigger" onclick="document.getElementById('nav-dropdown').classList.toggle('open')">Tools <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-dropdown-menu">
-          <a href="vault.html">Vault &#128274;</a>
-          <a href="claim-builder.html">Claim builder &#128274;</a>
-          <a href="state-benefits.html">State benefits &#128274;</a>
-          <a href="nexus-letter.html">Nexus letter &#128274;</a>
-          <a href="appeal-assistant.html">Appeal assistant &#128274;</a>
-          <a href="tdiu-smc.html">TDIU &amp; SMC &#128274;</a>
-          <a href="cp-prep.html">C&amp;P Prep &#128274;</a>
-          <a href="rating-analyzer.html">Decision analyzer &#128274;</a>
-          <a href="statement-gen.html">Statement builder &#128274;</a>
+          <div class="nav-dd-label">Earned tools</div>
+          <div class="nav-dd-cols">
+            <div class="nav-dd-col">
+              <a href="vault.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Vault</a>
+              <a href="claim-builder.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Claim builder</a>
+              <a href="nexus-letter.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Nexus letter</a>
+              <a href="appeal-assistant.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Appeal assistant</a>
+              <a href="tdiu-smc.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>TDIU &amp; SMC</a>
+            </div>
+            <div class="nav-dd-divider"></div>
+            <div class="nav-dd-col">
+              <a href="cp-prep.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>C&amp;P Prep</a>
+              <a href="rating-analyzer.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Decision analyzer</a>
+              <a href="statement-gen.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>Statement builder</a>
+              <a href="state-benefits.html"><svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>State benefits</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -300,15 +313,15 @@ footer{background:var(--surface);border-top:1.5px solid var(--border);padding:36
       <div class="mobile-section-label">TOOLS</div>
       <a href="calculator.html">Rating calculator</a>
       <a href="gap.html">Gap identifier</a>
-      <a href="vault.html">Vault <span class="mobile-lock">&#128274;</span></a>
-      <a href="claim-builder.html">Claim builder <span class="mobile-lock">&#128274;</span></a>
-      <a href="state-benefits.html">State benefits <span class="mobile-lock">&#128274;</span></a>
-      <a href="nexus-letter.html">Nexus letter <span class="mobile-lock">&#128274;</span></a>
-      <a href="appeal-assistant.html">Appeal assistant <span class="mobile-lock">&#128274;</span></a>
-      <a href="tdiu-smc.html">TDIU &amp; SMC <span class="mobile-lock">&#128274;</span></a>
-      <a href="cp-prep.html">C&amp;P Prep <span class="mobile-lock">&#128274;</span></a>
-      <a href="rating-analyzer.html">Decision analyzer <span class="mobile-lock">&#128274;</span></a>
-      <a href="statement-gen.html">Statement builder <span class="mobile-lock">&#128274;</span></a>
+      <a href="vault.html">Vault <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="claim-builder.html">Claim builder <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="state-benefits.html">State benefits <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="nexus-letter.html">Nexus letter <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="appeal-assistant.html">Appeal assistant <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="tdiu-smc.html">TDIU &amp; SMC <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="cp-prep.html">C&amp;P Prep <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="rating-analyzer.html">Decision analyzer <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
+      <a href="statement-gen.html">Statement builder <svg class="nav-lock" viewBox="0 0 10 12"><rect x="1.5" y="5" width="7" height="6" rx="1.2" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></a>
       <div class="mobile-divider"></div>
       <div class="mobile-section-label">ACCOUNT</div>
       <a href="dashboard.html">My dashboard</a>
